@@ -3,19 +3,19 @@ const nodemailer = require('nodemailer');
 class MailService {
     constructor() {
         this.transporter = nodemailer.createTransport({
-            host: 'smtp.mail.ru',
+            host: '',
             port: 465,
             secure: true,
             auth: {
-                user: 'pustovoi2004@mail.ru',
-                pass: 'jKaTrnTNQa2w5WEFxpsr'
+                user: '',
+                pass: ''
             }
         })
     }
 
     async sendActivationMail(to, link) {
         await this.transporter.sendMail({
-            from: 'Illia Pustoviy <pustovoi2004@mail.ru>',
+            from: 'Illia Pustoviy <>',
             to,
             subject: 'Activation of Account on ' + process.env.API_URL,
             text: '',
@@ -31,7 +31,7 @@ class MailService {
 
     async sendResetPasswordMail(to, link) {
         await this.transporter.sendMail({
-            from: 'Illia Pustoviy <pustovoi2004@mail.ru>',
+            from: 'Illia Pustoviy <>',
             to,
             subject: 'Reset your password on ' + process.env.API_URL,
             text: '',
