@@ -1,7 +1,7 @@
 // controllers/authController.js
-const {validationResult} = require('express-validator');
-const ApiError = require('../exceptions/api-error.js');
-const userService = require('../service/user-service.js');
+import {validationResult} from 'express-validator';
+import ApiError from '../exceptions/api-error.js';
+import userService from '../service/user-service.js';
 
 class AuthController {
   register = async (req, res, next) => {
@@ -86,4 +86,4 @@ class AuthController {
   };
 }
 
-module.exports = new AuthController();
+export default new AuthController();

@@ -14,41 +14,42 @@ CREATE TABLE USERS (
 );
 
 CREATE TABLE Posts (
-    PostID INT PRIMARY KEY AUTO_INCREMENT,
+    id INT PRIMARY KEY AUTO_INCREMENT,
     AuthorID INT,
     Title VARCHAR(255) NOT NULL,
-    PublishDate DATETIME NOT NULL,
+    PublishDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     Status ENUM('active', 'inactive') DEFAULT 'active',
     Content TEXT,
     FOREIGN KEY (AuthorID) REFERENCES Users (UserID)
 );
 
 CREATE TABLE Categories (
-    CategoryID INT PRIMARY KEY AUTO_INCREMENT,
+    id INT PRIMARY KEY AUTO_INCREMENT,
     Title VARCHAR(255) NOT NULL,
     Description TEXT
 );
 
 CREATE TABLE PostCategories (
-    PostCategoryID INT PRIMARY KEY AUTO_INCREMENT,
     PostID INT,
     CategoryID INT,
-    FOREIGN KEY (PostID) REFERENCES Posts (PostID),
+    FOREIGN KEY (PostID) REFERENCES Posts (id),
     FOREIGN KEY (CategoryID) REFERENCES Categories (CategoryID)
 );
 
 CREATE TABLE Comments (
-    CommentID INT PRIMARY KEY AUTO_INCREMENT,
+    id INT PRIMARY KEY AUTO_INCREMENT,
     AuthorID INT,
-    PublishDate DATETIME NOT NULL,
+    PublishDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     Content TEXT,
+    PostID INT,
+    FOREIGN KEY (PostID) REFERENCES Posts (id),
     FOREIGN KEY (AuthorID) REFERENCES Users (id)
 );
 
 CREATE TABLE Likes (
-    LikeID INT PRIMARY KEY AUTO_INCREMENT,
+    id INT PRIMARY KEY AUTO_INCREMENT,
     AuthorID INT,
-    PublishDate DATETIME NOT NULL,
+    PublishDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     EntityID INT,
     EntityType ENUM('post', 'comment') DEFAULT 'post',
     Type ENUM('like', 'dislike') DEFAULT 'like',

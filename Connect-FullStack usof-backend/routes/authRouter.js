@@ -1,7 +1,7 @@
-const express = require('express');
+import express from 'express';
 const router = express.Router();
-const authController = require('../controllers/authController');
-const {body} = require('express-validator');
+import authController from '../controllers/authController.js';
+import {body} from 'express-validator';
 
 router.post('/register', 
             body('email').isEmail(), 
@@ -15,4 +15,4 @@ router.get('/refresh', authController.refresh);
 router.post('/password-reset', authController.passwordReset);
 router.post('/password-reset/:confirm_token', authController.passwordResetConfirm);
 
-module.exports = router;
+export default router;

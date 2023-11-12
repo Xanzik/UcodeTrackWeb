@@ -1,9 +1,9 @@
-const nodemailer = require('nodemailer');
+import nodemailer from 'nodemailer';
 
 class MailService {
     constructor() {
         this.transporter = nodemailer.createTransport({
-            host: '',
+            host: 'smtp.mail.ru',
             port: 465,
             secure: true,
             auth: {
@@ -46,4 +46,4 @@ class MailService {
     }
 }
 
-module.exports = new MailService();
+export default new MailService();

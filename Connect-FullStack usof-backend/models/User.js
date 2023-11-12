@@ -1,7 +1,5 @@
-const mysql = require('mysql2/promise');
-
-const config = require('../utils/config.json');
-
+import mysql from 'mysql2/promise';
+import config from '../utils/config.json' assert { type: "json" };
 let pool = mysql.createPool(config);
 
 class User {
@@ -61,4 +59,4 @@ class User {
     }
 }
 
-module.exports = User;
+export default User;

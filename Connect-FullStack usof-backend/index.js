@@ -1,15 +1,20 @@
-require('dotenv').config();
+import dotenv from 'dotenv';
 
-const express = require('express');
-const cookieParser = require('cookie-parser');
-const fileUpload = require('express-fileupload');
+dotenv.config();
+
+import express from 'express';
+import cookieParser from 'cookie-parser';
+import fileUpload from 'express-fileupload';
 const app = express();
 const port = 3000;
 
-const authRouter = require('./routes/authRouter.js');
-const userRouter = require('./routes/userRouter.js');
+import authRouter from './routes/authRouter.js';
+import userRouter from './routes/userRouter.js';
+import categoryRouter from './routes/categoryRouter.js'
+import postRouter from './routes/postRouter.js'
+import commentRouter from './routes/commentRouter.js';
 
-const errorMiddleware = require('./middlewares/error-middlewares.js');
+import errorMiddleware from './middlewares/error-middlewares.js';
 
 app.use(fileUpload({}));
 app.use(express.json());
@@ -17,6 +22,9 @@ app.use(express.static('static'));
 app.use(cookieParser());
 app.use('/api/auth', authRouter);
 app.use('/api', userRouter);
+app.use('/api', categoryRouter);
+app.use('/api', postRouter);
+app.use('/api', commentRouter);
 app.use(errorMiddleware);
 
 app.listen(port, () => {

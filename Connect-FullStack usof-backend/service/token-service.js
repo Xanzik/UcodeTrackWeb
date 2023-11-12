@@ -1,7 +1,7 @@
-const jwt = require('jsonwebtoken');
-const mysql = require('mysql2/promise');
-const config = require('../utils/config.json');
-const {deleteRefreshToken, findUserByToken} = require('../utils/db.js');
+import jwt from 'jsonwebtoken';
+import mysql from 'mysql2/promise';
+import config from '../utils/config.json' assert { type: "json" };
+import {deleteRefreshToken, findUserByToken} from '../utils/db.js';
 
 let pool = mysql.createPool(config);
 
@@ -76,6 +76,14 @@ class TokenService {
         const email = decodedToken.email;
         return email;
     }
+
+    async getIDByToken(token) {
+      const parts = token.split(" ");
+      const tokenValue = parts[1];
+      const decodedToken = jwt.verify(tokenValue, process.env.JWT_ACCESS_SECRET);
+      const email = decodedToken.id;
+      return email;
+    }
 }
 
-module.exports = new TokenService();
+export default new TokenService();

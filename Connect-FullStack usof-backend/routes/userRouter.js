@@ -1,6 +1,6 @@
-const express = require('express');
+import express from 'express';
 const router = express.Router();
-const userController = require('../controllers/userController');
+import userController from '../controllers/userController.js';
 
 router.get('/users', userController.getUsers);
 router.get('/users/:user_id', userController.getUsersByID);
@@ -9,4 +9,4 @@ router.patch('/users/avatar', userController.updateUserAvatar);
 router.patch('/users/:user_id', userController.updateUser);
 router.delete('/users/:user_id', userController.deleteUser);
 
-module.exports = router;
+export default router;

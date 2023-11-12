@@ -1,6 +1,6 @@
-const mysql = require('mysql2/promise');
-const bcrypt = require('bcrypt');
-const config = require('./config.json');
+import mysql from 'mysql2/promise';
+import bcrypt from 'bcrypt';
+import config from './config.json' assert { type: "json" };
 
 let pool = mysql.createPool(config);
 
@@ -177,7 +177,7 @@ const deleteUser = async (id) => {
   }
 }
 
-module.exports = {
+export {
   checkExistingUser,
   findUserByEmail,
   deleteRefreshToken,

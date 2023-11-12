@@ -1,5 +1,5 @@
-const userService = require('../service/user-service.js');
-const ApiError = require('../exceptions/api-error.js');
+import userService from '../service/user-service.js';
+import ApiError from '../exceptions/api-error.js';
 
 class UserController {
     getUsers = async (req, res, next) => {
@@ -68,4 +68,4 @@ class UserController {
     }
 }
 
-module.exports = new UserController();
+export default new UserController();

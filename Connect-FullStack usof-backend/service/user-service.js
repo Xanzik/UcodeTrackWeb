@@ -1,10 +1,10 @@
-const User = require('../models/User.js');
-const {checkExistingUser, getUsers, updateUser, deleteUser, getUser, findUserByEmail, changeResetLink, changePassword, saveAvatarByEmail} = require('../utils/db.js');
-const mailService = require('./mail-service.js');
-const uuid = require('uuid');
-const bcrypt = require('bcrypt');
-const tokenService = require('./token-service.js');
-const ApiError = require('../exceptions/api-error.js');
+import User from '../models/User.js';
+import {checkExistingUser, getUsers, updateUser, deleteUser, getUser, findUserByEmail, changeResetLink, changePassword, saveAvatarByEmail} from '../utils/db.js';
+import mailService from './mail-service.js';
+import { v4 as uuidv4 } from 'uuid';
+import bcrypt from 'bcrypt';
+import tokenService from './token-service.js';
+import ApiError from '../exceptions/api-error.js';
 
 class UserService {
     async register(userData) {
@@ -24,7 +24,7 @@ class UserService {
         
           try {
             const hashedPassword = await bcrypt.hash(password, 3);
-            const activationLink = uuid.v4();
+            const activationLink = uuidv4();
             const newUser = new User(login, hashedPassword, email, activationLink);
             await newUser.save();
             await mailService.sendActivationMail(email, `${process.env.API_URL}/api/auth/activate/${activationLink}`);
@@ -47,7 +47,7 @@ class UserService {
         if (!passwordMatch) {
           throw ApiError.BadRequest('Incorrect password');
         }
-        const tokens = tokenService.generateTokens({email: email});
+        const tokens = tokenService.generateTokens({email: email, id: user.id});
         await tokenService.saveToken(email, tokens.refreshToken);
         return { ...tokens, user: user.email, status: 0, message: 'The user logged in successfully' };
     }
@@ -127,7 +127,7 @@ class UserService {
       
         try {
           const hashedPassword = await bcrypt.hash(password, 3);
-          const activationLink = uuid.v4();
+          const activationLink = uuidv4();
           const newUser = new User(login, hashedPassword, email, activationLink);
           await newUser.save();
           await mailService.sendActivationMail(email, `${process.env.API_URL}/api/auth/activate/${activationLink}`);
@@ -173,4 +173,4 @@ class UserService {
 
 }
 
-module.exports = new UserService();
+export default new UserService();
