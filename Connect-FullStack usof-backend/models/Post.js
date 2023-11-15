@@ -6,7 +6,7 @@ import categoryService from '../service/categoryService.js';
 let connection = mysql.createPool(config);
 
 class PostModel {
-  async getAllPosts(filters) {
+  async getAllPosts(filters, user) {
     try {
       let query = `
       SELECT *
@@ -17,17 +17,20 @@ class PostModel {
     const queryParams = [];
 
     if (filters.dateFrom) {
-      query += ` AND publish_date >= ?`;
+      query += ` AND updatedAt >= ?`;
       queryParams.push(filters.dateFrom);
     }
 
     if (filters.dateTo) {
-      query += ` AND publish_date <= ?`;
+      query += ` AND updatedAt <= ?`;
       queryParams.push(filters.dateTo);
     }
 
-    if (filters.status) {
+    if (filters.status && user.role === 'admin') {
       query += ` AND status = ?`;
+      queryParams.push(filters.status);
+    } else {
+      query += ` AND status = 'active' OR (status = "inactive" AND AuthorID = ${user.id}))`;
       queryParams.push(filters.status);
     }
 
@@ -45,7 +48,11 @@ class PostModel {
       queryParams.push(...filters.category.join().split(',').map(category => category.trim()));
     }
     
-    query += ` GROUP BY posts.id`;
+    if (filters.sortBy !== 'date') {
+      query += ' ORDER BY (SELECT COUNT(*) FROM likes WHERE EntityID = posts.id AND EntityType = "post") DESC';
+    } else {
+      query += ' ORDER BY updatedAt DESC';
+    }
 
     const [results] = await connection.execute(query, queryParams);
 
@@ -64,59 +71,10 @@ class PostModel {
     }
   }
 
-  async getSortedPost(sortBy) {
-    try {
-      let query = 'SELECT * FROM posts';
-
-      if (sortBy === 'likes') {
-          query += ' ORDER BY (SELECT COUNT(*) FROM likes WHERE post_id = posts.id) DESC';
-      } else if (sortBy === 'date') {
-          query += ' ORDER BY publish_date DESC';
-      }
-      const [posts] = await connection.execute(query);
-      return posts;
-    } catch (error) {
-        throw ApiError.BadRequest('Failed to get sorted post', error);
-    }
-  }
-
-  async getFilteredPost(filters) {
-    try {
-        let query = 'SELECT p.* FROM posts p ';
-
-        if (filters.category && filters.category.length > 0) {
-            query += 'JOIN post_categories pc ON p.id = pc.post_id ';
-        }
-
-        query += 'WHERE 1=1';
-
-        if (filters.category && filters.category.length > 0) {
-            query += ' AND pc.category_id IN (?)';
-        }
-
-        if (filters.dateFrom) {
-            query += ' AND publish_date >= ?';
-        }
-
-        if (filters.dateTo) {
-            query += ' AND publish_date <= ?';
-        }
-
-        if (filters.status) {
-            query += ' AND status = ?';
-        }
-
-        const [posts] = await connection.execute(query, Object.values(filters));
-        return posts;
-    } catch (error) {
-        throw ApiError.BadRequest('Failed to get filtered posts', error);
-    }
-}
-
-  async createPost(title, content, categories, user_id) {
+  async createPost(title, content, categories, user) {
     const sqlPostQuery = 'INSERT INTO posts (author_id, title, content) VALUES (?, ?, ?)';
     try {
-        const [postResult] = await connection.execute(sqlPostQuery, [user_id, title, content]);
+        const [postResult] = await connection.execute(sqlPostQuery, [user.id, title, content]);
         const postId = postResult.insertId;
         let categoryIds = [];
         if (categories && categories.length > 0) {
@@ -156,15 +114,24 @@ class PostModel {
     }
   }
 
-  async updatePost(id, newData) {
+  async updatePost(id, newData, user) {
     try {
         const postExists = await this.getPostByID(id);
-        if (!postExists) {
-            throw ApiError.BadRequest('Post not found');
+        if (!postExists[0].id) {
+          throw ApiError.BadRequest('Post not found');
         }
-        const { title, content } = newData;
-        const query = 'UPDATE posts SET title = ?, content = ? WHERE id = ?';
-        await connection.execute(query, [title, content, id]);
+        if(postExists[0].author_id !== user.id && user.role !== 'admin') {
+          throw ApiError.ForbiddenError('You not author');
+        }
+        if(user.role === 'user') {
+          const { content } = newData;
+          const query = 'UPDATE posts SET content = ? WHERE id = ?';
+          await connection.execute(query, [content, id]);
+        } else {
+          const { status } = newData;
+          const query = 'UPDATE posts SET status = ? WHERE id = ?';
+          await connection.execute(query, [status, id]);
+        }
         const updatedPost = await this.getPostByID(id);
         return updatedPost;
     } catch (error) {
@@ -187,12 +154,17 @@ class PostModel {
     }
   }
 
-  async deletePost(id) {
+  async deletePost(id, user) {
     try {
-        await connection.execute('DELETE FROM comments WHERE PostID = ?', [id]);
-        await connection.execute('DELETE FROM post_categories WHERE post_id = ?', [id]);
-        await connection.execute('DELETE FROM posts WHERE id = ?', [id]);
-        return { message: 'Post deleted successfully' };
+      const postExists = await this.getPostByID(id);
+      if (!postExists[0].id) {
+        throw ApiError.BadRequest('Post not found');
+      }
+      if(postExists[0].author_id !== user.id && user.role !== 'admin') {
+        throw ApiError.ForbiddenError('You not author or admin');
+      }
+      const result = await connection.execute('DELETE FROM posts WHERE id = ?', [id]);
+      return { result, message: 'Post deleted successfully' };
     } catch (error) {
         throw ApiError.BadRequest('Error while deleting post:', error);
     }
@@ -208,17 +180,25 @@ class PostModel {
     }
   }
 
-  async createLike(postId, userId) {
+  async createLike(postId, user) {
     try {
-      const currentDate = new Date().toISOString().slice(0, 19).replace('T', ' ');
+        const checkQuery = `
+            SELECT * FROM likes
+            WHERE AuthorID = ? AND PostID = ? AND Type = ?
+        `;
+        const [existingLike] = await connection.execute(checkQuery, [user.id, postId, 'like']);
 
-      const query = `
-          INSERT INTO likes (AuthorID, PublishDate, EntityID, EntityType, Type)
-          VALUES (?, ?, ?, ?, ?)
-      `;
-      await connection.execute(query, [userId, currentDate, postId, 'post', 'like']);
+        if (existingLike.length > 0) {
+            return { message: 'Like already exists for this user and post' };
+        }
 
-      return { message: 'Like created successfully' };
+        const insertQuery = `
+            INSERT INTO likes (AuthorID, PostID, Type)
+            VALUES (?, ?, ?)
+        `;
+        await connection.execute(insertQuery, [user.id, postId, 'like']);
+
+        return { message: 'Like created successfully' };
     } catch (error) {
         throw ApiError.BadRequest('Error while creating like for post:', error);
     }
@@ -235,14 +215,14 @@ class PostModel {
     }
   }
 
-  async deleteLike(postId, userId) {
+  async deleteLike(postId, user) {
     try {
-        const query = 'DELETE FROM likes WHERE EntityID = ? AND AuthorID = ? AND EntityType = "post"';
-        await connection.execute(query, [postId, userId]);
+        await this.getPostByID(postId);
+        const query = 'DELETE FROM likes WHERE PostID = ? AND AuthorID = ?';
+        await connection.execute(query, [postId, user.id]);
 
         return { message: 'Like deleted successfully' };
     } catch (error) {
-        console.error('Error while deleting like for post:', error);
         throw ApiError.BadRequest('Error while deleting like for post:', error);
     }
   }

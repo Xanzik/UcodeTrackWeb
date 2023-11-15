@@ -3,7 +3,7 @@ import { DataTypes } from 'sequelize';
 import sequelize from '../../utils/db_s.js';
 
 const Post = sequelize.define('Post', {
-  id: {
+  id: { 
     type: DataTypes.INTEGER,
     primaryKey: true,
     autoIncrement: true,
@@ -15,6 +15,13 @@ const Post = sequelize.define('Post', {
   Status: {
     type: DataTypes.ENUM('active', 'inactive'),
     defaultValue: 'active',
+  },
+  author_id: {
+    type: DataTypes.INTEGER,
+    references: {
+      model: 'Users',
+      key: 'id',
+    },
   },
   Content: {
     type: DataTypes.TEXT,
@@ -35,6 +42,6 @@ Post.associate = (models) => {
   Post.belongsTo(models.User, { foreignKey: 'AuthorID', as: 'author' });
 };
 
-Post.sync();
+await Post.sync();
 
 export default Post;

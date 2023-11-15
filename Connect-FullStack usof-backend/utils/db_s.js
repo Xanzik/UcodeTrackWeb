@@ -6,7 +6,7 @@ const sequelize = new Sequelize(config.database, config.user, config.password, {
   dialect: 'mysql',
 });
 
-sequelize.authenticate()
+sequelize.sync()
   .then(() => {
     console.log('DB_s installed.');
   })

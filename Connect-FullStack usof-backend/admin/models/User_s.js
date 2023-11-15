@@ -12,6 +12,10 @@ const User = sequelize.define('User', {
     allowNull: false,
     unique: true,
   },
+  password: {
+    type: DataTypes.STRING(255),
+    allowNull: false,
+  },
   full_name: {
     type: DataTypes.STRING(255),
   },
@@ -30,6 +34,19 @@ const User = sequelize.define('User', {
     type: DataTypes.ENUM('user', 'admin'),
     defaultValue: 'user',
   },
+  activate: {
+    type: DataTypes.BOOLEAN,
+    defaultValue: 0,
+  },
+  activation_link: {
+    type: DataTypes.TEXT,
+  },
+  reset_link: {
+    type: DataTypes.TEXT,
+  },
+  refresh_token: {
+    type: DataTypes.TEXT,
+  },
   createdAt: {
     type: DataTypes.DATE,
     allowNull: false,
@@ -42,6 +59,6 @@ const User = sequelize.define('User', {
   },
 });
 
-User.sync();
+await User.sync();
 
 export default User;

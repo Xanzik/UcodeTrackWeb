@@ -8,7 +8,7 @@ const Category = sequelize.define('Category', {
     primaryKey: true,
     autoIncrement: true,
   },
-  name: {
+  title: {
     type: DataTypes.STRING(255),
     allowNull: false,
   },
@@ -27,6 +27,6 @@ const Category = sequelize.define('Category', {
   },
 });
 
-Category.sync();
+await Category.sync();
 
 export default Category;

@@ -1,5 +1,6 @@
 import mysql from 'mysql2/promise';
 import config from '../utils/config.json' assert { type: "json" };
+import bcrypt from 'bcrypt';
 let pool = mysql.createPool(config);
 
 class User {
@@ -15,11 +16,11 @@ class User {
     this.rating = null;
   }
 
-  async save() {
+  async save(login, password, email, activationLink) {
       try {
         const connection = await pool.getConnection();
         const insertUserQuery = 'INSERT INTO usof_database.users (login, password, email, activation_link) VALUES (?, ?, ?, ?)';
-        const [result] = await connection.execute(insertUserQuery, [this.login, this.password, this.email, this.activationLink]);
+        const [result] = await connection.execute(insertUserQuery, [login, password, email,activationLink]);
         connection.release();
         if (result.affectedRows === 1) {
           console.log('User saved successfully');
@@ -35,7 +36,6 @@ class User {
     try {
       const connection = await pool.getConnection();
       const [rows] = await connection.execute('SELECT * FROM usof_database.users WHERE activation_link = ?', [activationLink]);
-  
       if (rows.length === 1) {
         const user = rows[0];
         const updateQuery = 'UPDATE usof_database.users SET activate = ? WHERE id = ?';
@@ -58,7 +58,7 @@ class User {
     }
   }
 
-  async checkExistingUser (login, email) {
+  static async checkExistingUser (login, email) {
     try {
       const connection = await pool.getConnection();
       const [rows] = await connection.execute('SELECT * FROM usof_database.users WHERE login = ? OR email = ?', [login, email]);

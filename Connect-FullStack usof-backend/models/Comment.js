@@ -2,6 +2,8 @@ import mysql from 'mysql2/promise';
 import ApiError from '../exceptions/api-error.js';
 import config from '../utils/config.json' assert { type: "json" };
 
+import postService from '../service/postService.js';
+
 let connection = mysql.createPool(config);
 
 class CommentModel {
@@ -12,14 +14,20 @@ class CommentModel {
         this.content = content;
     }
 
-    async createComment(content, user_id, postId) {
+    async createComment(content, user, postId) {
         try {
-            const [result] = await connection.execute(
-                'INSERT INTO comments (AuthorID, Content, isBlocked, PostID) VALUES (?, ?, ?, ?)',
-                [user_id, content, false, postId]
-            );
-            const commentId = result.insertId;
-            return commentId;
+            const postExists = await postService.getPostByID(postId);
+            if (!postExists[0].id) {
+                throw ApiError.BadRequest('Post not found');
+            }
+            if((user.role === 'user' && postExists[0].status === 'active') || user.role === 'admin') {
+                const [result] = await connection.execute(
+                    'INSERT INTO comments (AuthorID, Content, isBlocked, PostID) VALUES (?, ?, ?, ?)',
+                    [user.id, content, false, postId]
+                );
+                const commentId = result.insertId;
+                return commentId;
+            }
         } catch (error) {
             throw ApiError.BadRequest('Error while creating a comment for post:', error);
         }
@@ -39,38 +47,16 @@ class CommentModel {
             throw ApiError.BadRequest('Error by finding comment:', error);
         }
     }
-
-    async getLikesByComment(id) {
-        try {
-            const query = 'SELECT * FROM likes WHERE EntityID = ? AND EntityType = "comment"';
-            const [likes] = await connection.execute(query, [id]);
-            return likes;
-        } catch (error) {
-            throw ApiError.BadRequest('Error while getting likes for comment:', error);
-        }
-    }
-
-    async createLike(id, userId) {
-        try {    
-            console.log(id);
-            const query = `
-                INSERT INTO likes (AuthorID, EntityID, EntityType, Type)
-                VALUES (?, ?, ?, ?)
-            `;
-            await connection.execute(query, [userId, id, 'comment', 'like']);
-        
-            return { message: 'Like created successfully' };
-        } catch (error) {
-            throw ApiError.BadRequest('Error while creating like for comment:', error);
-        }
-    }
     
-    async updateComment(id, content) {
+    async updateComment(id, status, user) {
         try {
-            const query = 'UPDATE comments SET content = ? WHERE id = ?';
-            await connection.execute(query, [content, id]);
-            const updatedComment = await this.getComment(id);
-            return updatedComment;
+            const comment = await this.getComment(id);
+            if(comment.AuthorID === user.id || user.role === admin) {
+                const query = 'UPDATE comments SET status = ? WHERE id = ?';
+                await connection.execute(query, [status, id]);
+                const updatedComment = await this.getComment(id);
+                return updatedComment;
+            }
         } catch (error) {
             throw ApiError.BadRequest('Error by updating comment:', error);
         }
@@ -86,32 +72,17 @@ class CommentModel {
         }
     }
     
-    
-    async deleteComment(id) {
+    async deleteComment(id, user) {
         try {
-            await this.getComment(id);
-            await connection.execute('DELETE FROM comments WHERE id = ?', [id]);
-            return { message: 'Comment deleted successfully' };
+            const comment = await this.getComment(id);
+            if(comment.AuthorID === user.id || user.role === admin) {
+                await connection.execute('DELETE FROM comments WHERE id = ?', [id]);
+                return { message: 'Comment deleted successfully' };
+            }
         } catch (error) {
             throw ApiError.BadRequest('Error while deleting comment:', error);
         }
     }
-
-    async deleteLike(id, userId) {
-        try {
-            const comment = await this.getComment(id);
-            if (comment.AuthorID !== userId) {
-                throw ApiError.BadRequest('Only the author can delete the like for this comment.');
-            }
-            const query = 'DELETE FROM likes WHERE EntityID = ? AND EntityType = "comment"';
-            await connection.execute(query, [id]);
-   
-            return { message: 'Like deleted successfully' };
-        } catch (error) {
-            throw ApiError.BadRequest('Error while deleting like for comment:', error);
-        }
-    }
-    
 }
   
 export default new CommentModel;

@@ -8,8 +8,37 @@ const Comment = sequelize.define('Comment', {
     primaryKey: true,
     autoIncrement: true,
   },
+  Status: {
+    type: DataTypes.ENUM('active', 'inactive'),
+    defaultValue: 'active',
+  },
   Content: {
     type: DataTypes.TEXT,
+  },
+  AuthorID: {
+    type: DataTypes.INTEGER,
+    references: {
+      model: 'Users',
+      key: 'id',
+    },
+  },
+  PostID: {
+    type: DataTypes.INTEGER,
+    references: {
+      model: 'Posts',
+      key: 'id',
+    },
+    onDelete: 'CASCADE',
+  },
+  createdAt: {
+    type: DataTypes.DATE,
+    allowNull: false,
+    defaultValue: DataTypes.NOW,
+  },
+  updatedAt: {
+    type: DataTypes.DATE,
+    allowNull: false,
+    defaultValue: DataTypes.NOW,
   },
 });
 
@@ -18,6 +47,6 @@ Comment.associate = (models) => {
   Comment.belongsTo(models.User, { foreignKey: 'AuthorID', as: 'author' });
 };
 
-Comment.sync();
+await Comment.sync();
 
 export default Comment;

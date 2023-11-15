@@ -1,6 +1,6 @@
 CREATE DATABASE IF NOT EXISTS usof_database;
 
-USE usof_database;
+use usof_database;
 
 CREATE TABLE IF NOT EXISTS USERS (
     id INT PRIMARY KEY AUTO_INCREMENT,
@@ -10,7 +10,11 @@ CREATE TABLE IF NOT EXISTS USERS (
     email VARCHAR(255) NOT NULL,
     profile_picture VARCHAR(255),
     rating INT DEFAULT 0,
+    activate TINYINT(1) NOT NULL DEFAULT 0,
     role ENUM('user', 'admin') DEFAULT 'user',
+    activation_link TEXT,
+    reset_link TEXT,
+    refresh_token TEXT,
     createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
@@ -46,6 +50,7 @@ CREATE TABLE IF NOT EXISTS Comments (
     AuthorID INT,
     Content TEXT,
     PostID INT,
+    Status ENUM('active', 'inactive') DEFAULT 'active',
     FOREIGN KEY (PostID) REFERENCES Posts (id) ON DELETE CASCADE,
     FOREIGN KEY (AuthorID) REFERENCES Users (id),
     createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -55,10 +60,12 @@ CREATE TABLE IF NOT EXISTS Comments (
 CREATE TABLE IF NOT EXISTS Likes (
     id INT PRIMARY KEY AUTO_INCREMENT,
     AuthorID INT,
-    EntityID INT,
-    EntityType ENUM('post', 'comment') DEFAULT 'post',
+    PostID INT,
+    CommentID INT,
     Type ENUM('like', 'dislike') DEFAULT 'like',
     FOREIGN KEY (AuthorID) REFERENCES Users (id) ON DELETE CASCADE,
+    FOREIGN KEY (PostID) REFERENCES Posts (id) ON DELETE CASCADE,
+    FOREIGN KEY (CommentID) REFERENCES Comments (id) ON DELETE CASCADE,
     createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
