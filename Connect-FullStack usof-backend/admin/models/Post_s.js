@@ -23,6 +23,10 @@ const Post = sequelize.define('Post', {
       key: 'id',
     },
   },
+  isBlocked: {
+    type: DataTypes.BOOLEAN,
+    defaultValue: false,
+  },
   Content: {
     type: DataTypes.TEXT,
   },
@@ -34,7 +38,7 @@ const Post = sequelize.define('Post', {
   updatedAt: {
     type: DataTypes.DATE,
     allowNull: false,
-    defaultValue: sequelize.literal('CURRENT_TIMESTAMP'),
+    defaultValue: sequelize.literal('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'),
   },
 });
 

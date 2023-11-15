@@ -12,7 +12,7 @@ class CategoryModel {
     }
 
     async createCategory(title) {
-        const sqlQuery = 'INSERT INTO categories (name) VALUES (?)';
+        const sqlQuery = 'INSERT INTO categories (title) VALUES (?)';
         try {
           const [result] = await connection.execute(sqlQuery, [title]);
           return result;
@@ -73,7 +73,7 @@ class CategoryModel {
     async getCategoryIds(categories) {
       try {
         const placeholders = categories.map(() => '?').join(',');
-        const [rows] = await connection.execute(`SELECT id FROM categories WHERE name IN (${placeholders})`, categories);
+        const [rows] = await connection.execute(`SELECT id FROM categories WHERE title IN (${placeholders})`, categories);
         return rows.map(row => row.id);
       } catch (error) {
         throw ApiError.BadRequest('Error by get categories id:', error);

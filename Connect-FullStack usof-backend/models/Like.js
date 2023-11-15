@@ -32,7 +32,6 @@ class LikeModel {
                 return { message: 'Like already exists for this user and entity' };
             }
             const insertQuery = `INSERT INTO likes (AuthorID, ${entityIDColumn}, Type) VALUES (?, ?, ?)`;
-            console.log(user.id, id, type);
             await connection.execute(insertQuery, [user.id, id, type]);
         
             return { message: 'Like or dislike created successfully' };

@@ -25,6 +25,7 @@ CREATE TABLE IF NOT EXISTS Posts (
     Title VARCHAR(255) NOT NULL,
     Status ENUM('active', 'inactive') DEFAULT 'active',
     Content TEXT,
+    isBlocked TINYINT(1) NOT NULL DEFAULT 0,
     FOREIGN KEY (AuthorID) REFERENCES Users (UserID),
     createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
@@ -50,6 +51,7 @@ CREATE TABLE IF NOT EXISTS Comments (
     AuthorID INT,
     Content TEXT,
     PostID INT,
+    isBlocked TINYINT(1) NOT NULL DEFAULT 0,
     Status ENUM('active', 'inactive') DEFAULT 'active',
     FOREIGN KEY (PostID) REFERENCES Posts (id) ON DELETE CASCADE,
     FOREIGN KEY (AuthorID) REFERENCES Users (id),

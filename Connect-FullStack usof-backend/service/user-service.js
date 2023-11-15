@@ -7,31 +7,31 @@ import ApiError from '../exceptions/api-error.js';
 
 class UserService {
     async register(userData) {
-        const { login, password, passwordConfirmation, email } = userData;
+      const { login, password, passwordConfirmation, email } = userData;
 
-        if (!login || !password || !passwordConfirmation || !email) {
-          throw ApiError.BadRequest(`Please provide all required fields`);
-          }
-        
-          if (password !== passwordConfirmation) {
-            throw ApiError.BadRequest('Password and password confirmation do not match');
-          }
-        
-          if (await User.checkExistingUser(login, email)) {
-            throw ApiError.BadRequest('User already exists');
-          }
-        
-          try {
-            const hashedPassword = await bcrypt.hash(password, 3);
-            const activationLink = uuidv4();
-            await User.save(login, hashedPassword, email, activationLink);
-            await mailService.sendActivationMail(email, `${process.env.API_URL}/api/auth/activate/${activationLink}`);
-            const tokens = await tokenService.generateTokens({email: email});
-            await tokenService.saveToken(email, tokens.refreshToken);
-            return { ...tokens, user: email, status: 0, message: 'User registered successfully' };
-          } catch (error) {
-            throw ApiError.BadRequest('Error registering user:', error);
-          }
+      if (!login || !password || !passwordConfirmation || !email) {
+        throw ApiError.BadRequest(`Please provide all required fields`);
+      }
+      
+      if (password !== passwordConfirmation) {
+        throw ApiError.BadRequest('Password and password confirmation do not match');
+      }
+      
+      if (await User.checkExistingUser(login, email)) {
+        throw ApiError.BadRequest('User already exists');
+      }
+      
+      try {
+        const hashedPassword = await bcrypt.hash(password, 3);
+        const activationLink = uuidv4();
+        await User.save(login, hashedPassword, email, activationLink);
+        await mailService.sendActivationMail(email, `${process.env.API_URL}/api/auth/activate/${activationLink}`);
+        const tokens = await tokenService.generateTokens({email: email});
+        await tokenService.saveToken(email, tokens.refreshToken);
+        return { ...tokens, user: email, status: 0, message: 'User registered successfully' };
+      } catch (error) {
+        throw ApiError.BadRequest('Error registering user:', error);
+      }
     }
 
     async login(userData) {
@@ -93,9 +93,7 @@ class UserService {
     }
 
     async activate(activationLink) {
-      const user = new User();
-      const fonded_user = await user.find_by_link(activationLink);
-      console.log(fonded_user);
+      const fonded_user = await User.find_by_link(activationLink);
       if(!fonded_user) {
         throw ApiError.BadRequest('Link not found');
       }

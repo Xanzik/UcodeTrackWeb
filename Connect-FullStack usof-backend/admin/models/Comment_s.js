@@ -30,15 +30,19 @@ const Comment = sequelize.define('Comment', {
     },
     onDelete: 'CASCADE',
   },
+  isBlocked: {
+    type: DataTypes.BOOLEAN,
+    defaultValue: false,
+  },
   createdAt: {
     type: DataTypes.DATE,
     allowNull: false,
-    defaultValue: DataTypes.NOW,
+    defaultValue: sequelize.literal('CURRENT_TIMESTAMP'),
   },
   updatedAt: {
     type: DataTypes.DATE,
     allowNull: false,
-    defaultValue: DataTypes.NOW,
+    defaultValue: sequelize.literal('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'),
   },
 });
 

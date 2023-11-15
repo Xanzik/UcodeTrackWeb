@@ -22,8 +22,8 @@ class CommentModel {
             }
             if((user.role === 'user' && postExists[0].status === 'active') || user.role === 'admin') {
                 const [result] = await connection.execute(
-                    'INSERT INTO comments (AuthorID, Content, isBlocked, PostID) VALUES (?, ?, ?, ?)',
-                    [user.id, content, false, postId]
+                    'INSERT INTO comments (AuthorID, Content, PostID) VALUES (?, ?, ?)',
+                    [user.id, content, postId]
                 );
                 const commentId = result.insertId;
                 return commentId;

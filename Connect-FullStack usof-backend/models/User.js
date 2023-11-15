@@ -4,18 +4,6 @@ import bcrypt from 'bcrypt';
 let pool = mysql.createPool(config);
 
 class User {
-  constructor(login, password, email, activationLink, role) {
-    this.login = login;
-    this.password = password;
-    this.email = email;
-    this.activationLink = activationLink;
-    this.role = role;
-    this.id = null;
-    this.fullName = null;
-    this.profilePicture = null;
-    this.rating = null;
-  }
-
   async save(login, password, email, activationLink) {
       try {
         const connection = await pool.getConnection();
@@ -58,7 +46,7 @@ class User {
     }
   }
 
-  static async checkExistingUser (login, email) {
+  async checkExistingUser (login, email) {
     try {
       const connection = await pool.getConnection();
       const [rows] = await connection.execute('SELECT * FROM usof_database.users WHERE login = ? OR email = ?', [login, email]);

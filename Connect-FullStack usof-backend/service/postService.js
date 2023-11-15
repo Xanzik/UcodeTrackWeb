@@ -1,6 +1,5 @@
 // postService.js
 import PostModel from '../models/Post.js';
-import tokenService from './token-service.js';
 import commentService from './commentService.js';
 
 class PostService {

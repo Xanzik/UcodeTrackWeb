@@ -82,7 +82,7 @@ class PostModel {
         }
         if (categoryIds.length > 0) {
           for (const categoryId of categoryIds) {
-              await db.execute('INSERT INTO post_categories (post_id, category_id) VALUES (?, ?)', [postId, categoryId]);
+              await connection.execute('INSERT INTO post_categories (post_id, category_id) VALUES (?, ?)', [postId, categoryId]);
           }
       }
         return postId;

@@ -7,10 +7,6 @@ class likeService {
     }
 
     async createLike(id, user, type, entityType) {
-        console.log(type);
-        console.log(entityType);
-        console.log(id);
-        console.log(user);
         const like = await LikeModel.createLike(id, user, type, entityType);
         return like;
     }
