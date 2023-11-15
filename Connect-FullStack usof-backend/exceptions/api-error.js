@@ -5,6 +5,10 @@ export default class ApiError extends Error {
         this.errors = errors;
     }
 
+    static ForbiddenError(message, errors = []) {
+        return new ApiError(403, message, errors);
+    }
+
     static UnauthorizedError() {
         return new ApiError(401, 'Unauthorized');
     }

@@ -1,12 +1,12 @@
 import jwt from 'jsonwebtoken';
 import mysql from 'mysql2/promise';
 import config from '../utils/config.json' assert { type: "json" };
-import {deleteRefreshToken, findUserByToken} from '../utils/db.js';
+import User from '../models/User.js';
 
 let pool = mysql.createPool(config);
 
 class TokenService {
-    generateTokens(payload) {
+    async generateTokens(payload) {
         const accessToken = jwt.sign(payload, process.env.JWT_ACCESS_SECRET, {expiresIn:'30m'});
         const refreshToken = jwt.sign(payload, process.env.JWT_REFRESH_SECRET, {expiresIn:'30d'});
         return {
@@ -15,7 +15,7 @@ class TokenService {
         }
     }
 
-    generateResetToken(payload) {
+    async generateResetToken(payload) {
       const resetToken = jwt.sign(payload, process.env.JWT_ACCESS_SECRET, {expiresIn:'24h'});
       return  resetToken;
     }
@@ -42,7 +42,7 @@ class TokenService {
       }
     }
 
-    validateAccessToken(token) {
+    async validateAccessToken(token) {
       try {
         const userData = jwt.verify(token, process.env.JWT_ACCESS_SECRET);
         return userData;
@@ -51,7 +51,7 @@ class TokenService {
       }
     }
 
-    validateRefreshToken(token) {
+    async validateRefreshToken(token) {
       try {
         const userData = jwt.verify(token, process.env.JWT_REFRESH_SECRET);
         return userData;
@@ -59,13 +59,14 @@ class TokenService {
         return null;
       }
     }
+
     async removeToken(refreshToken) {
-      const tokenData = deleteRefreshToken(refreshToken);
+      const tokenData = User.deleteRefreshToken(refreshToken);
       return tokenData;
     }
 
     async findToken(refreshToken) {
-      const tokenData = findUserByToken(refreshToken);
+      const tokenData = User.findUserByToken(refreshToken);
       return tokenData;
     }
 

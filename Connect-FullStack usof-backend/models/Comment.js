@@ -51,15 +51,14 @@ class CommentModel {
     }
 
     async createLike(id, userId) {
-        try {
-            const currentDate = new Date().toISOString().slice(0, 19).replace('T', ' ');
-    
+        try {    
+            console.log(id);
             const query = `
-                INSERT INTO likes (AuthorID, PublishDate, EntityID, EntityType, Type)
-                VALUES (?, ?, ?, ?, ?)
+                INSERT INTO likes (AuthorID, EntityID, EntityType, Type)
+                VALUES (?, ?, ?, ?)
             `;
-            await connection.execute(query, [userId, currentDate, id, 'comment', 'like']);
-    
+            await connection.execute(query, [userId, id, 'comment', 'like']);
+        
             return { message: 'Like created successfully' };
         } catch (error) {
             throw ApiError.BadRequest('Error while creating like for comment:', error);

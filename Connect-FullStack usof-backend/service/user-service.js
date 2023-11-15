@@ -1,5 +1,4 @@
 import User from '../models/User.js';
-import {checkExistingUser, getUsers, updateUser, deleteUser, getUser, findUserByEmail, changeResetLink, changePassword, saveAvatarByEmail} from '../utils/db.js';
 import mailService from './mail-service.js';
 import { v4 as uuidv4 } from 'uuid';
 import bcrypt from 'bcrypt';
@@ -28,7 +27,7 @@ class UserService {
             const newUser = new User(login, hashedPassword, email, activationLink);
             await newUser.save();
             await mailService.sendActivationMail(email, `${process.env.API_URL}/api/auth/activate/${activationLink}`);
-            const tokens = tokenService.generateTokens({email: email});
+            const tokens = await tokenService.generateTokens({email: email});
             await tokenService.saveToken(email, tokens.refreshToken);
             return { ...tokens, user: newUser.email, status: 0, message: 'User registered successfully' };
           } catch (error) {
@@ -38,7 +37,7 @@ class UserService {
 
     async login(userData) {
       const { email, password } = userData;
-        const [rows] = await findUserByEmail(email);
+        const [rows] = await User.findUserByEmail(email);
         if (!rows) {
           throw ApiError.BadRequest('User not found');
         }
@@ -47,9 +46,12 @@ class UserService {
         if (!passwordMatch) {
           throw ApiError.BadRequest('Incorrect password');
         }
-        const tokens = tokenService.generateTokens({email: email, id: user.id});
+        if (!user.activate) {
+          throw ApiError.BadRequest('User must activate his account');
+        }
+        const tokens = await tokenService.generateTokens({email: email, id: user.id, login: user.login, role: user.role});
         await tokenService.saveToken(email, tokens.refreshToken);
-        return { ...tokens, user: user.email, status: 0, message: 'The user logged in successfully' };
+        return { ...tokens, user: user.email, role: user.role, status: 0, message: 'The user logged in successfully' };
     }
 
     async logout(refreshToken) {
@@ -61,22 +63,22 @@ class UserService {
       if(!refreshToken) {
         throw ApiError.UnauthorizedError();
       }
-      const userData = tokenService.validateRefreshToken(refreshToken);
+      const userData = await tokenService.validateRefreshToken(refreshToken);
       const [userWithToken] = await tokenService.findToken(refreshToken);
       if(!userData || !userWithToken) {
         throw ApiError.UnauthorizedError();
       }
-      const tokens = tokenService.generateTokens({email: userWithToken.email});
+      const tokens = await tokenService.generateTokens({email: userWithToken.email});
       await tokenService.saveToken(userWithToken.email, tokens.refreshToken);
       return { ...tokens, userWithToken: userWithToken.email, status: 0, message: 'The token refreshed successfully' };
     }
 
     async passwordReset(email) {
       try {
-        const resetLink = tokenService.generateResetToken({email});
+        const resetLink = await tokenService.generateResetToken({email});
 
         await mailService.sendResetPasswordMail(email, `${process.env.API_URL}/api/auth/password-reset/${resetLink}`);
-        changeResetLink(resetLink, email);
+        await User.changeResetLink(resetLink, email);
         return { status: 0, message: 'Password reset sended on email' };
       } catch (error) {
         throw ApiError.BadRequest('Error sending reset:', error);
@@ -84,7 +86,7 @@ class UserService {
     }
 
     async passwordResetConfirm(newPassword, token) {
-      const fonded_user = await changePassword(token, newPassword);
+      const fonded_user = await User.changePassword(token, newPassword);
       if(!fonded_user) {
         throw ApiError.BadRequest('Link not found');
       }
@@ -101,12 +103,12 @@ class UserService {
     }
 
     async getUsers() {
-      const users = getUsers();
+      const users = await User.getUsers();
       return users;
     }
 
     async getUserByID(id) {
-      const user = getUser(id);
+      const user = await User.getUser(id);
       return user;
     }
 
@@ -131,7 +133,7 @@ class UserService {
           const newUser = new User(login, hashedPassword, email, activationLink);
           await newUser.save();
           await mailService.sendActivationMail(email, `${process.env.API_URL}/api/auth/activate/${activationLink}`);
-          const tokens = tokenService.generateTokens({email});
+          const tokens = await tokenService.generateTokens({email});
           await tokenService.saveToken(email, tokens.refreshToken);
           return { ...tokens, user: newUser.email, status: 0, message: 'User registered successfully' };
         } catch (error) {
@@ -143,13 +145,13 @@ class UserService {
         const avatarName = uuid.v4() + ".jpg";
         file.mv(process.env.FILE_PATH + "\\" + avatarName);
         const email = await tokenService.getEmailByToken(token);
-        const result = await saveAvatarByEmail(avatarName, email);
+        const result = await User.saveAvatarByEmail(avatarName, email);
         return result;
       }
 
       async updateUser(id, data) {
         try {
-          const results = await updateUser(id, data);
+          const results = await User.updateUser(id, data);
           if (results.affectedRows > 0) {
             return results;
           } else {
@@ -162,7 +164,7 @@ class UserService {
 
       async deleteUser(id) {
         try {
-          const results = await deleteUser(id);
+          const results = await User.deleteUser(id);
           if (results.affectedRows > 0) {
             return results;
           }
