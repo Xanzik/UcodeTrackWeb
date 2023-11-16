@@ -1,6 +1,7 @@
 import User from '../models/User.js';
 import mailService from './mail-service.js';
 import { v4 as uuidv4 } from 'uuid';
+import fs from 'fs';
 import bcrypt from 'bcrypt';
 import tokenService from './token-service.js';
 import ApiError from '../exceptions/api-error.js';
@@ -140,7 +141,11 @@ class UserService {
       }
 
       async updateUserAvatar(file, token) {
-        const avatarName = uuid.v4() + ".jpg";
+        const path = './static';
+        if (!fs.existsSync(path)) {
+          fs.mkdirSync(path);
+        }
+        const avatarName = uuidv4() + ".jpg";
         file.mv(process.env.FILE_PATH + "\\" + avatarName);
         const email = await tokenService.getEmailByToken(token);
         const result = await User.saveAvatarByEmail(avatarName, email);
