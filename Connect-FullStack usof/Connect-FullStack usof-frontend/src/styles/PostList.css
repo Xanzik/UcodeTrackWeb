@@ -1,0 +1,88 @@
+/* Page.css */
+body {
+  font-family: "Arial", sans-serif;
+  background-color: #020111;
+  color: #fff;
+}
+
+/* PostsList.css */
+.posts-list-container {
+  max-width: 800px;
+  margin-top: 100px;
+}
+
+.filters-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.filter-group {
+  margin-bottom: 10px;
+}
+
+.filter-group label {
+  display: block;
+  font-weight: bold;
+}
+
+.filter-input {
+  padding: 8px;
+  border: 1px solid #7fdbff;
+  background-color: #020111;
+  color: #fff;
+}
+
+.filter-select {
+  padding: 8px;
+  border: 1px solid #7fdbff;
+  background-color: #020111;
+  color: #fff;
+}
+
+.posts-list {
+  list-style: none;
+  padding: 0;
+}
+
+.post-item {
+  background-color: #020111;
+  border: 1px solid #7fdbff;
+  margin-bottom: 20px;
+  padding: 20px;
+}
+
+.post-title {
+  font-size: 1.8rem;
+  font-family: "Orbitron", sans-serif;
+  color: #7fdbff;
+  margin-bottom: 12px;
+}
+
+.post-content {
+  color: #fff;
+}
+
+.post-item a {
+  color: #7fdbff;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.post-item a:hover {
+  color: #1565c0;
+}
+
+.clear-button {
+  padding: 8px;
+  background-color: #7fdbff;
+  color: #020111;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.clear-button:hover {
+  background-color: #1565c0;
+}

@@ -1,0 +1,41 @@
+/* Profile.css */
+.profile-page {
+  display: flex;
+}
+
+.profile-container {
+  flex: 1;
+  text-align: center;
+  margin-top: 100px;
+}
+
+.profile-info {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.profile-info img {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #7fdbff;
+  margin-right: 20px;
+}
+
+.profile-info div {
+  color: #7fdbff;
+}
+
+.profile-info p {
+  margin: 5px 0;
+}
+
+.profile-info strong {
+  font-weight: bold;
+}
+
+h1 {
+  color: #7fdbff;
+}
