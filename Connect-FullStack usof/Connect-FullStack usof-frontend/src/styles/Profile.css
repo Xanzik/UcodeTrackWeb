@@ -1,18 +1,20 @@
 /* Profile.css */
 .profile-page {
   display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .profile-container {
-  flex: 1;
   text-align: center;
-  margin-top: 100px;
+  margin-top: 20px;
 }
 
 .profile-info {
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-wrap: wrap;
 }
 
 .profile-info img {
@@ -26,6 +28,7 @@
 
 .profile-info div {
   color: #7fdbff;
+  text-align: left;
 }
 
 .profile-info p {
@@ -38,4 +41,30 @@
 
 h1 {
   color: #7fdbff;
+}
+
+.user-posts {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.user-posts h2 {
+  color: #7fdbff;
+  margin-bottom: 10px;
+}
+
+.user-posts ul {
+  list-style: none;
+  padding: 0;
+}
+
+.user-posts li {
+  background-color: #020111;
+  border: 1px solid #ddd;
+  margin-bottom: 10px;
+  padding: 10px;
+  color: #333;
+  text-align: left;
+  max-width: 400px;
+  margin: 0 auto;
 }

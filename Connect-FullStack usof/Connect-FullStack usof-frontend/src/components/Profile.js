@@ -1,13 +1,21 @@
 // Profile.js
-import React from "react";
+import React, { useEffect } from "react";
 import Header from "./Header";
 import MenuBar from "./MenuBar";
-import { connect } from "react-redux";
+import { connect, useDispatch } from "react-redux";
+import { getPosts } from "../store/actions/posts.js";
 import "../styles/Profile.css";
 
 const defaultAvatar = "basic_avatar.jpg";
 
-const Profile = ({ currentUser }) => {
+const Profile = ({ currentUser, allPosts }) => {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getPosts());
+  }, [dispatch]);
+  const userPosts = currentUser
+    ? allPosts.filter((post) => post.author_id === currentUser.id)
+    : [];
   return (
     <div className="profile-page">
       <Header />
@@ -50,6 +58,16 @@ const Profile = ({ currentUser }) => {
             </div>
           </div>
         )}
+        {userPosts.length > 0 && (
+          <div className="user-posts">
+            <h2>Posts:</h2>
+            <ul>
+              {userPosts.map((post) => (
+                <li key={post.id}>{post.Title}</li>
+              ))}
+            </ul>
+          </div>
+        )}
       </div>
     </div>
   );
@@ -58,6 +76,7 @@ const Profile = ({ currentUser }) => {
 const mapStateToProps = (state) => {
   return {
     currentUser: state.auth.user,
+    allPosts: state.posts.posts,
   };
 };
 

@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { checkAuth } from "./store/actions/auth.js";
 
-import LoginPage from "./components/AuthComponents/LoginPage.js";
+import LoginForm from "./components/AuthComponents/LoginForm.js";
 import Page from "./components/Page.js";
 import Profile from "./components/Profile.js";
 import CreatePost from "./components/PostComponents/CreatePost.js";
@@ -17,18 +17,15 @@ const App = () => {
       dispatch(checkAuth());
     }
   }, [dispatch]);
-
   const isAuth = useSelector((state) => state.auth.isAuth);
   const loading = useSelector((state) => state.auth.loading);
-
   if (loading) {
     return <div>loading</div>;
   }
-
   if (!isAuth) {
-    return <LoginPage />;
+    return <LoginForm />;
   }
-  // <Route path="/:page" element={<PostsListWithPagination />} />
+
   return (
     <Router>
       <Routes>
