@@ -2,7 +2,7 @@ import React from "react";
 
 import Header from "./Header";
 import MenuBar from "./MenuBar";
-import PostsListWithPagination from "./PostComponents/PostList.js";
+import PostsList from "./PostComponents/PostList.js";
 
 import "../styles/Page.css";
 
@@ -20,7 +20,7 @@ const Page = () => {
             alignItems: "center",
           }}
         >
-          <PostsListWithPagination />
+          <PostsList />
         </div>
       </div>
     </div>

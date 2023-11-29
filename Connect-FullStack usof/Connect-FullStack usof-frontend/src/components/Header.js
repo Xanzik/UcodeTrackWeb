@@ -4,6 +4,8 @@ import { connect } from "react-redux";
 
 import "../styles/Page.css";
 
+const URL = `http://localhost:5000`;
+
 const defaultAvatar = "basic_avatar.jpg";
 
 const Header = ({ currentUser }) => {
@@ -16,7 +18,11 @@ const Header = ({ currentUser }) => {
           <span>{currentUser.role}</span>
           <span>{currentUser.login}</span>
           <img
-            src={currentUser.avatar ? currentUser.avatar : defaultAvatar}
+            src={
+              currentUser.profile_picture
+                ? `${URL}/static/${currentUser.profile_picture}`
+                : defaultAvatar
+            }
             alt="User Avatar"
           />
         </div>

@@ -104,6 +104,7 @@ class UserService {
       throw ApiError.UnauthorizedError();
     }
     const user = await tokenService.validateRefreshToken(refreshToken);
+    const refresh_user = await this.getUserByID(user.id);
     const userWithToken = await tokenService.findToken(refreshToken);
     if (!user || !userWithToken) {
       throw ApiError.UnauthorizedError();
@@ -115,13 +116,13 @@ class UserService {
       role: user.role,
     });
     const user_dto = new UserDTO(
-      user.id,
-      user.login,
-      user.full_name,
-      user.email,
-      user.profile_picture,
-      user.rating,
-      user.role
+      refresh_user.id,
+      refresh_user.login,
+      refresh_user.full_name,
+      refresh_user.email,
+      refresh_user.profile_picture,
+      refresh_user.rating,
+      refresh_user.role
     );
     await tokenService.saveToken(user.email, tokens.refreshToken);
     return {
@@ -215,22 +216,25 @@ class UserService {
     }
   }
 
-  async updateUserAvatar(file, token) {
-    const path = "./static";
-    if (!fs.existsSync(path)) {
-      fs.mkdirSync(path);
+  async updateUserAvatar(file, user) {
+    try {
+      const path = "./static";
+      if (!fs.existsSync(path)) {
+        fs.mkdirSync(path);
+      }
+      const avatarName = uuidv4() + ".jpg";
+      file.mv(process.env.FILE_PATH + "\\" + avatarName);
+      const result = await User.saveAvatarByEmail(avatarName, user.email);
+      return result;
+    } catch (e) {
+      console.error(error);
     }
-    const avatarName = uuidv4() + ".jpg";
-    file.mv(process.env.FILE_PATH + "\\" + avatarName);
-    const email = await tokenService.getEmailByToken(token);
-    const result = await User.saveAvatarByEmail(avatarName, email);
-    return result;
   }
 
   async updateUser(id, data) {
     try {
       const results = await User.updateUser(id, data);
-      if (results.affectedRows > 0) {
+      if (results) {
         return results;
       } else {
         throw ApiError.BadRequest("User not found");

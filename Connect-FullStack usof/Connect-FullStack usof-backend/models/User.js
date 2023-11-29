@@ -1,6 +1,8 @@
 import mysql from "mysql2/promise";
 import config from "../utils/config.json" assert { type: "json" };
 import bcrypt from "bcrypt";
+import UserDTO from "../dto/user_dto.js";
+
 let pool = mysql.createPool(config);
 
 class User {
@@ -221,10 +223,20 @@ class User {
         .map((field) => `${field} = ?`)
         .join(", ");
       const sql = `UPDATE users SET ${placeholders} WHERE id = ?`;
-      const [rows] = await connection.execute(sql, updateValues);
+      await connection.execute(sql, updateValues);
+      const user = await this.getUser(id);
+      const user_dto = new UserDTO(
+        user.id,
+        user.login,
+        user.full_name,
+        user.email,
+        user.profile_picture,
+        user.rating,
+        user.role
+      );
       connection.release();
-      if (rows.affectedRows === 1) {
-        return rows;
+      if (user) {
+        return { user: user_dto };
       } else {
         return "The user with the specified email was not found.";
       }

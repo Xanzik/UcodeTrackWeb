@@ -7,7 +7,6 @@
 
 .profile-container {
   text-align: center;
-  margin-top: 20px;
 }
 
 .profile-info {
@@ -23,7 +22,7 @@
   border-radius: 50%;
   object-fit: cover;
   border: 2px solid #7fdbff;
-  margin-right: 20px;
+  margin-right: 50px;
 }
 
 .profile-info div {
@@ -67,4 +66,57 @@ h1 {
   text-align: left;
   max-width: 400px;
   margin: 0 auto;
+}
+
+.avatar-container {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.avatar-container:hover {
+  transform: scale(1.1); /* Scale up on hover */
+}
+
+.avatar-image {
+  width: 100%;
+  height: auto;
+  filter: brightness(100%); /* Initially, set brightness to 100% */
+  transition: filter 0.3s ease;
+}
+
+.avatar-container:hover .avatar-image {
+  filter: brightness(70%); /* Darken the image on hover */
+}
+
+.change-avatar-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 200px;
+  height: 200px;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  border-radius: 50%;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 20px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.avatar-container:hover .change-avatar-overlay {
+  opacity: 1; /* Show overlay on hover */
+}
+
+.change-avatar-overlay input {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
 }

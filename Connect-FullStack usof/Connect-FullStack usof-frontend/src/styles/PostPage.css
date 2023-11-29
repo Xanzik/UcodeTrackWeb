@@ -1,0 +1,12 @@
+.post-page {
+  padding: 20px;
+  border: 1px solid #ccc;
+}
+
+.post-page h2 {
+  color: #333;
+}
+
+.post-page p {
+  color: #555;
+}

@@ -2,6 +2,7 @@ const initialState = {
   posts: [],
   loading: false,
   error: null,
+  post: null,
 };
 
 const postsReducer = (state = initialState, action) => {
@@ -27,6 +28,19 @@ const postsReducer = (state = initialState, action) => {
         error: null,
       };
     case "GET_POSTS_FAILURE":
+      return {
+        ...state,
+        loading: false,
+        error: action.payload,
+      };
+    case "GET_POST_SUCCESS":
+      return {
+        ...state,
+        post: action.payload,
+        loading: false,
+        error: null,
+      };
+    case "GET_POST_FAILURE":
       return {
         ...state,
         loading: false,

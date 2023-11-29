@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
+import { Link } from "react-router-dom";
 import { useLocation, useNavigate } from "react-router-dom";
 import { getPosts } from "../../store/actions/posts.js";
+import { getUsers } from "../../store/actions/user.js";
 import { useSelector } from "react-redux";
 import "../../styles/PostList.css";
 
-const PostsListWithPagination = () => {
+const PostsList = () => {
   const dispatch = useDispatch();
   const location = useLocation();
   const navigate = useNavigate();
@@ -35,6 +37,12 @@ const PostsListWithPagination = () => {
   }, [dispatch, location.search]);
 
   const posts = useSelector((state) => state.posts.posts);
+
+  useEffect(() => {
+    dispatch(getUsers());
+  }, [dispatch]);
+
+  const users = useSelector((state) => state.users.users);
 
   const handleFilterChange = (filter, value) => {
     const searchParams = new URLSearchParams(location.search);
@@ -118,13 +126,20 @@ const PostsListWithPagination = () => {
       <button className="clear-button" onClick={handleClearFilters}>
         Clear Filters
       </button>
-      <h2>Posts:</h2>
       <ul className="posts-list">
         {posts.map((post) => (
           <li key={post.id} className="post-item">
-            <h3 className="post-title">{post.Title}</h3>
-            <p className="post-content">{post.Content}</p>
-            <p className="post-status"> {post.Status}</p>
+            <Link to={`/post/${post.id}`} className="post-link">
+              <h3 className="post-title">{post.Title}</h3>
+              <p className="post-content">{post.Content}</p>
+              <p className="post-status">Status: {post.Status}</p>
+              <p className="post-status">Updated At: {post.updatedAt}</p>
+              <p className="post-author">
+                Author:{" "}
+                {users.find((user) => user.id === post.author_id)?.login ||
+                  "Loading..."}
+              </p>
+            </Link>
           </li>
         ))}
       </ul>
@@ -132,4 +147,4 @@ const PostsListWithPagination = () => {
   );
 };
 
-export default PostsListWithPagination;
+export default PostsList;

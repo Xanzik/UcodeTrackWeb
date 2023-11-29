@@ -9,6 +9,8 @@ import LoginForm from "./components/AuthComponents/LoginForm.js";
 import Page from "./components/Page.js";
 import Profile from "./components/Profile.js";
 import CreatePost from "./components/PostComponents/CreatePost.js";
+import PasswordResetPage from "./components/AuthComponents/PasswordResetPage.js";
+import PostPage from "./components/PostComponents/PostPage.js";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -32,6 +34,11 @@ const App = () => {
         <Route path="/" element={<Page />} />
         <Route path="/create-post" element={<CreatePost />} />
         <Route path="/profile" element={<Profile />} />
+        <Route
+          path="/api/auth/password-reset/:token"
+          element={<PasswordResetPage />}
+        />
+        <Route path="/post/:postId" element={<PostPage />} />
       </Routes>
     </Router>
   );

@@ -19,4 +19,12 @@ export default class AuthService {
   static async logout() {
     return $api.post("auth/logout");
   }
+
+  static async sendResetLink() {
+    return $api.post("auth/password-reset");
+  }
+
+  static async resetPassword(token, newPassword) {
+    return $api.post(`auth//password-reset/${token}`, { newPassword });
+  }
 }

@@ -4,12 +4,10 @@ import axios from "axios";
 
 export const login = (email, password) => async (dispatch) => {
   try {
-    console.log("Login function called"); // Добавь эту строку
     const response = await AuthService.login(email, password);
     localStorage.setItem("token", response.data.accessToken);
     dispatch({ type: "SET_USER", payload: response.data.user });
     dispatch({ type: "SET_AUTH_STATUS", payload: true });
-    console.log("Login successful", response.data);
   } catch (error) {
     console.error("Login failed", error);
   }
@@ -41,6 +39,24 @@ export const logout = () => async (dispatch) => {
     dispatch({ type: "SET_AUTH_STATUS", payload: false });
   } catch (error) {
     console.error("Logout error", error);
+  }
+};
+
+export const sendResetLink = () => async (dispatch) => {
+  try {
+    await AuthService.sendResetLink();
+    dispatch({ type: "SET_MESSAGE", payload: "Success" });
+  } catch (error) {
+    dispatch({ type: "SET_MESSAGE", payload: "Error" });
+  }
+};
+
+export const resetPassword = (token, newPassword) => async (dispatch) => {
+  try {
+    await AuthService.resetPassword(token, newPassword);
+    dispatch({ type: "SET_MESSAGE", payload: "Success" });
+  } catch (error) {
+    dispatch({ type: "SET_MESSAGE", payload: "Error" });
   }
 };
 

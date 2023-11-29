@@ -36,3 +36,21 @@ export const getPosts = (filters) => {
     }
   };
 };
+
+export const getPost = (id) => {
+  return async (dispatch) => {
+    try {
+      const response = await PostService.getPost(id);
+      dispatch({
+        type: "GET_POST_SUCCESS",
+        payload: response.data,
+      });
+    } catch (error) {
+      console.error("Error fetching posts:", error);
+      dispatch({
+        type: "GET_POST_FAILURE",
+        payload: error,
+      });
+    }
+  };
+};

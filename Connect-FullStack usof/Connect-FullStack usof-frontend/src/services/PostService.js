@@ -8,4 +8,8 @@ export default class PostService {
   static async getPosts(filters) {
     return $api.get("posts", { params: filters });
   }
+
+  static async getPost(id) {
+    return $api.get(`posts/${id}`);
+  }
 }

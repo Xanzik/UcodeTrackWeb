@@ -46,3 +46,27 @@
 .scifi-button:hover {
   background-color: #1565c0;
 }
+
+/* CreatePost.css */
+.categories-container {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.category {
+  margin: 5px;
+  padding: 8px;
+  border: 1px solid #ccc;
+  cursor: pointer;
+}
+
+.selected-categories {
+  margin-top: 10px;
+}
+
+.selected-category {
+  margin-right: 5px;
+  padding: 5px;
+  background-color: #eee;
+  border: 1px solid #ccc;
+}

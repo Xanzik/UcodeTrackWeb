@@ -23,6 +23,10 @@ const LoginForm = () => {
     dispatch(login(email, password));
   };
 
+  const handleRegister = async () => {
+    dispatch(registration(email, password, passwordConfirmation, name));
+  };
+
   const handleFormToggle = () => {
     setLoginFormOpen(!isLoginFormOpen);
   };
@@ -31,7 +35,6 @@ const LoginForm = () => {
     <div className="scifi-container">
       {isLoginFormOpen ? (
         <form className="scifi-form">
-          {/* Добавляем класс к форме */}
           <label className="scifi-label">
             Email:
             <input
@@ -99,9 +102,7 @@ const LoginForm = () => {
           </label>
           <br />
           <button
-            onClick={() =>
-              registration(email, password, passwordConfirmation, login)
-            }
+            onClick={handleRegister}
             className="scifi-button"
             type="button"
           >
