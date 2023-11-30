@@ -1,4 +1,3 @@
-// Profile.js
 import React, { useEffect, useState } from "react";
 import Header from "./Header";
 import MenuBar from "./MenuBar";
@@ -9,7 +8,8 @@ import { updateUserProfile, changeAvatar } from "../store/actions/user.js";
 import { ToastContainer, toast } from "react-toastify";
 
 import "react-toastify/dist/ReactToastify.css";
-import "../styles/Profile.css";
+
+import ProfileCSS from "../styles/Profile.module.css";
 
 const defaultAvatar = "basic_avatar.jpg";
 const URL = `http://localhost:5000`;
@@ -88,14 +88,14 @@ const Profile = ({ currentUser, allPosts, message }) => {
     <div>
       <Header />
       <MenuBar />
-      <div className="profile-page">
-        <div className="profile-container">
+      <div className={ProfileCSS["profile-page"]}>
+        <div className={ProfileCSS["profile-container"]}>
           <h1>Welcome, {currentUser ? currentUser.login : "Guest"}</h1>
           {currentUser && (
-            <div className="profile-info">
-              <div className="avatar-container">
+            <div className={ProfileCSS["profile-info"]}>
+              <div className={ProfileCSS["avatar-container"]}>
                 <img
-                  className="avatar-image"
+                  className={ProfileCSS["avatar-image"]}
                   src={
                     currentUser.profile_picture
                       ? `${URL}/static/${currentUser.profile_picture}`
@@ -104,7 +104,7 @@ const Profile = ({ currentUser, allPosts, message }) => {
                   alt="User Avatar"
                 />
                 <div
-                  className="change-avatar-overlay"
+                  className={ProfileCSS["change-avatar-overlay"]}
                   onMouseOver={() => setOverlayVisible(true)}
                   onMouseOut={() => setOverlayVisible(false)}
                   onClick={handleAvatarClick}
@@ -120,7 +120,7 @@ const Profile = ({ currentUser, allPosts, message }) => {
               </div>
               <div>
                 {editing ? (
-                  <form>
+                  <form className={ProfileCSS["form-container"]}>
                     <label>
                       Login:
                       <input
@@ -138,15 +138,27 @@ const Profile = ({ currentUser, allPosts, message }) => {
                         value={formData.full_name}
                         onChange={handleInputChange}
                       />
-                      <button type="button" onClick={handleResetPassword}>
-                        Reset Password
-                      </button>
-                      <ToastContainer />
                     </label>
-                    <button type="button" onClick={handleSaveClick}>
+                    <button
+                      className={`${ProfileCSS["button"]} ${ProfileCSS["reset-password-button"]}`}
+                      type="button"
+                      onClick={handleResetPassword}
+                    >
+                      Reset Password
+                    </button>
+                    <ToastContainer />
+                    <button
+                      className={`${ProfileCSS["button"]} ${ProfileCSS["save-button"]}`}
+                      type="button"
+                      onClick={handleSaveClick}
+                    >
                       Save
                     </button>
-                    <button type="button" onClick={handleCancelClick}>
+                    <button
+                      className={`${ProfileCSS["button"]} ${ProfileCSS["cancel-button"]}`}
+                      type="button"
+                      onClick={handleCancelClick}
+                    >
                       Cancel
                     </button>
                   </form>
@@ -166,7 +178,11 @@ const Profile = ({ currentUser, allPosts, message }) => {
                       <strong>Rating:</strong>{" "}
                       {currentUser.rating ? currentUser.rating : 0}
                     </p>
-                    <button type="button" onClick={handleEditClick}>
+                    <button
+                      className={`${ProfileCSS["button"]} ${ProfileCSS["edit-button"]}`}
+                      type="button"
+                      onClick={handleEditClick}
+                    >
                       Edit
                     </button>
                   </>
@@ -175,7 +191,7 @@ const Profile = ({ currentUser, allPosts, message }) => {
             </div>
           )}
           {userPosts.length > 0 && (
-            <div className="user-posts">
+            <div className={ProfileCSS["user-posts"]}>
               <h2>Posts:</h2>
               <ul>
                 {userPosts.map((post) => (

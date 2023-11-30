@@ -1,0 +1,87 @@
+/* PostPage.module.css */
+.post-page {
+  max-width: 800px;
+  margin: 20px auto;
+  margin-top: 100px;
+  padding: 20px;
+  background-color: #020111;
+  color: #fff;
+  border: 1px solid #7fdbff;
+  border-radius: 10px;
+}
+
+.actions {
+  margin-top: 20px;
+}
+
+button {
+  background-color: #7fdbff;
+  color: #020111;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-right: 10px;
+}
+
+button:hover {
+  background-color: #1565c0;
+}
+
+.comments-section {
+  margin-top: 20px;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+li {
+  background-color: #020111;
+  border: 1px solid #7fdbff;
+  margin-bottom: 10px;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.comment-form {
+  margin-top: 20px;
+}
+
+textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #7fdbff;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  box-sizing: border-box;
+}
+
+button {
+  background-color: #7fdbff;
+  color: #020111;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #1565c0;
+}
+
+/* Ваши стили для лайка */
+.like-icon,
+.dislike-icon {
+  width: 30px; /* Укажите нужную ширину */
+  height: 30px; /* Укажите нужную высоту */
+  fill: #ff4500; /* Цвет лайка, можно заменить на другой цвет */
+  transition: fill 0.3s ease-in-out; /* Плавный переход цвета */
+  cursor: pointer;
+}
+
+.like-icon:hover,
+.dislike-icon:hover {
+  transform: scale(1.1);
+}

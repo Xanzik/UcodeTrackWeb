@@ -1,38 +1,32 @@
-/* SciFiStyle.css */
-body {
-  background-color: #020111;
-  margin: 0;
-  font-family: "Arial", sans-serif;
-  display: flex;
-  justify-content: center;
-  height: 100vh;
-}
-
-h2,
-h1,
-p {
-  color: aqua;
-}
-
 .scifi-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  margin: auto;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 50px;
+  background-color: #020111;
+  border-radius: 100px;
+  border: 2px solid #2196f3;
+  box-shadow: 0 0 500px rgba(255, 255, 255, 0.2);
+  color: #fff;
+  text-align: center;
 }
 
 .scifi-form {
   background-color: #020111;
   color: #fff;
-  padding: 20px;
+  padding: 25px;
   border: 2px solid #2196f3;
   border-radius: 8px;
   width: 300px;
+  text-align: center;
 }
 
 .scifi-label {
-  margin-bottom: 10px;
   color: #2196f3;
+  text-align: left;
+  display: block;
 }
 
 .scifi-input {
@@ -43,7 +37,7 @@ p {
   border: 1px solid #2196f3;
   border-radius: 4px;
   width: 100%;
-  box-sizing: border-box; /* Учитываем padding в ширине */
+  box-sizing: border-box;
 }
 
 .scifi-button,
@@ -56,6 +50,7 @@ p {
   border-radius: 4px;
   cursor: pointer;
   width: 100%;
+  max-width: 150px;
 }
 
 .scifi-button:hover,

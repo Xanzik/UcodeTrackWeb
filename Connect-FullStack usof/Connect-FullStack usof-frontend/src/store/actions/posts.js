@@ -4,7 +4,6 @@ export const createPost = (title, content, categories) => {
   return async (dispatch) => {
     try {
       const response = await PostService.createPost(title, content, categories);
-
       dispatch({
         type: "CREATE_POST_SUCCESS",
         payload: response.data,

@@ -1,0 +1,75 @@
+/* MenuBar.css */
+
+:root {
+  --main-bg-color: #020111;
+  --main-text-color: #7fdbff;
+  --highlight-color: #1565c0;
+  --button-bg-color: #1565c0;
+  --button-text-color: #ffffff;
+}
+
+.menu-bar {
+  background-color: var(--main-bg-color);
+  color: var(--main-text-color);
+  display: flex;
+  position: fixed;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  border-radius: 10px;
+  box-shadow: 0 4px 32px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s ease-in-out;
+  border-left: 2px solid #7fdbff;
+  border-right: 2px solid #7fdbff;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.menu-bar a {
+  position: relative;
+  color: var(--main-text-color);
+  text-decoration: none;
+  margin: 10px 0;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  transition: color 0.3s ease-in-out;
+}
+
+.menu-bar a:before {
+  content: "";
+  position: absolute;
+  width: 0;
+  height: 2px;
+  background-color: var(--highlight-color);
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  transition: width 0.3s ease-in-out;
+}
+
+.menu-bar a:hover:before {
+  width: calc(100% - 20px);
+}
+
+.menu-bar a:hover {
+  color: var(--highlight-color);
+}
+
+.scifi-button {
+  background-color: transparent;
+  color: var(--main-text-color);
+  border: none;
+  padding: 8px 12px;
+  margin: 10px 0;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
+}
+
+.scifi-button:hover {
+  background-color: transparent;
+  color: var(--highlight-color);
+}

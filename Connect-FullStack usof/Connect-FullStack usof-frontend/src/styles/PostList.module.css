@@ -1,0 +1,126 @@
+/* PostList.css */
+.posts-list-container {
+  max-width: 800px;
+  margin-top: 100px;
+  padding: 20px;
+  background-color: #020111;
+  border: 1px solid #7fdbff;
+  border-radius: 10px;
+}
+
+.filters-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.filter-group {
+  flex: 1;
+  margin-bottom: 20px;
+}
+
+.filter-group label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 8px;
+  color: #7fdbff;
+}
+
+.filter-input,
+.filter-select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #7fdbff;
+  border-radius: 5px;
+  background-color: #020111;
+  color: #fff;
+  margin-bottom: 10px;
+  box-sizing: border-box;
+}
+
+.filter-input::placeholder {
+  color: #7fdbff;
+}
+
+.categories-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.category {
+  padding: 8px;
+  background-color: #7fdbff;
+  color: #020111;
+  border: 1px solid #7fdbff;
+  cursor: pointer;
+  transition: background-color 0.3s ease-in-out;
+  border-radius: 5px;
+}
+
+.category:hover {
+  background-color: #1565c0;
+}
+
+.selected-categories {
+  margin-top: 20px;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.selected-category {
+  margin-right: 10px;
+  margin-bottom: 10px;
+  padding: 8px;
+  background-color: #eee;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.clear-button {
+  padding: 10px;
+  background-color: #7fdbff;
+  color: #020111;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.clear-button:hover {
+  background-color: #1565c0;
+}
+
+.posts-list {
+  list-style: none;
+  padding: 0;
+}
+
+.post-item {
+  background-color: #020111;
+  border: 1px solid #7fdbff;
+  margin-bottom: 20px;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+.post-title {
+  font-size: 1.8rem;
+  font-family: "Orbitron", sans-serif;
+  color: #7fdbff;
+  margin-bottom: 12px;
+}
+
+.post-content,
+.post-item a {
+  color: #fff;
+  text-decoration: none;
+}
+
+.post-item a:hover {
+  color: #1565c0;
+}

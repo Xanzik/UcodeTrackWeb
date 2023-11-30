@@ -1,0 +1,246 @@
+/* Profile.css */
+.profile-page {
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #020111;
+  color: #7fdbff;
+  padding: 20px;
+  border: 1px solid #7fdbff;
+  max-width: 800px;
+  padding-top: 200px;
+}
+
+.profile-container {
+  text-align: center;
+}
+
+.profile-info {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 20px;
+}
+
+.profile-info img {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #7fdbff;
+  margin-right: 50px;
+}
+
+.profile-info {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.profile-info p {
+  margin: 10px 0;
+  font-size: 16px;
+  line-height: 1.5;
+  color: #7fdbff;
+  transition: color 0.3s ease-in-out;
+}
+
+.profile-info strong {
+  font-weight: bold;
+  margin-right: 5px;
+  color: #ff7675;
+  text-transform: uppercase;
+  transition: color 0.3s ease-in-out;
+}
+
+.profile-info:hover {
+  transform: scale(1.05);
+}
+
+.profile-info:hover strong {
+  color: #ff7a92;
+}
+
+.profile-info:hover p {
+  color: #a0d8ff;
+}
+
+h1 {
+  color: #7fdbff;
+}
+
+.user-posts {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.user-posts h2 {
+  color: #7fdbff;
+  margin-bottom: 10px;
+}
+
+.user-posts ul {
+  list-style: none;
+  padding: 0;
+}
+
+.user-posts li {
+  background-color: #020111;
+  border: 1px solid #7fdbff;
+  margin-bottom: 10px;
+  padding: 10px;
+  color: #fff;
+  text-align: left;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.user-posts button {
+  background-color: #2196f3;
+  color: #fff;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.user-posts button:hover {
+  background-color: #1565c0;
+}
+
+.avatar-container {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.avatar-container:hover {
+  transform: scale(1.1);
+}
+
+.avatar-image {
+  width: 100%;
+  filter: brightness(100%);
+  transition: filter 0.3s ease;
+}
+
+.avatar-container:hover .avatar-image {
+  filter: brightness(70%);
+}
+
+.change-avatar-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  max-width: 200px;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 20px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  border-radius: 50%;
+}
+
+.avatar-container:hover .change-avatar-overlay {
+  opacity: 1;
+}
+
+.change-avatar-overlay input {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.form-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-top: 20px;
+}
+
+.form-container label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+.form-container input {
+  padding: 10px;
+  border: 1px solid #7fdbff;
+  border-radius: 5px;
+  background-color: #020111;
+  color: #fff;
+  margin-bottom: 10px;
+  box-sizing: border-box;
+}
+
+.form-container input::placeholder {
+  color: #7fdbff;
+}
+
+.button {
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.reset-password-button {
+  background-color: #7fdbff;
+  color: #020111;
+  margin-right: 10px;
+}
+
+.reset-password-button:hover {
+  background-color: #1565c0;
+}
+
+.save-button {
+  background-color: #4caf50;
+  color: #020111;
+  margin-right: 10px;
+}
+
+.save-button:hover {
+  background-color: #45a049;
+}
+
+.cancel-button {
+  background-color: #ff9800;
+  color: #020111;
+}
+
+.cancel-button:hover {
+  background-color: #e68a00;
+}
+
+.edit-button {
+  background-color: #2196f3;
+  color: #fff;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.edit-button:hover {
+  background-color: #1565c0;
+}

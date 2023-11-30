@@ -1,10 +1,7 @@
 import React from "react";
-
 import Header from "./Header";
 import MenuBar from "./MenuBar";
 import PostsList from "./PostComponents/PostList.js";
-
-import "../styles/Page.css";
 
 const Page = () => {
   return (

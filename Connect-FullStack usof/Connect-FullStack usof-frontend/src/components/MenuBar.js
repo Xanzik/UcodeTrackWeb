@@ -1,10 +1,9 @@
-// MenuBar.js
 import React from "react";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { logout } from "../store/actions/auth";
 
-import "../styles/MenuBar.css";
+import MenuBarCSS from "../styles/MenuBar.module.css";
 
 const MenuBar = () => {
   const dispatch = useDispatch();
@@ -13,11 +12,15 @@ const MenuBar = () => {
   };
 
   return (
-    <div className="menu-bar">
+    <div className={MenuBarCSS["menu-bar"]}>
       <Link to="/">Main Page</Link>
       <Link to="/profile">My Profile</Link>
       <Link to="/create-post">Create Post</Link>
-      <button onClick={handleLogout} className="scifi-button" type="button">
+      <button
+        onClick={handleLogout}
+        className={MenuBarCSS["scifi-button"]}
+        type="button"
+      >
         Logout
       </button>
     </div>

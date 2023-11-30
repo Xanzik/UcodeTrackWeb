@@ -5,7 +5,7 @@ import { getCategories } from "../../store/actions/category.js";
 
 import Header from "../Header.js";
 import MenuBar from "../MenuBar.js";
-import "../../styles/CreatePost.css";
+import CreatePostCSS from "../../styles/CreatePost.module.css";
 
 import PostService from "../../services/PostService.js";
 
@@ -67,7 +67,11 @@ const CreatePost = () => {
     e.preventDefault();
 
     try {
-      await PostService.createPost(post.title, post.content, post.categories);
+      await PostService.createPost(
+        post.title,
+        post.content,
+        post.categories.map((category) => category.title)
+      );
 
       setPost({
         title: "",
@@ -85,27 +89,27 @@ const CreatePost = () => {
     <div>
       <Header />
       <MenuBar />
-      <div className="scifi-container">
+      <div className={CreatePostCSS["scifi-container"]}>
         <h1>Create a New Post</h1>
-        <form className="scifi-form" onSubmit={handleSubmit}>
-          <label className="scifi-label">
+        <form className={CreatePostCSS["scifi-form"]} onSubmit={handleSubmit}>
+          <label className={CreatePostCSS["scifi-label"]}>
             Title:
             <input
               type="text"
               value={post.title}
               onChange={handleTitleChange}
-              className="scifi-input"
+              className={CreatePostCSS["scifi-input"]}
             />
           </label>
-          <label className="scifi-label">
+          <label className={CreatePostCSS["scifi-label"]}>
             Content:
             <textarea
               value={post.content}
               onChange={handleContentChange}
-              className="scifi-input"
+              className={CreatePostCSS["scifi-input"]}
             />
           </label>
-          <label className="scifi-label">
+          <label className={CreatePostCSS["scifi-label"]}>
             Categories:
             <div>
               <input
@@ -113,16 +117,16 @@ const CreatePost = () => {
                 placeholder="Search categories..."
                 value={searchText}
                 onChange={handleSearchChange}
-                className="scifi-input"
+                className={CreatePostCSS["scifi-input"]}
               />
               {searchText && (
-                <div className="categories-container">
+                <div className={CreatePostCSS["categories-container"]}>
                   {filteredCategories.map((category) => (
                     <div
                       key={category.id}
-                      className={`category ${
+                      className={`${CreatePostCSS["category"]} ${
                         post.categories.some((c) => c.title === category.title)
-                          ? "selected"
+                          ? CreatePostCSS["selected"]
                           : ""
                       }`}
                       onClick={() => handleCategorySelect(category)}
@@ -134,19 +138,19 @@ const CreatePost = () => {
               )}
             </div>
           </label>
-          <div className="selected-categories">
+          <div className={CreatePostCSS["selected-categories"]}>
             <p>Selected Categories:</p>
             {post.categories.map((category) => (
               <span
                 key={category.id}
-                className="selected-category"
+                className={CreatePostCSS["selected-category"]}
                 onClick={() => handleSelectedCategoryRemove(category)}
               >
                 {category.title}
               </span>
             ))}
           </div>
-          <button type="submit" className="scifi-button">
+          <button type="submit" className={CreatePostCSS["scifi-button"]}>
             Create Post
           </button>
         </form>

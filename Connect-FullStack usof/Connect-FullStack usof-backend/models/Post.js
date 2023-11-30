@@ -53,7 +53,9 @@ class PostModel {
           SELECT post_id
           FROM post_categories
           JOIN categories ON post_categories.category_id = categories.id
-          WHERE categories.name IN (${categoryPlaceholders})
+          WHERE categories.title IN (${categoryPlaceholders})
+          GROUP BY post_id
+          HAVING COUNT(DISTINCT categories.title) = ${filters.category.length}
         )
       `;
 
@@ -71,7 +73,6 @@ class PostModel {
       } else {
         query += " ORDER BY updatedAt DESC";
       }
-
       if (!queryParams[1]) {
         const [results] = await connection.execute(query);
         return { posts: results };

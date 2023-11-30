@@ -1,48 +1,31 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { useLocation, useNavigate } from "react-router-dom";
 import { getPosts } from "../../store/actions/posts.js";
 import { getUsers } from "../../store/actions/user.js";
-import { useSelector } from "react-redux";
-import "../../styles/PostList.css";
+import { getCategories } from "../../store/actions/category.js";
+import PostListCSS from "../../styles/PostList.module.css";
 
 const PostsList = () => {
   const dispatch = useDispatch();
   const location = useLocation();
   const navigate = useNavigate();
 
-  const [category, setCategory] = useState("");
+  const [selectedCategories, setSelectedCategories] = useState([]);
   const [dateFrom, setDateFrom] = useState("");
   const [dateTo, setDateTo] = useState("");
   const [status, setStatus] = useState("");
   const [sortBy, setSortBy] = useState("");
-
-  useEffect(() => {
-    const searchParams = new URLSearchParams(location.search);
-    setCategory(searchParams.get("category") || "");
-    setDateFrom(searchParams.get("dateFrom") || "");
-    setDateTo(searchParams.get("dateTo") || "");
-    setStatus(searchParams.get("status") || "");
-    setSortBy(searchParams.get("sortBy") || "");
-    dispatch(
-      getPosts({
-        category: searchParams.get("category"),
-        dateFrom: searchParams.get("dateFrom"),
-        dateTo: searchParams.get("dateTo"),
-        status: searchParams.get("status"),
-        sortBy: searchParams.get("sortBy"),
-      })
-    );
-  }, [dispatch, location.search]);
+  const [searchText, setSearchText] = useState("");
 
   const posts = useSelector((state) => state.posts.posts);
-
-  useEffect(() => {
-    dispatch(getUsers());
-  }, [dispatch]);
-
+  const allCategories = useSelector((state) => state.categories.categories);
   const users = useSelector((state) => state.users.users);
+
+  const handleSearchChange = (e) => {
+    setSearchText(e.target.value);
+  };
 
   const handleFilterChange = (filter, value) => {
     const searchParams = new URLSearchParams(location.search);
@@ -52,55 +35,121 @@ const PostsList = () => {
   };
 
   const handleClearFilters = () => {
-    setCategory("");
     setDateFrom("");
     setDateTo("");
     setStatus("");
     setSortBy("");
-
+    setSearchText("");
+    setSelectedCategories([]);
     navigate(`${location.pathname}`);
   };
 
+  const handleCategorySelect = (category) => {
+    const isCategorySelected = selectedCategories.some(
+      (c) => c.title === category.title
+    );
+
+    if (isCategorySelected) {
+      const updatedCategories = selectedCategories.filter(
+        (c) => c !== category
+      );
+      setSelectedCategories(updatedCategories);
+    } else {
+      setSelectedCategories([...selectedCategories, category]);
+    }
+  };
+
+  const handleSelectedCategoryRemove = (category) => {
+    const updatedCategories = selectedCategories.filter(
+      (c) => c.title !== category.title
+    );
+    setSelectedCategories(updatedCategories);
+  };
+
+  const filteredCategories = allCategories.filter((category) =>
+    category.title.toLowerCase().includes(searchText.toLowerCase())
+  );
+
+  useEffect(() => {
+    const searchParams = new URLSearchParams(location.search);
+    setDateFrom(searchParams.get("dateFrom") || "");
+    setDateTo(searchParams.get("dateTo") || "");
+    setStatus(searchParams.get("status") || "");
+    setSortBy(searchParams.get("sortBy") || "");
+    dispatch(
+      getPosts({
+        category: selectedCategories.map((category) => category.title),
+        dateFrom: searchParams.get("dateFrom"),
+        dateTo: searchParams.get("dateTo"),
+        status: searchParams.get("status"),
+        sortBy: searchParams.get("sortBy"),
+      })
+    );
+
+    dispatch(getCategories());
+  }, [dispatch, location.search, selectedCategories]);
+
+  useEffect(() => {
+    dispatch(getUsers());
+  }, [dispatch]);
+
   return (
-    <div className="posts-list-container">
-      <div className="filters-container">
-        <div className="filter-group">
-          <label>Category:</label>
+    <div className={PostListCSS["posts-list-container"]}>
+      <div className={PostListCSS["filters-container"]}>
+        <div className={PostListCSS["filter-group"]}>
+          <label className={PostListCSS["filter-label"]}>Category:</label>
           <input
             type="text"
-            className="filter-input"
-            value={category}
-            onChange={(e) => setCategory(e.target.value)}
-            onBlur={() => handleFilterChange("category", category)}
+            className={PostListCSS["filter-input"]}
+            placeholder="Search categories..."
+            value={searchText}
+            onChange={handleSearchChange}
           />
+          {searchText && (
+            <div className={PostListCSS["categories-container"]}>
+              {filteredCategories.map((category) => (
+                <div
+                  key={category.id}
+                  className={`${PostListCSS["category"]} ${
+                    selectedCategories.includes(category)
+                      ? PostListCSS["selected"]
+                      : ""
+                  }`}
+                  onClick={() => handleCategorySelect(category)}
+                >
+                  {category.title}
+                </div>
+              ))}
+            </div>
+          )}
         </div>
 
-        <div className="filter-group">
-          <label>Date From:</label>
+        <div className={PostListCSS["filter-group"]}>
+          <label className={PostListCSS["filter-label"]}>Date From:</label>
           <input
             type="date"
-            className="filter-input"
+            className={PostListCSS["filter-input"]}
             value={dateFrom}
             onChange={(e) => setDateFrom(e.target.value)}
             onBlur={() => handleFilterChange("dateFrom", dateFrom)}
           />
         </div>
 
-        <div className="filter-group">
-          <label>Date To:</label>
+        <div className={PostListCSS["filter-group"]}>
+          <label className={PostListCSS["filter-label"]}>Date To:</label>
           <input
             type="date"
-            className="filter-input"
+            className={PostListCSS["filter-input"]}
             value={dateTo}
             onChange={(e) => setDateTo(e.target.value)}
             onBlur={() => handleFilterChange("dateTo", dateTo)}
           />
         </div>
 
-        <div className="filter-group">
-          <label>Status:</label>
+        <div className={PostListCSS["filter-group"]}>
+          <label className={PostListCSS["filter-label"]}>Status:</label>
           <select
-            className="filter-select"
+            className={PostListCSS["filter-select"]}
             value={status}
             onChange={(e) => setStatus(e.target.value)}
             onBlur={() => handleFilterChange("status", status)}
@@ -110,10 +159,10 @@ const PostsList = () => {
           </select>
         </div>
 
-        <div className="filter-group">
-          <label>Sort By:</label>
+        <div className={PostListCSS["filter-group"]}>
+          <label className={PostListCSS["filter-label"]}>Sort By:</label>
           <select
-            className="filter-select"
+            className={PostListCSS["filter-select"]}
             value={sortBy}
             onChange={(e) => setSortBy(e.target.value)}
             onBlur={() => handleFilterChange("sortBy", sortBy)}
@@ -123,18 +172,37 @@ const PostsList = () => {
           </select>
         </div>
       </div>
-      <button className="clear-button" onClick={handleClearFilters}>
+      <div className={PostListCSS["selected-categories"]}>
+        {selectedCategories.map((category) => (
+          <span
+            key={category.id}
+            className={PostListCSS["selected-category"]}
+            onClick={() => handleSelectedCategoryRemove(category)}
+          >
+            {category.title}
+          </span>
+        ))}
+      </div>
+      <button
+        className={PostListCSS["clear-button"]}
+        onClick={handleClearFilters}
+      >
         Clear Filters
       </button>
-      <ul className="posts-list">
+
+      <ul className={PostListCSS["posts-list"]}>
         {posts.map((post) => (
-          <li key={post.id} className="post-item">
-            <Link to={`/post/${post.id}`} className="post-link">
-              <h3 className="post-title">{post.Title}</h3>
-              <p className="post-content">{post.Content}</p>
-              <p className="post-status">Status: {post.Status}</p>
-              <p className="post-status">Updated At: {post.updatedAt}</p>
-              <p className="post-author">
+          <li key={post.id} className={PostListCSS["post-item"]}>
+            <Link to={`/post/${post.id}`} className={PostListCSS["post-link"]}>
+              <h3 className={PostListCSS["post-title"]}>{post.Title}</h3>
+              <p className={PostListCSS["post-content"]}>{post.Content}</p>
+              <p className={PostListCSS["post-status"]}>
+                Status: {post.Status}
+              </p>
+              <p className={PostListCSS["post-status"]}>
+                Updated At: {post.updatedAt}
+              </p>
+              <p className={PostListCSS["post-author"]}>
                 Author:{" "}
                 {users.find((user) => user.id === post.author_id)?.login ||
                   "Loading..."}

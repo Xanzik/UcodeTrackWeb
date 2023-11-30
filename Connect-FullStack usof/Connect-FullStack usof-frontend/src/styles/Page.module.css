@@ -1,0 +1,72 @@
+body {
+  background-color: #020111;
+}
+
+.header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  background-color: #020111;
+  color: #7fdbff;
+  position: fixed;
+  width: 100%;
+  top: 0;
+  left: 0;
+  border: 1px solid #7fdbff;
+  padding-right: 10px;
+  overflow-y: scroll;
+  z-index: 1000;
+}
+
+.service-name {
+  font-size: 1.5rem;
+  font-family: "Orbitron", sans-serif;
+}
+
+.search-bar {
+  max-width: 100%;
+  padding: 5px;
+  margin: 10px;
+  width: 800px;
+  border: 1px solid #7fdbff;
+  color: #7fdbff;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  color: #7fdbff;
+}
+
+.user-info span {
+  margin-right: 10px;
+}
+
+.user-info img {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid #7fdbff;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #020111;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #7fdbff;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #7fdbff;
+}
+
+::-webkit-scrollbar-thumb:active {
+  background: #7fdbff;
+}

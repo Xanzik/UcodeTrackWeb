@@ -69,7 +69,6 @@ class PostController {
   createPost = async (req, res, next) => {
     try {
       const { title, content, categories } = req.body;
-      console.log(categories);
       const user = req.user;
       const post = await postService.createPost(
         title,
