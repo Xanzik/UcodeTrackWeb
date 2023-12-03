@@ -1,4 +1,3 @@
-/* PostPage.module.css */
 .post-page {
   max-width: 800px;
   margin: 20px auto;
@@ -8,10 +7,27 @@
   color: #fff;
   border: 1px solid #7fdbff;
   border-radius: 10px;
+  font-size: 16px;
+}
+
+.post-title {
+  text-align: center;
+  color: #7fdbff;
 }
 
 .actions {
   margin-top: 20px;
+}
+
+.content {
+  margin-bottom: 20px;
+  font-size: 16px;
+}
+
+.postImage {
+  width: 100px;
+  border-radius: 8px;
+  cursor: pointer;
 }
 
 button {
@@ -52,6 +68,8 @@ li {
 textarea {
   width: 100%;
   padding: 10px;
+  background-color: #020111;
+  color: white;
   border: 1px solid #7fdbff;
   border-radius: 5px;
   margin-bottom: 10px;
@@ -71,17 +89,221 @@ button:hover {
   background-color: #1565c0;
 }
 
-/* Ваши стили для лайка */
+.like-dislike-container {
+  display: flex;
+  align-items: center;
+}
+
 .like-icon,
 .dislike-icon {
-  width: 30px; /* Укажите нужную ширину */
-  height: 30px; /* Укажите нужную высоту */
-  fill: #ff4500; /* Цвет лайка, можно заменить на другой цвет */
-  transition: fill 0.3s ease-in-out; /* Плавный переход цвета */
+  max-width: 30px;
+  max-height: 30px;
+  fill: #ff4500;
+  margin-right: 10px;
+  transition: transform 0.3s ease-in-out;
   cursor: pointer;
 }
 
-.like-icon:hover,
-.dislike-icon:hover {
+.dislike-icon {
+  transform: rotate(180deg);
+}
+
+.like-icon:hover {
   transform: scale(1.1);
+}
+
+.dislike-icon:hover {
+  transform: scale(-1.1);
+}
+
+.like-icon:active {
+  transform: scale(0.8);
+}
+
+.dislike-icon:active {
+  transform: scale(-0.8);
+}
+
+.like-icon.liked {
+  filter: brightness(1) sepia(100%) hue-rotate(90deg) saturate(800%);
+}
+
+.dislike-icon.disliked {
+  filter: brightness(1) sepia(100%) hue-rotate(315deg) saturate(800%);
+}
+
+.reply-container {
+  margin-top: 10px;
+}
+
+.reply-list {
+  list-style-type: none;
+  padding: 0;
+  margin-left: 20px;
+}
+
+.reply {
+  margin-bottom: 10px;
+  border: 1px solid #ddd;
+  padding: 10px;
+}
+
+.reply-button {
+  margin-right: 10px;
+  cursor: pointer;
+}
+
+.reply-textarea {
+  width: 100%;
+  height: 60px;
+  padding: 5px;
+  margin-bottom: 10px;
+  resize: none;
+}
+
+.reply-submit-button {
+  background-color: #007bff;
+  color: #fff;
+  padding: 5px 10px;
+  cursor: pointer;
+  border: none;
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+.reply-submit-button:hover {
+  background-color: #0056b3;
+}
+
+.reply-info {
+  display: flex;
+  align-items: center;
+}
+
+.reply-info p {
+  margin-right: 10px;
+}
+
+.reset-reply-button {
+  color: #fff;
+  border: none;
+  border-radius: 25%;
+  cursor: pointer;
+  padding: 5px;
+  font-size: 14px;
+}
+
+.reset-reply-button:hover {
+  background-color: #e25041;
+}
+
+.rating {
+  font-size: 18px;
+  font-weight: bold;
+  color: #db3434;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  font-family: "Indie Flower", cursive;
+  font-size: 18px;
+  height: 30px;
+  margin-top: 15px;
+  color: #7fdbff;
+}
+
+.user-info p {
+  margin-right: 10px;
+}
+
+.user-info img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.comment {
+  margin-bottom: 20px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.comment p {
+  margin-bottom: 10px;
+}
+
+.comment img {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+}
+
+.categories-container {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.edit-container {
+  border: 1px solid #ccc;
+}
+
+.category {
+  margin: 5px;
+  padding: 8px;
+  border: 1px solid #ccc;
+  cursor: pointer;
+}
+
+.selected-categories {
+  margin-top: 20px;
+}
+
+.selected-categories p {
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.selected-category {
+  display: inline-block;
+  padding: 8px;
+  margin-right: 10px;
+  margin-bottom: 10px;
+  background-color: #3498db;
+  color: #fff;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.selected-category:hover {
+  background-color: #1565c0;
+}
+
+.scifi-input {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 10px;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  background-color: #020111;
+  color: #fff;
+  border: 1px solid #7fdbff;
+  box-sizing: border-box;
+}
+
+.scifi-input::placeholder {
+  color: #7fdbff;
+}
+
+.search-icon {
+  position: relative;
+  top: 2px;
+  left: 8px;
+  color: #7fdbff;
 }

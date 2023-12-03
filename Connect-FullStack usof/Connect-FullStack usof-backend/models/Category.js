@@ -73,9 +73,10 @@ class CategoryModel {
   async getCategoryIds(categories) {
     try {
       const placeholders = categories.map(() => "?").join(",");
+      const categoryTitles = categories.map((category) => category.title);
       const [rows] = await connection.execute(
         `SELECT id FROM categories WHERE title IN (${placeholders})`,
-        categories
+        categoryTitles
       );
       return rows.map((row) => row.id);
     } catch (error) {

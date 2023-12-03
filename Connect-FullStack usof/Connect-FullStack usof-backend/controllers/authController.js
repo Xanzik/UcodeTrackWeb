@@ -94,7 +94,7 @@ class AuthController {
     try {
       const activationLink = req.params.link;
       await userService.activate(activationLink);
-      return res.redirect(process.env.API_URL);
+      return res.redirect(process.env.CLIENT_URL);
     } catch (error) {
       console.error("Error activating in:", error);
       res.status(500).json({ message: "Failed to activate" });

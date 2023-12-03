@@ -3,6 +3,7 @@ const initialState = {
   loading: false,
   error: null,
   post: null,
+  categories: [],
 };
 
 const postsReducer = (state = initialState, action) => {
@@ -46,6 +47,42 @@ const postsReducer = (state = initialState, action) => {
         loading: false,
         error: action.payload,
       };
+    case "GET_POST_CATEGORIES_SUCCESS":
+      return {
+        ...state,
+        categories: action.payload,
+        loading: false,
+        error: null,
+      };
+    case "GET_POST_CATEGORIES_FAILURE":
+      return {
+        ...state,
+        loading: false,
+        error: action.payload,
+      };
+    case "UPDATE_POST_SUCCESS":
+      const updatedPosts = state.posts.map((post) => {
+        if (post.id === action.payload.id) {
+          return action.payload;
+        }
+        return post;
+      });
+      return {
+        ...state,
+        posts: updatedPosts,
+      };
+    case "UPDATE_POST_FAILURE":
+      return state;
+    case "DELETE_POST_SUCCESS":
+      const updatedPostsDelete = state.posts.filter(
+        (post) => post.id !== action.payload
+      );
+      return {
+        ...state,
+        posts: updatedPostsDelete,
+      };
+    case "DELETE_POST_FAILURE":
+      return state;
     default:
       return state;
   }

@@ -16,16 +16,12 @@ export const login = (email, password) => async (dispatch) => {
 export const registration =
   (email, password, passwordConfirmation, login) => async (dispatch) => {
     try {
-      const response = await AuthService.registration(
+      await AuthService.registration(
         email,
         password,
         passwordConfirmation,
         login
       );
-      localStorage.setItem("token", response.data.accessToken);
-      dispatch({ type: "SET_USER", payload: response.data.user });
-      dispatch({ type: "SET_AUTH_STATUS", payload: true });
-      console.log("Register successful", response.data);
     } catch (error) {
       console.error("Registration failed", error);
     }

@@ -9,7 +9,8 @@
   padding: 20px;
   border: 1px solid #7fdbff;
   max-width: 800px;
-  padding-top: 200px;
+  height: 450px;
+  margin-top: 5%;
 }
 
 .profile-container {
@@ -33,32 +34,21 @@
   margin-right: 50px;
 }
 
-.profile-info {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 20px;
-}
-
 .profile-info p {
-  margin: 10px 0;
-  font-size: 16px;
-  line-height: 1.5;
+  font-size: 18px;
+  line-height: 1.6;
   color: #7fdbff;
+  margin: 0;
   transition: color 0.3s ease-in-out;
 }
 
 .profile-info strong {
+  display: block;
   font-weight: bold;
-  margin-right: 5px;
+  margin: 10px 0;
   color: #ff7675;
   text-transform: uppercase;
   transition: color 0.3s ease-in-out;
-}
-
-.profile-info:hover {
-  transform: scale(1.05);
 }
 
 .profile-info:hover strong {
@@ -67,10 +57,6 @@
 
 .profile-info:hover p {
   color: #a0d8ff;
-}
-
-h1 {
-  color: #7fdbff;
 }
 
 .user-posts {
@@ -194,51 +180,24 @@ h1 {
 
 .button {
   padding: 10px;
+  margin: 1px;
   border: none;
   border-radius: 5px;
   cursor: pointer;
   font-weight: bold;
   transition: background-color 0.3s ease-in-out;
-}
-
-.reset-password-button {
-  background-color: #7fdbff;
-  color: #020111;
-  margin-right: 10px;
 }
 
 .reset-password-button:hover {
   background-color: #1565c0;
 }
 
-.save-button {
-  background-color: #4caf50;
-  color: #020111;
-  margin-right: 10px;
-}
-
 .save-button:hover {
   background-color: #45a049;
 }
 
-.cancel-button {
-  background-color: #ff9800;
-  color: #020111;
-}
-
 .cancel-button:hover {
   background-color: #e68a00;
-}
-
-.edit-button {
-  background-color: #2196f3;
-  color: #fff;
-  padding: 10px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-weight: bold;
-  transition: background-color 0.3s ease-in-out;
 }
 
 .edit-button:hover {

@@ -1,32 +1,58 @@
 import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import Header from "./Header";
 import MenuBar from "./MenuBar";
-import { connect, useDispatch } from "react-redux";
+import { connect, useDispatch, useSelector } from "react-redux";
 import { getPosts } from "../store/actions/posts.js";
 import { sendResetLink } from "../store/actions/auth.js";
-import { updateUserProfile, changeAvatar } from "../store/actions/user.js";
-import { ToastContainer, toast } from "react-toastify";
-
-import "react-toastify/dist/ReactToastify.css";
+import {
+  updateUserProfile,
+  changeAvatar,
+  getUsers,
+} from "../store/actions/user.js";
+import { toast } from "react-toastify";
 
 import ProfileCSS from "../styles/Profile.module.css";
 
-const defaultAvatar = "basic_avatar.jpg";
+const defaultAvatar = "/basic_avatar.jpg";
 const URL = `http://localhost:5000`;
 
-const Profile = ({ currentUser, allPosts, message }) => {
+const selectUsers = (state) => (state.users ? state.users.users : []);
+
+const Profile = ({ allPosts, message }) => {
   const dispatch = useDispatch();
+  const { userId } = useParams();
   const fileInputRef = React.createRef();
   const [isOverlayVisible, setOverlayVisible] = useState(false);
   const [editing, setEditing] = useState(false);
-  const [formData, setFormData] = useState({
-    login: currentUser.login || "",
-    full_name: currentUser.full_name || "",
-  });
 
   useEffect(() => {
     dispatch(getPosts());
+    dispatch(getUsers());
   }, [dispatch]);
+
+  const users = useSelector(selectUsers);
+  const currentUser = useSelector((state) => state.auth.user);
+  const [profileUser, setProfileUser] = useState(null);
+  const [formData, setFormData] = useState({
+    login: profileUser?.login || "",
+    full_name: profileUser?.full_name || "",
+  });
+
+  useEffect(() => {
+    const foundUser = users.find((user) => {
+      const numericUserId = Number(userId);
+      return user.id === numericUserId;
+    });
+
+    if (foundUser) {
+      setProfileUser(foundUser);
+      setFormData({
+        login: foundUser.login,
+        full_name: foundUser.full_name,
+      });
+    }
+  }, [users, userId]);
 
   useEffect(() => {
     if (message) {
@@ -40,8 +66,8 @@ const Profile = ({ currentUser, allPosts, message }) => {
     }
   }, [message, dispatch]);
 
-  const userPosts = currentUser
-    ? allPosts.filter((post) => post.author_id === currentUser.id)
+  const userPosts = profileUser
+    ? allPosts.filter((post) => post.author_id === profileUser.id)
     : [];
 
   const handleInputChange = (e) => {
@@ -52,9 +78,10 @@ const Profile = ({ currentUser, allPosts, message }) => {
     setEditing(true);
   };
 
-  const handleSaveClick = () => {
-    dispatch(updateUserProfile(formData, currentUser.id));
+  const handleSaveClick = async () => {
+    await dispatch(updateUserProfile(formData, profileUser.id));
     setEditing(false);
+    await dispatch(getUsers());
   };
 
   const handleCancelClick = () => {
@@ -67,20 +94,22 @@ const Profile = ({ currentUser, allPosts, message }) => {
     }
   };
 
-  const handleFileChange = (event) => {
+  const handleFileChange = async (event) => {
     const selectedFile = event.target.files[0];
     if (selectedFile) {
-      const formData = new FormData();
-      formData.append("file", selectedFile);
-      dispatch(changeAvatar(formData));
+      const formAvatarData = new FormData();
+      formAvatarData.append("file", selectedFile);
+      await dispatch(changeAvatar(formAvatarData, profileUser.id));
+      await dispatch(updateUserProfile(formData, profileUser.id));
+      await dispatch(getUsers());
       event.target.value = null;
     }
   };
 
-  const handleResetPassword = () => {
+  const handleResetPassword = async () => {
     const confirmReset = window.confirm("Do you want to change your password?");
     if (confirmReset) {
-      dispatch(sendResetLink());
+      await dispatch(sendResetLink());
     }
   };
 
@@ -90,33 +119,34 @@ const Profile = ({ currentUser, allPosts, message }) => {
       <MenuBar />
       <div className={ProfileCSS["profile-page"]}>
         <div className={ProfileCSS["profile-container"]}>
-          <h1>Welcome, {currentUser ? currentUser.login : "Guest"}</h1>
-          {currentUser && (
+          {profileUser && (
             <div className={ProfileCSS["profile-info"]}>
               <div className={ProfileCSS["avatar-container"]}>
                 <img
                   className={ProfileCSS["avatar-image"]}
                   src={
-                    currentUser.profile_picture
-                      ? `${URL}/static/${currentUser.profile_picture}`
+                    profileUser.profile_picture
+                      ? `${URL}/static/${profileUser.profile_picture}`
                       : defaultAvatar
                   }
                   alt="User Avatar"
                 />
-                <div
-                  className={ProfileCSS["change-avatar-overlay"]}
-                  onMouseOver={() => setOverlayVisible(true)}
-                  onMouseOut={() => setOverlayVisible(false)}
-                  onClick={handleAvatarClick}
-                >
-                  {isOverlayVisible ? "Change Avatar" : null}
-                  <input
-                    ref={fileInputRef}
-                    type="file"
-                    accept="image/*"
-                    onChange={handleFileChange}
-                  />
-                </div>
+                {currentUser.id === profileUser.id && (
+                  <div
+                    className={ProfileCSS["change-avatar-overlay"]}
+                    onMouseOver={() => setOverlayVisible(true)}
+                    onMouseOut={() => setOverlayVisible(false)}
+                    onClick={handleAvatarClick}
+                  >
+                    {isOverlayVisible ? "Change Avatar" : null}
+                    <input
+                      ref={fileInputRef}
+                      type="file"
+                      accept="image/*"
+                      onChange={handleFileChange}
+                    />
+                  </div>
+                )}
               </div>
               <div>
                 {editing ? (
@@ -146,7 +176,6 @@ const Profile = ({ currentUser, allPosts, message }) => {
                     >
                       Reset Password
                     </button>
-                    <ToastContainer />
                     <button
                       className={`${ProfileCSS["button"]} ${ProfileCSS["save-button"]}`}
                       type="button"
@@ -165,26 +194,30 @@ const Profile = ({ currentUser, allPosts, message }) => {
                 ) : (
                   <>
                     <p>
-                      <strong>Login:</strong> {currentUser.login}
+                      <strong> {profileUser.login}</strong>
                     </p>
                     <p>
-                      <strong>Role:</strong> {currentUser.role}
+                      <strong> {profileUser.role}</strong>
                     </p>
                     <p>
-                      <strong>Full Name:</strong>{" "}
-                      {currentUser.full_name || "Not specified"}
+                      <strong>
+                        Full Name: {profileUser.full_name || "Not specified"}
+                      </strong>
                     </p>
                     <p>
-                      <strong>Rating:</strong>{" "}
-                      {currentUser.rating ? currentUser.rating : 0}
+                      <strong>
+                        Rating: {profileUser.rating ? profileUser.rating : 0}
+                      </strong>
                     </p>
-                    <button
-                      className={`${ProfileCSS["button"]} ${ProfileCSS["edit-button"]}`}
-                      type="button"
-                      onClick={handleEditClick}
-                    >
-                      Edit
-                    </button>
+                    {currentUser.id === profileUser.id && (
+                      <button
+                        className={`${ProfileCSS["button"]} ${ProfileCSS["edit-button"]}`}
+                        type="button"
+                        onClick={handleEditClick}
+                      >
+                        Edit
+                      </button>
+                    )}
                   </>
                 )}
               </div>
@@ -192,7 +225,7 @@ const Profile = ({ currentUser, allPosts, message }) => {
           )}
           {userPosts.length > 0 && (
             <div className={ProfileCSS["user-posts"]}>
-              <h2>Posts:</h2>
+              <h2>User Questions </h2>
               <ul>
                 {userPosts.map((post) => (
                   <li key={post.id}>{post.Title}</li>
@@ -208,7 +241,6 @@ const Profile = ({ currentUser, allPosts, message }) => {
 
 const mapStateToProps = (state) => {
   return {
-    currentUser: state.auth.user,
     allPosts: state.posts.posts,
     message: state.auth.message,
   };

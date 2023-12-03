@@ -67,7 +67,7 @@ class PostModel {
         );
       }
 
-      if (filters.sortBy === "like") {
+      if (filters.sortBy === "likes") {
         query +=
           " ORDER BY (SELECT COUNT(*) FROM likes WHERE PostID = posts.id) DESC";
       } else {
@@ -101,13 +101,13 @@ class PostModel {
     const sqlPostQuery =
       "INSERT INTO posts (author_id, title, content) VALUES (?, ?, ?)";
     try {
-      const [postResult] = await connection.execute(sqlPostQuery, [
-        user.id,
-        title,
-        content,
-      ]);
+      let values = [user.id, title, content];
+
+      const [postResult] = await connection.execute(sqlPostQuery, values);
       const postId = postResult.insertId;
+
       let categoryIds = [];
+
       if (categories && categories.length > 0) {
         categoryIds = await categoryService.getCategoryIds(categories);
       }
@@ -119,6 +119,7 @@ class PostModel {
           );
         }
       }
+
       return postId;
     } catch (error) {
       throw ApiError.BadRequest("Error by creating post:", error);
@@ -143,7 +144,7 @@ class PostModel {
   async getCategoriesForPost(id) {
     try {
       const [categories] = await connection.execute(
-        "SELECT categories.name FROM post_categories " +
+        "SELECT categories.title FROM post_categories " +
           "JOIN categories ON post_categories.category_id = categories.id " +
           "WHERE post_categories.post_id = ?",
         [id]
@@ -166,7 +167,7 @@ class PostModel {
       if (postExists[0].author_id !== user.id && user.role !== "admin") {
         throw ApiError.ForbiddenError("You not author");
       }
-      if (user.role === "user") {
+      if (newData.content) {
         const { content } = newData;
         const query = "UPDATE posts SET content = ? WHERE id = ?";
         await connection.execute(query, [content, id]);
@@ -198,6 +199,17 @@ class PostModel {
         }
       }
       return { message: "Post categories updated successfully" };
+    } catch (error) {
+      throw ApiError.BadRequest("Error by updating post categories:", error);
+    }
+  }
+
+  async updatePostScreenshot(screenshot, post_id) {
+    try {
+      console.log(screenshot);
+      const updateQuery = "UPDATE posts SET screenshot = ? WHERE id = ?";
+      await connection.query(updateQuery, [screenshot, post_id]);
+      return "Screenshot updated successfully";
     } catch (error) {
       throw ApiError.BadRequest("Error by updating post categories:", error);
     }

@@ -203,7 +203,7 @@ class User {
       const [rows] = await connection.execute(sql, [avatarName, email]);
       connection.release();
       if (rows.affectedRows === 1) {
-        return "The avatar was successfully saved.";
+        return avatarName;
       } else {
         return "The user with the specified email was not found.";
       }

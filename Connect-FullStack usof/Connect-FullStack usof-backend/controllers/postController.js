@@ -58,8 +58,13 @@ class PostController {
     try {
       const user = req.user;
       const postId = req.params.post_id;
-      const { content } = req.body;
-      const post = await postService.createComment(content, postId, user);
+      const { content, replyCommentID } = req.body;
+      const post = await postService.createComment(
+        content,
+        postId,
+        user,
+        replyCommentID
+      );
       return res.json(post);
     } catch (e) {
       next(e);
@@ -82,11 +87,23 @@ class PostController {
     }
   };
 
+  updatePostScreenshot = async (req, res, next) => {
+    try {
+      const { screenshot } = req.files;
+      const postId = req.params.post_id;
+      const post = await postService.updatePostScreenshot(screenshot, postId);
+      return res.json(post);
+    } catch (e) {
+      next(e);
+    }
+  };
+
   updatePost = async (req, res, next) => {
     try {
       const user = req.user;
       const postId = req.params.post_id;
-      if (user.role === "user") {
+      const post = await postService.getPostByID(postId);
+      if (user.id === post[0].author_id) {
         const { content, categories } = req.body;
         const updatedPost = await postService.updatePost(
           postId,
@@ -95,7 +112,7 @@ class PostController {
           user
         );
         return res.json(updatedPost);
-      } else {
+      } else if (user.role === "admin") {
         const { status, categories } = req.body;
         const updatedPost = await postService.updatePost(
           postId,
@@ -107,6 +124,7 @@ class PostController {
       }
     } catch (e) {
       next(e);
+      c;
     }
   };
 
@@ -134,7 +152,7 @@ class PostController {
   getLikesForPost = async (req, res, next) => {
     try {
       const postId = req.params.post_id;
-      const like = await likeService.getLikes(postId, "like", "post");
+      const like = await likeService.getLikesForPost(postId, "like", "post");
       return res.json(like);
     } catch (e) {
       next(e);
@@ -166,7 +184,7 @@ class PostController {
   getDislikesForPost = async (req, res, next) => {
     try {
       const postId = req.params.post_id;
-      const like = await likeService.getLikes(postId, "dislike", "post");
+      const like = await likeService.getLikesForPost(postId, "dislike", "post");
       return res.json(like);
     } catch (e) {
       next(e);

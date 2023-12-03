@@ -53,3 +53,43 @@ export const getPost = (id) => {
     }
   };
 };
+
+export const updatePost = (id, updatedContent, updatedCategories) => {
+  return async (dispatch) => {
+    try {
+      const response = await PostService.updatePost(
+        id,
+        updatedContent,
+        updatedCategories
+      );
+      dispatch({
+        type: "UPDATE_POST_SUCCESS",
+        payload: response.data,
+      });
+    } catch (error) {
+      console.error("Error updating post:", error);
+      dispatch({
+        type: "UPDATE_POST_FAILURE",
+        payload: error,
+      });
+    }
+  };
+};
+
+export const deletePost = (id) => {
+  return async (dispatch) => {
+    try {
+      await PostService.deletePost(id);
+      dispatch({
+        type: "DELETE_POST_SUCCESS",
+        payload: id,
+      });
+    } catch (error) {
+      console.error("Error deleting post:", error);
+      dispatch({
+        type: "DELETE_POST_FAILURE",
+        payload: error,
+      });
+    }
+  };
+};

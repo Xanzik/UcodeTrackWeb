@@ -35,7 +35,7 @@ app.use(fileUpload({}));
 app.use(
   cors({
     credentials: true,
-    origin: `http://localhost:3000`,
+    origin: `${process.env.CLIENT_URL}`,
   })
 );
 app.use(express.json());
@@ -50,7 +50,7 @@ app.use("/api", commentRouter);
 app.use(errorMiddleware);
 
 app.listen(port, () => {
-  console.log(`Server started on http://localhost:${port}`);
+  console.log(`Server started on ${process.env.API_URL}`);
 });
 
 sqlQueries.forEach((sql) => {

@@ -1,6 +1,8 @@
 // postService.js
-import PostModel from '../models/Post.js';
-import commentService from './commentService.js';
+import { v4 as uuidv4 } from "uuid";
+import fs from "fs";
+import PostModel from "../models/Post.js";
+import commentService from "./commentService.js";
 
 class PostService {
   async getAllPosts(filters, user) {
@@ -38,14 +40,30 @@ class PostService {
     return post;
   }
 
-  async createComment(content, postId, user) {
-    const post = await commentService.createComment(content, user, postId);
+  async createComment(content, postId, user, replyCommentID) {
+    const post = await commentService.createComment(
+      content,
+      user,
+      postId,
+      replyCommentID
+    );
     return post;
   }
 
   async updatePost(postId, newData, categories, user) {
     const post = await PostModel.updatePost(postId, newData, user);
     await PostModel.updatePostCategories(postId, categories);
+    return post;
+  }
+
+  async updatePostScreenshot(screenshot, post_id) {
+    const path = "./static";
+    if (!fs.existsSync(path)) {
+      fs.mkdirSync(path);
+    }
+    const screenshotName = uuidv4() + ".jpg";
+    screenshot.mv(process.env.FILE_PATH + "\\" + screenshotName);
+    const post = await PostModel.updatePostScreenshot(screenshotName, post_id);
     return post;
   }
 

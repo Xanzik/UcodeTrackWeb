@@ -1,9 +1,9 @@
 // models/Post.js
-import { DataTypes } from 'sequelize';
-import sequelize from '../../utils/db_s.js';
+import { DataTypes } from "sequelize";
+import sequelize from "../../utils/db_s.js";
 
-const Post = sequelize.define('Post', {
-  id: { 
+const Post = sequelize.define("Post", {
+  id: {
     type: DataTypes.INTEGER,
     primaryKey: true,
     autoIncrement: true,
@@ -13,14 +13,14 @@ const Post = sequelize.define('Post', {
     allowNull: false,
   },
   Status: {
-    type: DataTypes.ENUM('active', 'inactive'),
-    defaultValue: 'active',
+    type: DataTypes.ENUM("active", "inactive"),
+    defaultValue: "active",
   },
   author_id: {
     type: DataTypes.INTEGER,
     references: {
-      model: 'Users',
-      key: 'id',
+      model: "Users",
+      key: "id",
     },
   },
   isBlocked: {
@@ -30,20 +30,25 @@ const Post = sequelize.define('Post', {
   Content: {
     type: DataTypes.TEXT,
   },
+  screenshot: {
+    type: DataTypes.STRING(255),
+  },
   createdAt: {
     type: DataTypes.DATE,
     allowNull: false,
-    defaultValue: sequelize.literal('CURRENT_TIMESTAMP'),
+    defaultValue: sequelize.literal("CURRENT_TIMESTAMP"),
   },
   updatedAt: {
     type: DataTypes.DATE,
     allowNull: false,
-    defaultValue: sequelize.literal('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'),
+    defaultValue: sequelize.literal(
+      "CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"
+    ),
   },
 });
 
 Post.associate = (models) => {
-  Post.belongsTo(models.User, { foreignKey: 'AuthorID', as: 'author' });
+  Post.belongsTo(models.User, { foreignKey: "AuthorID", as: "author" });
 };
 
 await Post.sync();

@@ -4,8 +4,15 @@ import { Link } from "react-router-dom";
 import { useLocation, useNavigate } from "react-router-dom";
 import { getPosts } from "../../store/actions/posts.js";
 import { getUsers } from "../../store/actions/user.js";
-import { getCategories } from "../../store/actions/category.js";
+import {
+  getCategories,
+  getCategoriesForPost,
+} from "../../store/actions/category.js";
 import PostListCSS from "../../styles/PostList.module.css";
+import Pagination from "../Pagination.js";
+
+const defaultAvatar = "/basic_avatar.jpg";
+const URL = `http://localhost:5000`;
 
 const PostsList = () => {
   const dispatch = useDispatch();
@@ -18,10 +25,19 @@ const PostsList = () => {
   const [status, setStatus] = useState("");
   const [sortBy, setSortBy] = useState("");
   const [searchText, setSearchText] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [postsPerPage] = useState(7);
+  const [postCategories, setPostCategories] = useState({});
 
   const posts = useSelector((state) => state.posts.posts);
   const allCategories = useSelector((state) => state.categories.categories);
   const users = useSelector((state) => state.users.users);
+
+  const lastPostIndex = currentPage * postsPerPage;
+  const firstPostIndex = lastPostIndex - postsPerPage;
+  const currentPost = posts.slice(firstPostIndex, lastPostIndex);
+
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   const handleSearchChange = (e) => {
     setSearchText(e.target.value);
@@ -71,6 +87,27 @@ const PostsList = () => {
   );
 
   useEffect(() => {
+    const fetchDataForPost = async (postId) => {
+      try {
+        const categories = await dispatch(getCategoriesForPost(postId));
+        const updatedCategories = {
+          ...postCategories,
+          [postId]: categories.data,
+        };
+        setPostCategories(updatedCategories);
+      } catch (error) {
+        console.error(error.message);
+      }
+    };
+
+    currentPost.forEach((post) => {
+      if (!postCategories[post.id]) {
+        fetchDataForPost(post.id);
+      }
+    });
+  }, [dispatch, currentPost, postCategories]);
+
+  useEffect(() => {
     const searchParams = new URLSearchParams(location.search);
     setDateFrom(searchParams.get("dateFrom") || "");
     setDateTo(searchParams.get("dateTo") || "");
@@ -92,6 +129,10 @@ const PostsList = () => {
   useEffect(() => {
     dispatch(getUsers());
   }, [dispatch]);
+
+  const handleAvatarClick = (userId) => {
+    navigate(`/profile/${userId}`);
+  };
 
   return (
     <div className={PostListCSS["posts-list-container"]}>
@@ -191,26 +232,74 @@ const PostsList = () => {
       </button>
 
       <ul className={PostListCSS["posts-list"]}>
-        {posts.map((post) => (
-          <li key={post.id} className={PostListCSS["post-item"]}>
+        {currentPost.map((post) => (
+          <li key={post.id} className={PostListCSS["post-container"]}>
             <Link to={`/post/${post.id}`} className={PostListCSS["post-link"]}>
-              <h3 className={PostListCSS["post-title"]}>{post.Title}</h3>
-              <p className={PostListCSS["post-content"]}>{post.Content}</p>
-              <p className={PostListCSS["post-status"]}>
-                Status: {post.Status}
-              </p>
-              <p className={PostListCSS["post-status"]}>
-                Updated At: {post.updatedAt}
-              </p>
-              <p className={PostListCSS["post-author"]}>
-                Author:{" "}
-                {users.find((user) => user.id === post.author_id)?.login ||
-                  "Loading..."}
-              </p>
+              <div className={PostListCSS["post-content-wrapper"]}>
+                <div className={PostListCSS["post-details"]}>
+                  <h3 className={PostListCSS["post-title"]}>{post.Title}</h3>
+                  <p className={PostListCSS["post-content"]}>
+                    {post.Content.length > 100
+                      ? post.Content.substring(0, 100) + "..."
+                      : post.Content}
+                  </p>
+                  <div className={PostListCSS["post-categories"]}>
+                    {postCategories[post.id] &&
+                      postCategories[post.id].map((category, index) => (
+                        <span
+                          key={index}
+                          className={PostListCSS["selected-category"]}
+                        >
+                          {category.title}
+                        </span>
+                      ))}
+                  </div>
+                  <div className={PostListCSS["post-info"]}>
+                    <p className={PostListCSS["post-date"]}>
+                      {new Date(post.updatedAt).toLocaleString()}
+                    </p>
+                    <p
+                      className={`${PostListCSS["post-status"]} ${
+                        post.Status === "active"
+                          ? PostListCSS["active"]
+                          : PostListCSS["inactive"]
+                      }`}
+                    >
+                      {post.Status}
+                    </p>
+                    <p className={PostListCSS["post-author"]}>
+                      {users.find((user) => user.id === post.author_id)
+                        ?.login || "Loading..."}
+                    </p>
+                    <p className={PostListCSS["post-rating"]}>
+                      {users.find((user) => user.id === post.author_id)?.rating}
+                    </p>
+                    <img
+                      src={
+                        users.find((user) => user.id === post.author_id)
+                          ?.profile_picture
+                          ? `${URL}/static/${
+                              users.find((user) => user.id === post.author_id)
+                                .profile_picture
+                            }`
+                          : defaultAvatar
+                      }
+                      alt="User Avatar"
+                      onClick={() => handleAvatarClick(post.author_id)}
+                      className={PostListCSS["post-avatar"]}
+                    />
+                  </div>
+                </div>
+              </div>
             </Link>
           </li>
         ))}
       </ul>
+      <Pagination
+        perPage={postsPerPage}
+        total={posts.length}
+        paginate={paginate}
+      />
     </div>
   );
 };

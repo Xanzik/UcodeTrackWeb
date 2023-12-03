@@ -12,6 +12,9 @@ import CreatePost from "./components/PostComponents/CreatePost.js";
 import PasswordResetPage from "./components/AuthComponents/PasswordResetPage.js";
 import PostPage from "./components/PostComponents/PostPage.js";
 
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 const App = () => {
   const dispatch = useDispatch();
   useEffect(() => {
@@ -32,14 +35,17 @@ const App = () => {
     <Router>
       <Routes>
         <Route path="/" element={<Page />} />
+        <Route path="/!" element={<Page />} />
         <Route path="/create-post" element={<CreatePost />} />
-        <Route path="/profile" element={<Profile />} />
+        <Route path="/profile/:userId" element={<Profile />} />
         <Route
           path="/api/auth/password-reset/:token"
           element={<PasswordResetPage />}
         />
         <Route path="/post/:postId" element={<PostPage />} />
+        <Route path="/post/:postId/page/:pageNumber" element={<PostPage />} />
       </Routes>
+      <ToastContainer />
     </Router>
   );
 };

@@ -16,6 +16,7 @@ const CreatePost = () => {
     content: "",
     categories: [],
   });
+  const [screenshot, setScreenshot] = useState(null);
 
   const [searchText, setSearchText] = useState("");
 
@@ -63,21 +64,29 @@ const CreatePost = () => {
     category.title.toLowerCase().includes(searchText.toLowerCase())
   );
 
+  const handleScreenshotChange = (e) => {
+    const file = e.target.files[0];
+    setScreenshot(file);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     try {
-      await PostService.createPost(
+      const formScreenshot = new FormData();
+      formScreenshot.append("screenshot", screenshot);
+      const post_id = await PostService.createPost(
         post.title,
         post.content,
         post.categories.map((category) => category.title)
       );
+      await PostService.updatePostScreenshot(post_id.data, formScreenshot);
 
       setPost({
         title: "",
         content: "",
         categories: [],
       });
+      setScreenshot(null);
 
       console.log("Post created successfully!");
     } catch (error) {
@@ -107,6 +116,14 @@ const CreatePost = () => {
               value={post.content}
               onChange={handleContentChange}
               className={CreatePostCSS["scifi-input"]}
+            />
+          </label>
+          <label className={CreatePostCSS["scifi-label"]}>
+            Image:
+            <input
+              type="file"
+              accept="image/*"
+              onChange={handleScreenshotChange}
             />
           </label>
           <label className={CreatePostCSS["scifi-label"]}>

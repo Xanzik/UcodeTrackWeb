@@ -30,95 +30,100 @@ const LoginForm = () => {
   };
 
   return (
-    <div className={LoginCSS["scifi-container"]}>
-      {isLoginFormOpen ? (
-        <form className={LoginCSS["scifi-form"]}>
-          <label className={LoginCSS["scifi-label"]}>
-            Email:
-            <input
-              className={LoginCSS["scifi-input"]}
-              type="text"
-              value={email}
-              onChange={handleUserEmailChange}
-            />
-          </label>
-          <br />
-          <label className={LoginCSS["scifi-label"]}>
-            Password:
-            <input
-              className={LoginCSS["scifi-input"]}
-              type="password"
-              value={password}
-              onChange={handlePasswordChange}
-            />
-          </label>
-          <br />
-          <button
-            onClick={handleLogin}
-            className={LoginCSS["scifi-button"]}
-            type="button"
-          >
-            Login
-          </button>
-        </form>
-      ) : (
-        <form className={LoginCSS["scifi-form"]}>
-          <label className={LoginCSS["scifi-label"]}>
-            Login:
-            <input
-              className={LoginCSS["scifi-input"]}
-              type="text"
-              value={name}
-              onChange={handleLoginChange}
-            />
-          </label>
-          <br />
-          <label className={LoginCSS["scifi-label"]}>
-            Email:
-            <input
-              className={LoginCSS["scifi-input"]}
-              type="text"
-              value={email}
-              onChange={handleUserEmailChange}
-            />
-          </label>
-          <br />
-          <label className={LoginCSS["scifi-label"]}>
-            Password:
-            <input
-              className={LoginCSS["scifi-input"]}
-              type="password"
-              value={password}
-              onChange={handlePasswordChange}
-            />
-          </label>
-          <br />
-          <label className={LoginCSS["scifi-label"]}>
-            PasswordConfirmation:
-            <input
-              className={LoginCSS["scifi-input"]}
-              type="password"
-              value={passwordConfirmation}
-              onChange={handlePasswordConfirmationChange}
-            />
-          </label>
-          <br />
-          <button
-            onClick={handleRegister}
-            className={LoginCSS["scifi-button"]}
-            type="button"
-          >
-            Register
-          </button>
-        </form>
-      )}
-      <br />
-      <button
-        className={LoginCSS["scifi-toggle-button"]}
-        onClick={handleFormToggle}
-      >
-        {isLoginFormOpen ? "Still not registered?" : "Back to login"}
-      </button>
+    <div>
+      <div className={LoginCSS["logo-container"]}>
+        <h1 className={LoginCSS["logo-text"]}>TechVerse QA</h1>
+      </div>
+      <div className={LoginCSS["scifi-container"]}>
+        {isLoginFormOpen ? (
+          <form className={LoginCSS["scifi-form"]}>
+            <label className={LoginCSS["scifi-label"]}>
+              Email:
+              <input
+                className={LoginCSS["scifi-input"]}
+                type="text"
+                value={email}
+                onChange={handleUserEmailChange}
+              />
+            </label>
+            <br />
+            <label className={LoginCSS["scifi-label"]}>
+              Password:
+              <input
+                className={LoginCSS["scifi-input"]}
+                type="password"
+                value={password}
+                onChange={handlePasswordChange}
+              />
+            </label>
+            <br />
+            <button
+              onClick={handleLogin}
+              className={LoginCSS["scifi-button"]}
+              type="button"
+            >
+              Login
+            </button>
+          </form>
+        ) : (
+          <form className={LoginCSS["scifi-form"]}>
+            <label className={LoginCSS["scifi-label"]}>
+              Login:
+              <input
+                className={LoginCSS["scifi-input"]}
+                type="text"
+                value={name}
+                onChange={handleLoginChange}
+              />
+            </label>
+            <br />
+            <label className={LoginCSS["scifi-label"]}>
+              Email:
+              <input
+                className={LoginCSS["scifi-input"]}
+                type="text"
+                value={email}
+                onChange={handleUserEmailChange}
+              />
+            </label>
+            <br />
+            <label className={LoginCSS["scifi-label"]}>
+              Password:
+              <input
+                className={LoginCSS["scifi-input"]}
+                type="password"
+                value={password}
+                onChange={handlePasswordChange}
+              />
+            </label>
+            <br />
+            <label className={LoginCSS["scifi-label"]}>
+              PasswordConfirmation:
+              <input
+                className={LoginCSS["scifi-input"]}
+                type="password"
+                value={passwordConfirmation}
+                onChange={handlePasswordConfirmationChange}
+              />
+            </label>
+            <br />
+            <button
+              onClick={handleRegister}
+              className={LoginCSS["scifi-button"]}
+              type="button"
+            >
+              Register
+            </button>
+          </form>
+        )}
+        <br />
+        <button
+          className={LoginCSS["scifi-toggle-button"]}
+          onClick={handleFormToggle}
+        >
+          {isLoginFormOpen ? "Still not registered?" : "Back to login"}
+        </button>
+      </div>
     </div>
   );
 };
