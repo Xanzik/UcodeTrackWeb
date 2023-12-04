@@ -53,6 +53,7 @@
   color: #020111;
   border: 1px solid #7fdbff;
   cursor: pointer;
+  display: inline-block;
   transition: background-color 0.3s ease-in-out;
   border-radius: 5px;
 }

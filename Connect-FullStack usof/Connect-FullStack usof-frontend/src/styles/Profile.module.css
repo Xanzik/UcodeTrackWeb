@@ -1,4 +1,3 @@
-/* Profile.css */
 .profile-page {
   margin: auto;
   display: flex;
@@ -9,16 +8,16 @@
   padding: 20px;
   border: 1px solid #7fdbff;
   max-width: 800px;
-  height: 450px;
+  height: 500px;
   margin-top: 5%;
 }
 
 .profile-container {
+  display: flex;
   text-align: center;
 }
 
 .profile-info {
-  display: flex;
   align-items: center;
   justify-content: center;
   flex-wrap: wrap;
@@ -38,7 +37,7 @@
   font-size: 18px;
   line-height: 1.6;
   color: #7fdbff;
-  margin: 0;
+  margin-right: 50px;
   transition: color 0.3s ease-in-out;
 }
 
@@ -61,6 +60,7 @@
 
 .user-posts {
   margin-top: 20px;
+  width: 300px;
   text-align: center;
 }
 
@@ -75,29 +75,31 @@
 }
 
 .user-posts li {
-  background-color: #020111;
   border: 1px solid #7fdbff;
-  margin-bottom: 10px;
-  padding: 10px;
-  color: #fff;
-  text-align: left;
-  max-width: 400px;
   margin: 0 auto;
 }
 
-.user-posts button {
-  background-color: #2196f3;
-  color: #fff;
+.postItem {
+  display: flex;
+  justify-content: space-between;
+  background-color: #020111;
+  border: 2px solid #7fdbff;
+  margin-bottom: 5px;
   padding: 10px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-weight: bold;
-  transition: background-color 0.3s ease-in-out;
 }
 
-.user-posts button:hover {
-  background-color: #1565c0;
+.link {
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+}
+
+.active {
+  color: rgb(0, 255, 0);
+}
+
+.inactive {
+  color: red;
 }
 
 .avatar-container {
@@ -155,6 +157,7 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  margin-right: 50px;
   margin-top: 20px;
 }
 
@@ -181,11 +184,17 @@
 .button {
   padding: 10px;
   margin: 1px;
+  margin-right: 50px;
   border: none;
   border-radius: 5px;
   cursor: pointer;
   font-weight: bold;
   transition: background-color 0.3s ease-in-out;
+}
+
+.save-button {
+  margin: 0;
+  width: 60px;
 }
 
 .reset-password-button:hover {
@@ -202,4 +211,10 @@
 
 .edit-button:hover {
   background-color: #1565c0;
+}
+
+.error-message {
+  color: #ff0000;
+  margin-top: 15px;
+  font-size: 20px;
 }

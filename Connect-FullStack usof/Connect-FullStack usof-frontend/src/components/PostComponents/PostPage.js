@@ -38,6 +38,8 @@ const PostPage = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [searchText, setSearchText] = useState("");
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
+  const [showDeleteCommentConfirmation, setShowDeleteCommentConfirmation] =
+    useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const commentsPerPage = 7;
 
@@ -82,9 +84,12 @@ const PostPage = () => {
     (comment) => comment.ParentCommentID === null
   );
 
-  const handleCommentSubmit = () => {
+  const handleCommentSubmit = async () => {
+    if (!commentText) {
+      return;
+    }
     if (replyToCommentId) {
-      dispatch(createComment(postId, commentText, replyToCommentId))
+      await dispatch(createComment(postId, commentText, replyToCommentId))
         .then(() => {
           dispatch(getComments(postId));
           setCommentText("");
@@ -94,7 +99,7 @@ const PostPage = () => {
           console.error("Error creating comment:", error);
         });
     } else {
-      dispatch(createComment(postId, commentText))
+      await dispatch(createComment(postId, commentText))
         .then(() => {
           dispatch(getComments(postId));
           setCommentText("");
@@ -109,8 +114,9 @@ const PostPage = () => {
     setReplyToCommentId(commentId);
   };
 
-  const handleDeleteComment = (commentId) => {
-    dispatch(deleteComment(commentId));
+  const handleDeleteComment = async (commentId) => {
+    await dispatch(deleteComment(commentId));
+    setShowDeleteCommentConfirmation(false);
   };
 
   const handleEditPost = () => {
@@ -120,6 +126,9 @@ const PostPage = () => {
   };
 
   const handleSaveEdit = async () => {
+    if (!editedContent) {
+      return;
+    }
     await dispatch(updatePost(postId, editedContent, editedCategories));
     await dispatch(getPost(postId));
     await dispatch(getCategoriesForPost(postId));
@@ -152,8 +161,8 @@ const PostPage = () => {
     setEditedCategories(updatedCategories);
   };
 
-  const handleDeletePost = () => {
-    dispatch(deletePost(postId));
+  const handleDeletePost = async () => {
+    await dispatch(deletePost(postId));
     setShowDeleteConfirmation(false);
     navigate("/");
   };
@@ -205,17 +214,19 @@ const PostPage = () => {
             <div>
               <div className={PostPageCSS["postContainer"]}>
                 <p className={PostPageCSS["content"]}>{post[0].Content}</p>
-                <a
-                  href={`${URL}/static/${post[0].screenshot}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <img
-                    src={`${URL}/static/${post[0].screenshot}`}
-                    alt="Post Screenshot"
-                    className={PostPageCSS["postImage"]}
-                  />
-                </a>
+                {post[0].screenshot && (
+                  <a
+                    href={`${URL}/static/${post[0].screenshot}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <img
+                      src={`${URL}/static/${post[0].screenshot}`}
+                      alt="Post Screenshot"
+                      className={PostPageCSS["postImage"]}
+                    />
+                  </a>
+                )}
               </div>
             </div>
           )}
@@ -367,10 +378,17 @@ const PostPage = () => {
                     {currentUser && currentUser.id === comment.AuthorID && (
                       <button
                         className={PostPageCSS["delete-button"]}
-                        onClick={() => handleDeleteComment(comment.id)}
+                        onClick={() => setShowDeleteCommentConfirmation(true)}
                       >
                         Delete
                       </button>
+                    )}
+                    {showDeleteCommentConfirmation && (
+                      <ConfirmationDialog
+                        message="Are you sure you want to delete your comment?"
+                        onConfirm={() => handleDeleteComment(comment.id)}
+                        onCancel={() => setShowDeleteCommentConfirmation(false)}
+                      />
                     )}
                     <div className={PostPageCSS["reply-container"]}>
                       <CommentReplies
@@ -392,6 +410,7 @@ const PostPage = () => {
           perPage={commentsPerPage}
           total={rootComments.length}
           paginate={paginate}
+          currentPage={currentPage}
         />
         <div className={PostPageCSS["comment-form"]}>
           <div className={PostPageCSS["reply-info"]}>

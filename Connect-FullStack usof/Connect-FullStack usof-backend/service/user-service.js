@@ -139,7 +139,7 @@ class UserService {
 
       await mailService.sendResetPasswordMail(
         email,
-        `${process.env.API_URL}/api/auth/password-reset/${resetLink}`
+        `${process.env.CLIENT_URL}/api/auth/password-reset/${resetLink}`
       );
       await User.changeResetLink(resetLink, email);
       return { status: 0, message: "Password reset sended on email" };

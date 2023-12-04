@@ -84,3 +84,9 @@
 .scifi-toggle-button:hover {
   background-color: #1565c0;
 }
+
+.error-message {
+  color: #ff0000;
+  margin-top: 15px;
+  font-size: 20px;
+}

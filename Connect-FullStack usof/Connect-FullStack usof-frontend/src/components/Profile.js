@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import Header from "./Header";
 import MenuBar from "./MenuBar";
+import Pagination from "./Pagination.js";
 import { connect, useDispatch, useSelector } from "react-redux";
 import { getPosts } from "../store/actions/posts.js";
 import { sendResetLink } from "../store/actions/auth.js";
@@ -10,6 +11,8 @@ import {
   changeAvatar,
   getUsers,
 } from "../store/actions/user.js";
+
+import ConfirmationDialog from "../components/ModalComponents/ConfirmationDialog.js";
 import { toast } from "react-toastify";
 
 import ProfileCSS from "../styles/Profile.module.css";
@@ -25,6 +28,11 @@ const Profile = ({ allPosts, message }) => {
   const fileInputRef = React.createRef();
   const [isOverlayVisible, setOverlayVisible] = useState(false);
   const [editing, setEditing] = useState(false);
+  const [postsPerPage] = useState(5);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [error, setError] = useState(null);
+
+  const [showResetConfirmation, setShowResetConfirmation] = useState(false);
 
   useEffect(() => {
     dispatch(getPosts());
@@ -66,9 +74,15 @@ const Profile = ({ allPosts, message }) => {
     }
   }, [message, dispatch]);
 
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
   const userPosts = profileUser
     ? allPosts.filter((post) => post.author_id === profileUser.id)
     : [];
+
+  const lastPostIndex = currentPage * postsPerPage;
+  const firstPostIndex = lastPostIndex - postsPerPage;
+  const currentPost = userPosts.slice(firstPostIndex, lastPostIndex);
 
   const handleInputChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -79,6 +93,13 @@ const Profile = ({ allPosts, message }) => {
   };
 
   const handleSaveClick = async () => {
+    if (!formData.login) {
+      return;
+    }
+    if (users.some((user) => user.login === formData.login)) {
+      setError("The login is already occupied.");
+      return;
+    }
     await dispatch(updateUserProfile(formData, profileUser.id));
     setEditing(false);
     await dispatch(getUsers());
@@ -86,6 +107,7 @@ const Profile = ({ allPosts, message }) => {
 
   const handleCancelClick = () => {
     setEditing(false);
+    setError(null);
   };
 
   const handleAvatarClick = () => {
@@ -107,10 +129,8 @@ const Profile = ({ allPosts, message }) => {
   };
 
   const handleResetPassword = async () => {
-    const confirmReset = window.confirm("Do you want to change your password?");
-    if (confirmReset) {
-      await dispatch(sendResetLink());
-    }
+    await dispatch(sendResetLink());
+    setShowResetConfirmation(false);
   };
 
   return (
@@ -172,24 +192,26 @@ const Profile = ({ allPosts, message }) => {
                     <button
                       className={`${ProfileCSS["button"]} ${ProfileCSS["reset-password-button"]}`}
                       type="button"
-                      onClick={handleResetPassword}
+                      onClick={() => setShowResetConfirmation(true)}
                     >
                       Reset Password
                     </button>
-                    <button
-                      className={`${ProfileCSS["button"]} ${ProfileCSS["save-button"]}`}
-                      type="button"
-                      onClick={handleSaveClick}
-                    >
-                      Save
-                    </button>
-                    <button
-                      className={`${ProfileCSS["button"]} ${ProfileCSS["cancel-button"]}`}
-                      type="button"
-                      onClick={handleCancelClick}
-                    >
-                      Cancel
-                    </button>
+                    <div>
+                      <button
+                        className={`${ProfileCSS["button"]} ${ProfileCSS["save-button"]}`}
+                        type="button"
+                        onClick={handleSaveClick}
+                      >
+                        Save
+                      </button>
+                      <button
+                        className={`${ProfileCSS["button"]} ${ProfileCSS["cancel-button"]}`}
+                        type="button"
+                        onClick={handleCancelClick}
+                      >
+                        Cancel
+                      </button>
+                    </div>
                   </form>
                 ) : (
                   <>
@@ -221,20 +243,60 @@ const Profile = ({ allPosts, message }) => {
                   </>
                 )}
               </div>
+              {error && (
+                <div className={ProfileCSS["error-message"]}>{error}</div>
+              )}
             </div>
           )}
-          {userPosts.length > 0 && (
-            <div className={ProfileCSS["user-posts"]}>
-              <h2>User Questions </h2>
-              <ul>
-                {userPosts.map((post) => (
-                  <li key={post.id}>{post.Title}</li>
-                ))}
-              </ul>
+          {currentPost.length > 1 ? (
+            <div>
+              <div className={ProfileCSS["user-posts"]}>
+                <h2>User Questions </h2>
+                <ul>
+                  {currentPost.map((post) => (
+                    <Link
+                      to={`/post/${post.id}`}
+                      key={post.id}
+                      className={ProfileCSS.link}
+                    >
+                      <li key={post.id} className={`${ProfileCSS.postItem} `}>
+                        <p className={ProfileCSS.postText}>{post.Title}</p>
+                        <p
+                          className={`${
+                            post.Status === "active"
+                              ? ProfileCSS.active
+                              : ProfileCSS.inactive
+                          }`}
+                        >
+                          {post.Status}
+                        </p>
+                      </li>
+                    </Link>
+                  ))}
+                </ul>
+              </div>
+              <Pagination
+                perPage={postsPerPage}
+                total={userPosts.length}
+                paginate={paginate}
+                currentPage={currentPage}
+              />
+            </div>
+          ) : (
+            <div>
+              <h2>No users posts available.</h2>
+              <h1>😑</h1>
             </div>
           )}
         </div>
       </div>
+      {showResetConfirmation && (
+        <ConfirmationDialog
+          message="Are you sure you want to reset your password? Link will be sent to your email!"
+          onConfirm={handleResetPassword}
+          onCancel={() => setShowResetConfirmation(false)}
+        />
+      )}
     </div>
   );
 };

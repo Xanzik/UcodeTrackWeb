@@ -1,62 +1,92 @@
-/* CreatePost.css */
 .scifi-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  max-width: 800px;
+  margin: 0 auto;
+  margin-top: 5%;
+  padding: 20px;
+  background-color: #020111;
+  color: #7fdbff;
+  border: 1px solid #7fdbff;
 }
 
 .scifi-form {
-  background-color: #020111;
-  color: #fff;
-  padding: 20px;
-  border: 2px solid #2196f3;
-  border-radius: 8px;
-  width: 300px;
-  margin-top: 20px;
+  display: flex;
+  align-items: flex-start;
 }
 
 .scifi-label {
-  margin-bottom: 10px;
-  color: #2196f3;
+  margin: 10px 0;
+}
+
+.file-input-container {
+  position: relative;
+  cursor: pointer;
+}
+
+.file-input-placeholder {
+  position: absolute;
+  top: 50%;
+  left: 10px;
+  transform: translateY(-50%);
+  color: #7fdbff;
+  padding: 5px;
+  border: 1px solid #7fdbff;
+}
+
+.file-input-container input[type="file"] {
+  width: 100%;
+  padding: 8px;
+  font-size: 30px;
+  border: 1px solid #7fdbff;
+  background-color: #020111;
+  color: #7fdbff;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.scifi-input,
+.scifi-textarea,
+.scifi-button {
+  margin-top: 5px;
+  padding: 8px;
+  font-size: 16px;
+  border: 1px solid #7fdbff;
+  background-color: #020111;
+  color: #7fdbff;
 }
 
 .scifi-input {
-  padding: 10px;
-  margin-bottom: 10px;
-  background-color: #020111;
-  color: #fff;
-  border: 1px solid #2196f3;
-  border-radius: 4px;
-  width: 100%;
-  box-sizing: border-box;
+  width: 90%;
 }
 
 .scifi-button {
-  padding: 10px;
-  margin-top: 10px;
-  background-color: #2196f3;
-  color: #020111;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
   width: 100%;
+  cursor: pointer;
 }
 
 .scifi-button:hover {
-  background-color: #1565c0;
+  background-color: #7fdbff;
+  color: #020111;
 }
 
 .categories-container {
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: row;
 }
 
 .category {
+  padding: 5px;
   margin: 5px;
-  padding: 8px;
-  border: 1px solid #ccc;
   cursor: pointer;
+  max-width: 100%;
+  max-height: 100%;
+  border: 1px solid #7fdbff;
+  background-color: #020111;
+  color: #7fdbff;
+}
+
+.selected {
+  background-color: #7fdbff;
+  color: #020111;
 }
 
 .selected-categories {
@@ -64,8 +94,10 @@
 }
 
 .selected-category {
-  margin-right: 5px;
+  display: inline-block;
   padding: 5px;
-  background-color: #eee;
-  border: 1px solid #ccc;
+  margin: 0 5px;
+  cursor: pointer;
+  background-color: #7fdbff;
+  color: #020111;
 }

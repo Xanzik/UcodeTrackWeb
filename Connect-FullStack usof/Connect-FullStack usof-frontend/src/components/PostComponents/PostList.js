@@ -146,23 +146,6 @@ const PostsList = () => {
             value={searchText}
             onChange={handleSearchChange}
           />
-          {searchText && (
-            <div className={PostListCSS["categories-container"]}>
-              {filteredCategories.map((category) => (
-                <div
-                  key={category.id}
-                  className={`${PostListCSS["category"]} ${
-                    selectedCategories.includes(category)
-                      ? PostListCSS["selected"]
-                      : ""
-                  }`}
-                  onClick={() => handleCategorySelect(category)}
-                >
-                  {category.title}
-                </div>
-              ))}
-            </div>
-          )}
         </div>
 
         <div className={PostListCSS["filter-group"]}>
@@ -213,6 +196,24 @@ const PostsList = () => {
           </select>
         </div>
       </div>
+      {searchText && (
+        <div className={PostListCSS["categories-container"]}>
+          {filteredCategories.map((category) => (
+            <div
+              key={category.id}
+              className={`${PostListCSS["category"]} ${
+                selectedCategories.includes(category)
+                  ? PostListCSS["selected"]
+                  : ""
+              }`}
+              onClick={() => handleCategorySelect(category)}
+            >
+              {category.title}
+            </div>
+          ))}
+        </div>
+      )}
+      <br></br>
       <div className={PostListCSS["selected-categories"]}>
         {selectedCategories.map((category) => (
           <span
@@ -299,6 +300,7 @@ const PostsList = () => {
         perPage={postsPerPage}
         total={posts.length}
         paginate={paginate}
+        currentPage={currentPage}
       />
     </div>
   );

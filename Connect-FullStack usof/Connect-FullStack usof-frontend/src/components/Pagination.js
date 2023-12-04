@@ -2,7 +2,7 @@
 import React from "react";
 import styles from "../styles/Pagination.module.css";
 
-const Pagination = ({ perPage, total, paginate }) => {
+const Pagination = ({ perPage, total, paginate, currentPage }) => {
   const pageNumbers = [];
 
   for (let i = 1; i <= Math.ceil(total / perPage); i++) {
@@ -17,7 +17,11 @@ const Pagination = ({ perPage, total, paginate }) => {
             <a
               onClick={() => paginate(number)}
               href={`#post/${number}`}
-              className={`page-link ${styles.scifiPageLink}`}
+              className={`page-link ${
+                currentPage === number
+                  ? styles.activeLink
+                  : styles.scifiPageLink
+              }`}
             >
               {number}
             </a>

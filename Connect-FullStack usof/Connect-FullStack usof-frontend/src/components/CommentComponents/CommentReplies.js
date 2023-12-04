@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useSelector } from "react-redux";
 
 import CommentLikes from "../LikesComponents/CommentLikes.js";
+import ConfirmationDialog from "../ModalComponents/ConfirmationDialog.js";
 
 import PostPageCSS from "../../styles/PostPage.module.css";
 
@@ -16,6 +17,8 @@ const CommentReplies = ({ parent_id, onDelete, replies, onAvatar }) => {
   const currentUser = useSelector((state) => state.auth.user);
   const users = useSelector(selectUsers);
   const [showReplies, setShowReplies] = useState(false);
+  const [showDeleteCommentConfirmation, setShowDeleteCommentConfirmation] =
+    useState(false);
 
   const handleToggleReplies = () => {
     setShowReplies(!showReplies);
@@ -65,10 +68,17 @@ const CommentReplies = ({ parent_id, onDelete, replies, onAvatar }) => {
                     {currentUser && currentUser.id === reply.AuthorID && (
                       <button
                         className={PostPageCSS["delete-button"]}
-                        onClick={() => onDelete(reply.id)}
+                        onClick={() => setShowDeleteCommentConfirmation(true)}
                       >
                         Delete
                       </button>
+                    )}
+                    {showDeleteCommentConfirmation && (
+                      <ConfirmationDialog
+                        message="Are you sure you want to delete your comment?"
+                        onConfirm={() => onDelete(reply.id)}
+                        onCancel={() => setShowDeleteCommentConfirmation(false)}
+                      />
                     )}
                   </li>
                 ))}

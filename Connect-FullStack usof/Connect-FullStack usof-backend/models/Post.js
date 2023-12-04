@@ -102,7 +102,6 @@ class PostModel {
       "INSERT INTO posts (author_id, title, content) VALUES (?, ?, ?)";
     try {
       let values = [user.id, title, content];
-
       const [postResult] = await connection.execute(sqlPostQuery, values);
       const postId = postResult.insertId;
 
@@ -206,7 +205,6 @@ class PostModel {
 
   async updatePostScreenshot(screenshot, post_id) {
     try {
-      console.log(screenshot);
       const updateQuery = "UPDATE posts SET screenshot = ? WHERE id = ?";
       await connection.query(updateQuery, [screenshot, post_id]);
       return "Screenshot updated successfully";

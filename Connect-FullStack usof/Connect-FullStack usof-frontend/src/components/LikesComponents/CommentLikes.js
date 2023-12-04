@@ -9,6 +9,8 @@ import {
   fetchDislikesForComment,
 } from "../../store/actions/like.js";
 
+import { getUsers } from "../../store/actions/user.js";
+
 import PostPageCSS from "../../styles/PostPage.module.css";
 
 const likeIMG = "/like.svg";
@@ -51,17 +53,19 @@ const CommentLikes = ({ commentId }) => {
         (like) => like.AuthorID === currentUser.id
       );
       setIsLiked(!!userLike);
+      await dispatch(getUsers());
     } catch (error) {
       console.error("Error handling like for comment:", error);
     }
   };
 
-  const handleDislikeClick = () => {
+  const handleDislikeClick = async () => {
     if (isDisliked) {
-      dispatch(deleteDislikeComment(commentId));
+      await dispatch(deleteDislikeComment(commentId));
     } else {
-      dispatch(createDislikeComment(commentId));
+      await dispatch(createDislikeComment(commentId));
     }
+    await dispatch(getUsers());
     setIsDisliked(!isDisliked);
   };
 

@@ -22,8 +22,8 @@
   transition: background-color 0.3s ease-in-out;
   border-left: 2px solid #7fdbff;
   border-right: 2px solid #7fdbff;
-  top: 50%;
   left: 20%;
+  top: 50%;
   transform: translateY(-50%);
 }
 

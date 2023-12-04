@@ -5,7 +5,6 @@ export const createLikePost = (id) => {
   return async (dispatch) => {
     try {
       const response = await PostService.createLikePost(id);
-      console.log(response);
       dispatch({
         type: "CREATE_LIKE",
         payload: response.data,

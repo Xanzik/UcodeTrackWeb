@@ -9,6 +9,8 @@ import {
   fetchDislikesForPost,
 } from "../../store/actions/like.js";
 
+import { getUsers } from "../../store/actions/user.js";
+
 import PostPageCSS from "../../styles/PostPage.module.css";
 
 const likeIMG = "/like.svg";
@@ -50,18 +52,20 @@ const PostLikes = ({ postId }) => {
       const userLike = likesData.find(
         (like) => like.AuthorID === currentUser.id
       );
+      await dispatch(getUsers());
       setIsLiked(!!userLike);
     } catch (error) {
       console.error("Error handling like for Post:", error);
     }
   };
 
-  const handleDislikeClick = () => {
+  const handleDislikeClick = async () => {
     if (isDisliked) {
-      dispatch(deleteDislike(postId));
+      await dispatch(deleteDislike(postId));
     } else {
-      dispatch(createDislikePost(postId));
+      await dispatch(createDislikePost(postId));
     }
+    await dispatch(getUsers());
     setIsDisliked(!isDisliked);
   };
 

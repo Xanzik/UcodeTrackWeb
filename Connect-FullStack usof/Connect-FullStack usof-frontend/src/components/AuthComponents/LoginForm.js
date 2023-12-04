@@ -10,6 +10,7 @@ const LoginForm = () => {
   const [password, setPassword] = useState("");
   const [passwordConfirmation, setPasswordConfirmation] = useState("");
   const [isLoginFormOpen, setLoginFormOpen] = useState(true);
+  const [error, setError] = useState(null);
 
   const handleUserEmailChange = (e) => setUserEmail(e.target.value);
   const handleLoginChange = (e) => setLogin(e.target.value);
@@ -18,15 +19,44 @@ const LoginForm = () => {
     setPasswordConfirmation(e.target.value);
 
   const handleLogin = async () => {
-    dispatch(login(email, password));
+    if (!email || !password) {
+      setError("Please fill in all fields");
+      return;
+    }
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      setError("Invalid email address");
+      return;
+    }
+    await dispatch(login(email, password));
   };
 
   const handleRegister = async () => {
-    dispatch(registration(email, password, passwordConfirmation, name));
+    if (!email || !password || !passwordConfirmation || !name) {
+      setError("Please fill in all fields.");
+      return;
+    }
+
+    if (passwordConfirmation !== password) {
+      setError("Password and PasswordConfirmation must be equal.");
+      return;
+    }
+
+    if (password.length < 6) {
+      setError("The password must contain more than 5 characters.");
+      return;
+    }
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      setError("Invalid email address");
+      return;
+    }
+    await dispatch(registration(email, password, passwordConfirmation, name));
   };
 
   const handleFormToggle = () => {
     setLoginFormOpen(!isLoginFormOpen);
+    setError(null);
   };
 
   return (
@@ -37,25 +67,21 @@ const LoginForm = () => {
       <div className={LoginCSS["scifi-container"]}>
         {isLoginFormOpen ? (
           <form className={LoginCSS["scifi-form"]}>
-            <label className={LoginCSS["scifi-label"]}>
-              Email:
-              <input
-                className={LoginCSS["scifi-input"]}
-                type="text"
-                value={email}
-                onChange={handleUserEmailChange}
-              />
-            </label>
+            <label className={LoginCSS["scifi-label"]}>Email:</label>
+            <input
+              className={LoginCSS["scifi-input"]}
+              type="text"
+              value={email}
+              onChange={handleUserEmailChange}
+            />
             <br />
-            <label className={LoginCSS["scifi-label"]}>
-              Password:
-              <input
-                className={LoginCSS["scifi-input"]}
-                type="password"
-                value={password}
-                onChange={handlePasswordChange}
-              />
-            </label>
+            <label className={LoginCSS["scifi-label"]}>Password:</label>
+            <input
+              className={LoginCSS["scifi-input"]}
+              type="password"
+              value={password}
+              onChange={handlePasswordChange}
+            />
             <br />
             <button
               onClick={handleLogin}
@@ -64,48 +90,43 @@ const LoginForm = () => {
             >
               Login
             </button>
+            {error && <div className={LoginCSS["error-message"]}>{error}</div>}
           </form>
         ) : (
           <form className={LoginCSS["scifi-form"]}>
-            <label className={LoginCSS["scifi-label"]}>
-              Login:
-              <input
-                className={LoginCSS["scifi-input"]}
-                type="text"
-                value={name}
-                onChange={handleLoginChange}
-              />
-            </label>
+            <label className={LoginCSS["scifi-label"]}>Login:</label>
+            <input
+              className={LoginCSS["scifi-input"]}
+              type="text"
+              value={name}
+              onChange={handleLoginChange}
+            />
             <br />
-            <label className={LoginCSS["scifi-label"]}>
-              Email:
-              <input
-                className={LoginCSS["scifi-input"]}
-                type="text"
-                value={email}
-                onChange={handleUserEmailChange}
-              />
-            </label>
+            <label className={LoginCSS["scifi-label"]}>Email:</label>
+            <input
+              className={LoginCSS["scifi-input"]}
+              type="text"
+              value={email}
+              onChange={handleUserEmailChange}
+            />
             <br />
-            <label className={LoginCSS["scifi-label"]}>
-              Password:
-              <input
-                className={LoginCSS["scifi-input"]}
-                type="password"
-                value={password}
-                onChange={handlePasswordChange}
-              />
-            </label>
+            <label className={LoginCSS["scifi-label"]}>Password:</label>
+            <input
+              className={LoginCSS["scifi-input"]}
+              type="password"
+              value={password}
+              onChange={handlePasswordChange}
+            />
             <br />
             <label className={LoginCSS["scifi-label"]}>
               PasswordConfirmation:
-              <input
-                className={LoginCSS["scifi-input"]}
-                type="password"
-                value={passwordConfirmation}
-                onChange={handlePasswordConfirmationChange}
-              />
             </label>
+            <input
+              className={LoginCSS["scifi-input"]}
+              type="password"
+              value={passwordConfirmation}
+              onChange={handlePasswordConfirmationChange}
+            />
             <br />
             <button
               onClick={handleRegister}
@@ -114,6 +135,7 @@ const LoginForm = () => {
             >
               Register
             </button>
+            {error && <div className={LoginCSS["error-message"]}>{error}</div>}
           </form>
         )}
         <br />

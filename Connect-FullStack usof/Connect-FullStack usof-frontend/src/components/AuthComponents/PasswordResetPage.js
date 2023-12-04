@@ -5,22 +5,29 @@ import { useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import { resetPassword } from "../../store/actions/auth.js";
 
+import styles from "../../styles/PasswordResetPage.module.css";
+
 import "react-toastify/dist/ReactToastify.css";
 
 const PasswordResetPage = ({ message }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
+  const [error, setError] = useState(null);
   const [newPassword, setNewPassword] = useState(null);
   const { token } = useParams();
 
   const handleNewPasswordChange = (event) => {
     setNewPassword(event.target.value);
+    setError(null);
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    dispatch(resetPassword(token, newPassword));
+    if (newPassword.length < 6) {
+      setError("Password must be at least 6 characters.");
+      return;
+    }
+    await dispatch(resetPassword(token, newPassword));
   };
 
   useEffect(() => {
@@ -36,15 +43,18 @@ const PasswordResetPage = ({ message }) => {
   }, [message, dispatch]);
 
   useEffect(() => {
-    if (message.toLowerCase() === "success") {
-      navigate("/");
+    if (message) {
+      if (message.toLowerCase() === "success") {
+        navigate("/");
+        dispatch({ type: "CLEAR_MESSAGE" });
+      }
     }
-  }, [navigate, message]);
+  }, [navigate, message, dispatch]);
 
   return (
-    <div>
+    <div className={styles["reset-container"]}>
       <h2>Password Reset Page</h2>
-      <form onSubmit={handleSubmit}>
+      <form className={styles.form} onSubmit={handleSubmit}>
         <div>
           <label htmlFor="newPassword">New Password:</label>
           <input
@@ -55,6 +65,8 @@ const PasswordResetPage = ({ message }) => {
             required
           />
         </div>
+        {error && <div className={styles.error}>{error}</div>}
+        <br></br>
         <div>
           <button type="submit">Change Password</button>
         </div>

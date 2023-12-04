@@ -8,7 +8,7 @@ import MenuBarCSS from "../styles/MenuBar.module.css";
 const MenuBar = () => {
   const dispatch = useDispatch();
   const handleLogout = async () => {
-    dispatch(logout());
+    await dispatch(logout());
   };
 
   const currentUser = useSelector((state) => state.auth.user);
