@@ -69,7 +69,7 @@ class PostModel {
 
       if (filters.sortBy === "likes") {
         query +=
-          " ORDER BY (SELECT COUNT(*) FROM likes WHERE PostID = posts.id) DESC";
+          " ORDER BY (SELECT COUNT(*) FROM likes WHERE PostID = posts.id) ASC";
       } else {
         query += " ORDER BY updatedAt DESC";
       }

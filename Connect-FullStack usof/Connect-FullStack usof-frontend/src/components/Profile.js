@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
+import { connect, useDispatch, useSelector } from "react-redux";
+
 import Header from "./Header";
 import MenuBar from "./MenuBar";
 import Pagination from "./Pagination.js";
-import { connect, useDispatch, useSelector } from "react-redux";
+
 import { getPosts } from "../store/actions/posts.js";
 import { sendResetLink } from "../store/actions/auth.js";
 import {
@@ -80,9 +82,13 @@ const Profile = ({ allPosts, message }) => {
     ? allPosts.filter((post) => post.author_id === profileUser.id)
     : [];
 
+  console.log(userPosts);
+
   const lastPostIndex = currentPage * postsPerPage;
   const firstPostIndex = lastPostIndex - postsPerPage;
   const currentPost = userPosts.slice(firstPostIndex, lastPostIndex);
+
+  console.log(currentPost);
 
   const handleInputChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -96,7 +102,11 @@ const Profile = ({ allPosts, message }) => {
     if (!formData.login) {
       return;
     }
-    if (users.some((user) => user.login === formData.login)) {
+    if (
+      users.some(
+        (user) => user.login === formData.login && user.id !== profileUser.id
+      )
+    ) {
       setError("The login is already occupied.");
       return;
     }
@@ -248,7 +258,7 @@ const Profile = ({ allPosts, message }) => {
               )}
             </div>
           )}
-          {currentPost.length > 1 ? (
+          {currentPost.length >= 1 ? (
             <div>
               <div className={ProfileCSS["user-posts"]}>
                 <h2>User Questions </h2>

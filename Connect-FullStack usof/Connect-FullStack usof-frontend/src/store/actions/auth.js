@@ -22,8 +22,9 @@ export const registration =
         passwordConfirmation,
         login
       );
+      dispatch({ type: "SET_MESSAGE", payload: "Success" });
     } catch (error) {
-      console.error("Registration failed", error);
+      dispatch({ type: "SET_MESSAGE", payload: "Error" });
     }
   };
 

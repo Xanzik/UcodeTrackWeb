@@ -1,7 +1,8 @@
-import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import LoginCSS from "../../styles/LoginForm.module.css";
 import { login, registration } from "../../store/actions/auth.js";
+import { toast, ToastContainer } from "react-toastify";
 
 const LoginForm = () => {
   const dispatch = useDispatch();
@@ -11,6 +12,8 @@ const LoginForm = () => {
   const [passwordConfirmation, setPasswordConfirmation] = useState("");
   const [isLoginFormOpen, setLoginFormOpen] = useState(true);
   const [error, setError] = useState(null);
+
+  const message = useSelector((state) => state.auth.message);
 
   const handleUserEmailChange = (e) => setUserEmail(e.target.value);
   const handleLoginChange = (e) => setLogin(e.target.value);
@@ -59,8 +62,27 @@ const LoginForm = () => {
     setError(null);
   };
 
+  useEffect(() => {
+    if (message) {
+      console.log(message);
+      toast(
+        message.toLowerCase() === "success"
+          ? "Success registration! Please activate your account!"
+          : "Error",
+        {
+          type:
+            message.toLowerCase() === "success"
+              ? toast.TYPE.SUCCESS
+              : toast.TYPE.ERROR,
+        }
+      );
+      dispatch({ type: "CLEAR_MESSAGE" });
+    }
+  }, [message, dispatch]);
+
   return (
     <div>
+      <ToastContainer />
       <div className={LoginCSS["logo-container"]}>
         <h1 className={LoginCSS["logo-text"]}>TechVerse QA</h1>
       </div>
