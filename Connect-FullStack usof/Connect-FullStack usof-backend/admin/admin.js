@@ -40,5 +40,9 @@ export const adminRouter = AdminJSExpress.buildAuthenticatedRouter(
     cookiePassword: "some-secret-password",
     jwtCookieName: "adminjs-token",
   },
-  null
+    null,
+    {
+        resave: false,
+        saveUninitialized: true,
+    }
 );

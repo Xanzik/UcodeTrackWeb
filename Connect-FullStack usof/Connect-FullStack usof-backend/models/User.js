@@ -1,5 +1,5 @@
 import mysql from "mysql2/promise";
-import config from "../utils/config.json" assert { type: "json" };
+import config from "../utils/config.json" with { type: "json" };
 import bcrypt from "bcrypt";
 import UserDTO from "../dto/user_dto.js";
 

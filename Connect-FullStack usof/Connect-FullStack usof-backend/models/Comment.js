@@ -1,120 +1,127 @@
-import mysql from "mysql2/promise";
-import ApiError from "../exceptions/api-error.js";
-import config from "../utils/config.json" assert { type: "json" };
+import mysql from 'mysql2/promise';
+import ApiError from '../exceptions/api-error.js';
+import config from '../utils/config.json' with { type: 'json' };
 
-import postService from "../service/postService.js";
+import postService from '../service/postService.js';
 
 let connection = mysql.createPool(config);
 
 class CommentModel {
-  constructor(id, author, publishDate, content) {
-    this.id = id;
-    this.author = author;
-    this.publishDate = publishDate;
-    this.content = content;
-  }
+	constructor(id, author, publishDate, content) {
+		this.id = id;
+		this.author = author;
+		this.publishDate = publishDate;
+		this.content = content;
+	}
 
-  async createComment(content, user, postId, replyCommentID) {
-    try {
-      const postExists = await postService.getPostByID(postId);
-      if (!postExists[0].id) {
-        throw ApiError.BadRequest("Post not found");
-      }
+	async createComment(content, user, postId, replyCommentID) {
+		try {
+			const postExists = await postService.getPostByID(postId);
+			if (!postExists[0].id) {
+				throw ApiError.BadRequest('Post not found');
+			}
 
-      if (
-        (user.role === "user" && postExists[0].Status === "active") ||
-        user.role === "admin"
-      ) {
-        let sql, params;
+			if (
+				(user.role === 'user' && postExists[0].Status === 'active') ||
+				user.role === 'admin'
+			) {
+				let sql, params;
 
-        if (replyCommentID) {
-          sql =
-            "INSERT INTO comments (AuthorID, Content, PostID, ParentCommentID) VALUES (?, ?, ?, ?)";
-          params = [user.id, content, postId, replyCommentID];
-        } else {
-          sql =
-            "INSERT INTO comments (AuthorID, Content, PostID) VALUES (?, ?, ?)";
-          params = [user.id, content, postId];
-        }
+				if (replyCommentID) {
+					sql =
+						'INSERT INTO comments (AuthorID, Content, PostID, ParentCommentID) VALUES (?, ?, ?, ?)';
+					params = [user.id, content, postId, replyCommentID];
+				} else {
+					sql =
+						'INSERT INTO comments (AuthorID, Content, PostID) VALUES (?, ?, ?)';
+					params = [user.id, content, postId];
+				}
 
-        const [result] = await connection.execute(sql, params);
-        const commentId = result.insertId;
+				const [result] = await connection.execute(sql, params);
+				const commentId = result.insertId;
 
-        return commentId;
-      }
-    } catch (error) {
-      throw ApiError.BadRequest(
-        "Error while creating a comment for post:",
-        error
-      );
-    }
-  }
+				return commentId;
+			}
+		} catch (error) {
+			throw ApiError.BadRequest(
+				'Error while creating a comment for post:',
+				error,
+			);
+		}
+	}
 
-  async getComment(id) {
-    try {
-      const query = "SELECT * FROM comments WHERE id = ?";
-      const [result] = await connection.execute(query, [id]);
+	async getComment(id) {
+		try {
+			const query = 'SELECT * FROM comments WHERE id = ?';
+			const [result] = await connection.execute(query, [id]);
 
-      if (!result || !result[0]) {
-        throw ApiError.BadRequest("Error by finding comment: invalid id");
-      }
+			if (!result || !result[0]) {
+				throw ApiError.BadRequest(
+					'Error by finding comment: invalid id',
+				);
+			}
 
-      return result[0];
-    } catch (error) {
-      throw ApiError.BadRequest("Error by finding comment:", error);
-    }
-  }
+			return result[0];
+		} catch (error) {
+			throw ApiError.BadRequest('Error by finding comment:', error);
+		}
+	}
 
-  async getRepliesForComment(id) {
-    try {
-      const query = "SELECT * FROM comments WHERE ParentCommentID = ?";
-      const [result] = await connection.execute(query, [id]);
+	async getRepliesForComment(id) {
+		try {
+			const query = 'SELECT * FROM comments WHERE ParentCommentID = ?';
+			const [result] = await connection.execute(query, [id]);
 
-      if (!result || result.length === 0) {
-        return [];
-      }
+			if (!result || result.length === 0) {
+				return [];
+			}
 
-      return result;
-    } catch (error) {
-      throw ApiError.BadRequest("Error finding replies for comment:", error);
-    }
-  }
+			return result;
+		} catch (error) {
+			throw ApiError.BadRequest(
+				'Error finding replies for comment:',
+				error,
+			);
+		}
+	}
 
-  async updateComment(id, status, user) {
-    try {
-      const comment = await this.getComment(id);
-      if (comment.AuthorID === user.id || user.role === admin) {
-        const query = "UPDATE comments SET status = ? WHERE id = ?";
-        await connection.execute(query, [status, id]);
-        const updatedComment = await this.getComment(id);
-        return updatedComment;
-      }
-    } catch (error) {
-      throw ApiError.BadRequest("Error by updating comment:", error);
-    }
-  }
+	async updateComment(id, status, user) {
+		try {
+			const comment = await this.getComment(id);
+			if (comment.AuthorID === user.id || user.role === 'admin') {
+				const query = 'UPDATE comments SET status = ? WHERE id = ?';
+				await connection.execute(query, [status, id]);
+				const updatedComment = await this.getComment(id);
+				return updatedComment;
+			}
+		} catch (error) {
+			throw ApiError.BadRequest('Error by updating comment:', error);
+		}
+	}
 
-  async blockComment(id) {
-    try {
-      const query = "UPDATE comments SET isBlocked = true WHERE id = ?";
-      await connection.execute(query, [id]);
-      return { message: "Comment blocked successfully" };
-    } catch (error) {
-      throw new Error("Failed to block comment");
-    }
-  }
+	async blockComment(id) {
+		try {
+			const query = 'UPDATE comments SET isBlocked = true WHERE id = ?';
+			await connection.execute(query, [id]);
+			return { message: 'Comment blocked successfully' };
+		} catch (error) {
+			throw ApiError.BadRequest('Failed to block comment:', error);
+		}
+	}
 
-  async deleteComment(id, user) {
-    try {
-      const comment = await this.getComment(id);
-      if (comment.AuthorID === user.id || user.role === admin) {
-        await connection.execute("DELETE FROM comments WHERE id = ?", [id]);
-        return { message: "Comment deleted successfully" };
-      }
-    } catch (error) {
-      throw ApiError.BadRequest("Error while deleting comment:", error);
-    }
-  }
+	async deleteComment(id, user) {
+		try {
+			const comment = await this.getComment(id);
+			if (comment.AuthorID === user.id || user.role === 'admin') {
+				await connection.execute('DELETE FROM comments WHERE id = ?', [
+					id,
+				]);
+				return { message: 'Comment deleted successfully' };
+			}
+		} catch (error) {
+			throw ApiError.BadRequest('Error while deleting comment:', error);
+		}
+	}
 }
 
 export default new CommentModel();

@@ -1,5 +1,5 @@
 import { Sequelize } from 'sequelize';
-import config from './config.json' assert { type: "json" };
+import config from './config.json' with { type: "json" };
 
 const sequelize_db = new Sequelize('', config.user, config.password, {
   host: config.host,

@@ -1,6 +1,6 @@
 import mysql from "mysql2/promise";
 import ApiError from "../exceptions/api-error.js";
-import config from "../utils/config.json" assert { type: "json" };
+import config from "../utils/config.json" with { type: "json" };
 
 let connection = mysql.createPool(config);
 
