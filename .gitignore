@@ -2,3 +2,5 @@
 node_modules/
 static/
 *.ini
+/Connect-FullStack usof/.idea
+/.idea
