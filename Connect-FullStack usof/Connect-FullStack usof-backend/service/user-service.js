@@ -1,61 +1,15 @@
 import User from '../models/User.js';
+import UserModel from '../admin/models/User_s.js';
 import mailService from './mail-service.js';
 import { v4 as uuidv4 } from 'uuid';
 import fs from 'fs';
 import bcrypt from 'bcrypt';
 import tokenService from './token-service.js';
 import ApiError from '../exceptions/api-error.js';
-import UserDTO from '../dto/user_dto.js';
+import { UserDTO } from '../dto/user_dto.js';
+import APIError from '../exceptions/api-error.js';
 
 class UserService {
-	async register(userData) {
-		const { login, password, passwordConfirmation, email } = userData;
-
-		if (!login || !password || !passwordConfirmation || !email) {
-			throw ApiError.BadRequest(`Please provide all required fields`);
-		}
-
-		if (password !== passwordConfirmation) {
-			throw ApiError.BadRequest(
-				'Password and password confirmation do not match',
-			);
-		}
-
-		if (await User.checkExistingUser(login, email)) {
-			throw ApiError.BadRequest('User already exists');
-		}
-
-		try {
-			const hashedPassword = await bcrypt.hash(password, 3);
-			const activationLink = uuidv4();
-			await User.save(login, hashedPassword, email, activationLink);
-			await mailService.sendActivationMail(
-				email,
-				`${process.env.API_URL}/api/auth/activate/${activationLink}`,
-			);
-			const tokens = await tokenService.generateTokens({ email: email });
-			await tokenService.saveToken(email, tokens.refreshToken);
-			const user = await User.findUserByEmail(email);
-			const user_dto = new UserDTO(
-				user.id,
-				user.login,
-				user.full_name,
-				user.email,
-				user.profile_picture,
-				user.rating,
-				user.role,
-			);
-			return {
-				...tokens,
-				user: user_dto,
-				status: 0,
-				message: 'User registered successfully',
-			};
-		} catch (error) {
-			throw ApiError.BadRequest('Error registering user:', error);
-		}
-	}
-
 	async login(userData) {
 		const { email, password } = userData;
 		const [rows] = await User.findUserByEmail(email);
@@ -168,13 +122,13 @@ class UserService {
 	}
 
 	async getUsers() {
-		const users = await User.getUsers();
-		return users;
+		const users = await UserModel.scope('public').findAll();
+		return users.map((user) => new UserDTO(user));
 	}
 
 	async getUserByID(id) {
-		const user = await User.getUser(id);
-		return user;
+		const user = await UserModel.findByPk(Number(id));
+		return new UserDTO(user);
 	}
 
 	async createNewUser(userData) {
@@ -236,26 +190,28 @@ class UserService {
 		}
 	}
 
-	async updateUser(id, data) {
-		try {
-			const results = await User.updateUser(id, data);
-			if (results) {
-				return results;
-			}
-		} catch (error) {
-			throw ApiError.BadRequest(error);
+	async updateUser(id, dto) {
+		const user = await UserModel.findByPk(Number(id));
+
+		if (!user) {
+			throw APIError.BadRequest('User does not exist');
 		}
+
+		await user.update(dto);
+
+		return new UserDTO(user);
 	}
 
 	async deleteUser(id) {
-		try {
-			const results = await User.deleteUser(id);
-			if (results.affectedRows > 0) {
-				return results;
-			}
-		} catch (error) {
-			throw ApiError.BadRequest(error);
+		const deletedCount = await UserModel.destroy({
+			where: {
+				id: Number(id),
+			},
+		});
+		if (deletedCount === 0) {
+			throw ApiError.NotFound('User not found');
 		}
+		return true;
 	}
 }
 

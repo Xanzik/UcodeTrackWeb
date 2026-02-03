@@ -1,4 +1,4 @@
-import dotenv from 'dotenv';
+import 'dotenv/config';
 import fs from 'fs';
 import { fileURLToPath } from 'url';
 import path, { dirname } from 'path';
@@ -9,8 +9,6 @@ import fileUpload from 'express-fileupload';
 import { admin } from './admin/admin.js';
 import mysql from 'mysql2';
 import config from './utils/config.json' with { type: 'json' };
-
-dotenv.config();
 
 const app = express();
 const port = 5000;

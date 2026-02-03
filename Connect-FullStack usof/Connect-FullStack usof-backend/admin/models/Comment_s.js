@@ -8,21 +8,23 @@ const Comment = sequelize.define('Comment', {
 		primaryKey: true,
 		autoIncrement: true,
 	},
-	Status: {
+	status: {
 		type: DataTypes.ENUM('active', 'inactive'),
 		defaultValue: 'active',
 	},
-	Content: {
+	content: {
 		type: DataTypes.TEXT,
 	},
-	AuthorID: {
+	authorId: {
 		type: DataTypes.INTEGER,
+		allowNull: true,
 		references: {
 			model: 'Users',
 			key: 'id',
 		},
+		onDelete: 'SET NULL',
 	},
-	PostID: {
+	postId: {
 		type: DataTypes.INTEGER,
 		references: {
 			model: 'Posts',
@@ -30,7 +32,7 @@ const Comment = sequelize.define('Comment', {
 		},
 		onDelete: 'CASCADE',
 	},
-	ParentCommentID: {
+	parentCommentId: {
 		type: DataTypes.INTEGER,
 		references: {
 			model: 'Comments',
@@ -42,18 +44,6 @@ const Comment = sequelize.define('Comment', {
 		type: DataTypes.BOOLEAN,
 		defaultValue: false,
 	},
-	createdAt: {
-		type: DataTypes.DATE,
-		allowNull: false,
-		defaultValue: sequelize.literal('CURRENT_TIMESTAMP'),
-	},
-	updatedAt: {
-		type: DataTypes.DATE,
-		allowNull: false,
-		defaultValue: sequelize.literal(
-			'CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP',
-		),
-	},
 });
 
 Comment.associate = (models) => {
@@ -62,14 +52,16 @@ Comment.associate = (models) => {
 		as: 'post',
 		onDelete: 'CASCADE',
 	});
-	Comment.belongsTo(models.User, { foreignKey: 'AuthorID', as: 'author' });
+	Comment.belongsTo(models.User, {
+		foreignKey: 'AuthorID',
+		as: 'author',
+		onDelete: 'SET NULL',
+	});
 	Comment.belongsTo(models.Comment, {
 		foreignKey: 'ParentCommentID',
 		as: 'parentComment',
 		onDelete: 'CASCADE',
 	});
 };
-
-await Comment.sync();
 
 export default Comment;
