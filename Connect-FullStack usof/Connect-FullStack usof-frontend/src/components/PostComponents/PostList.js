@@ -62,12 +62,12 @@ const PostsList = () => {
 
   const handleCategorySelect = (category) => {
     const isCategorySelected = selectedCategories.some(
-      (c) => c.title === category.title
+      (c) => c.title === category.title,
     );
 
     if (isCategorySelected) {
       const updatedCategories = selectedCategories.filter(
-        (c) => c !== category
+        (c) => c !== category,
       );
       setSelectedCategories(updatedCategories);
     } else {
@@ -77,13 +77,13 @@ const PostsList = () => {
 
   const handleSelectedCategoryRemove = (category) => {
     const updatedCategories = selectedCategories.filter(
-      (c) => c.title !== category.title
+      (c) => c.title !== category.title,
     );
     setSelectedCategories(updatedCategories);
   };
 
   const filteredCategories = allCategories.filter((category) =>
-    category.title.toLowerCase().includes(searchText.toLowerCase())
+    category.title.toLowerCase().includes(searchText.toLowerCase()),
   );
 
   useEffect(() => {
@@ -120,11 +120,13 @@ const PostsList = () => {
         dateTo: searchParams.get("dateTo"),
         status: searchParams.get("status"),
         sortBy: searchParams.get("sortBy"),
-      })
+      }),
     );
 
     dispatch(getCategories());
   }, [dispatch, location.search, selectedCategories]);
+
+  console.log(currentPost);
 
   useEffect(() => {
     dispatch(getUsers());
@@ -240,9 +242,9 @@ const PostsList = () => {
                 <div className={PostListCSS["post-details"]}>
                   <h3 className={PostListCSS["post-title"]}>{post.Title}</h3>
                   <p className={PostListCSS["post-content"]}>
-                    {post.Content.length > 100
-                      ? post.Content.substring(0, 100) + "..."
-                      : post.Content}
+                    {post.content?.length > 100
+                      ? post.content.substring(0, 100) + "..."
+                      : post.content}
                   </p>
                   <div className={PostListCSS["post-categories"]}>
                     {postCategories[post.id] &&
@@ -261,32 +263,32 @@ const PostsList = () => {
                     </p>
                     <p
                       className={`${PostListCSS["post-status"]} ${
-                        post.Status === "active"
+                        post.status === "active"
                           ? PostListCSS["active"]
                           : PostListCSS["inactive"]
                       }`}
                     >
-                      {post.Status}
+                      {post.status}
                     </p>
                     <p className={PostListCSS["post-author"]}>
-                      {users.find((user) => user.id === post.author_id)
-                        ?.login || "Loading..."}
+                      {users.find((user) => user.id === post.authorId)?.login ||
+                        "Loading..."}
                     </p>
                     <p className={PostListCSS["post-rating"]}>
-                      {users.find((user) => user.id === post.author_id)?.rating}
+                      {users.find((user) => user.id === post.authorId)?.rating}
                     </p>
                     <img
                       src={
-                        users.find((user) => user.id === post.author_id)
+                        users.find((user) => user.id === post.authorId)
                           ?.profile_picture
                           ? `${URL}/static/${
-                              users.find((user) => user.id === post.author_id)
+                              users.find((user) => user.id === post.authorId)
                                 .profile_picture
                             }`
                           : defaultAvatar
                       }
                       alt="User Avatar"
-                      onClick={() => handleAvatarClick(post.author_id)}
+                      onClick={() => handleAvatarClick(post.authorId)}
                       className={PostListCSS["post-avatar"]}
                     />
                   </div>

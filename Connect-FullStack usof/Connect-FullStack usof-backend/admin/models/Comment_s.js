@@ -22,6 +22,7 @@ const Comment = sequelize.define('Comment', {
 			model: 'Users',
 			key: 'id',
 		},
+		field: 'author_id',
 		onDelete: 'SET NULL',
 	},
 	postId: {
@@ -30,6 +31,7 @@ const Comment = sequelize.define('Comment', {
 			model: 'Posts',
 			key: 'id',
 		},
+		field: 'post_id',
 		onDelete: 'CASCADE',
 	},
 	parentCommentId: {
@@ -38,27 +40,29 @@ const Comment = sequelize.define('Comment', {
 			model: 'Comments',
 			key: 'id',
 		},
+		field: 'parent_comment_id',
 		onDelete: 'CASCADE',
 	},
 	isBlocked: {
 		type: DataTypes.BOOLEAN,
 		defaultValue: false,
+		field: 'is_blocked',
 	},
 });
 
 Comment.associate = (models) => {
 	Comment.belongsTo(models.Post, {
-		foreignKey: 'PostID',
+		foreignKey: 'post_id',
 		as: 'post',
 		onDelete: 'CASCADE',
 	});
 	Comment.belongsTo(models.User, {
-		foreignKey: 'AuthorID',
+		foreignKey: 'author_id',
 		as: 'author',
 		onDelete: 'SET NULL',
 	});
 	Comment.belongsTo(models.Comment, {
-		foreignKey: 'ParentCommentID',
+		foreignKey: 'parent_comment_id',
 		as: 'parentComment',
 		onDelete: 'CASCADE',
 	});

@@ -21,7 +21,8 @@ export const getUser = (id) => async (dispatch) => {
 export const updateUserProfile = (data, id) => async (dispatch) => {
   try {
     const response = await UserService.updateUser(data, id);
-    dispatch({ type: "SET_USER", payload: response.data.user });
+    console.log(response);
+    dispatch({ type: "SET_USER", payload: response.data });
   } catch (error) {
     console.error("Edit failed", error);
   }

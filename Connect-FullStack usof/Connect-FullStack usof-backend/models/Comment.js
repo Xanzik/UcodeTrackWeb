@@ -122,6 +122,21 @@ class CommentModel {
 			throw ApiError.BadRequest('Error while deleting comment:', error);
 		}
 	}
+
+	async getCommentsForPost(id) {
+		try {
+			const [comments] = await connection.execute(
+				'SELECT * FROM comments WHERE PostID = ?',
+				[id],
+			);
+			return comments;
+		} catch (error) {
+			throw ApiError.BadRequest(
+				'Error while getting comments for post:',
+				error,
+			);
+		}
+	}
 }
 
 export default new CommentModel();

@@ -2,49 +2,57 @@
 import { DataTypes } from 'sequelize';
 import sequelize from '../../utils/db_s.js';
 
-const Post = sequelize.define('Post', {
-	id: {
-		type: DataTypes.INTEGER,
-		primaryKey: true,
-		autoIncrement: true,
-	},
-	title: {
-		type: DataTypes.STRING(255),
-		allowNull: false,
-	},
-	status: {
-		type: DataTypes.ENUM('active', 'inactive'),
-		defaultValue: 'active',
-	},
-	authorId: {
-		type: DataTypes.INTEGER,
-		allowNull: false,
-		references: {
-			model: 'Users',
-			key: 'id',
+const Post = sequelize.define(
+	'Post',
+	{
+		id: {
+			type: DataTypes.INTEGER,
+			primaryKey: true,
+			autoIncrement: true,
 		},
-		onDelete: 'SET NULL',
+		title: {
+			type: DataTypes.STRING(255),
+			allowNull: false,
+		},
+		status: {
+			type: DataTypes.ENUM('active', 'inactive'),
+			defaultValue: 'active',
+		},
+		authorId: {
+			type: DataTypes.INTEGER,
+			allowNull: false,
+			references: {
+				model: 'Users',
+				key: 'id',
+			},
+			field: 'author_id',
+			onDelete: 'SET NULL',
+		},
+		isBlocked: {
+			type: DataTypes.BOOLEAN,
+			defaultValue: false,
+			field: 'is_blocked',
+		},
+		content: {
+			type: DataTypes.TEXT,
+		},
+		screenshot: {
+			type: DataTypes.STRING(255),
+		},
 	},
-	isBlocked: {
-		type: DataTypes.BOOLEAN,
-		defaultValue: false,
+	{
+		timestamps: true,
+		createdAt: 'created_at',
+		updatedAt: 'updated_at',
 	},
-	Content: {
-		type: DataTypes.TEXT,
-	},
-	screenshot: {
-		type: DataTypes.STRING(255),
-	},
-});
+);
 
 Post.associate = (models) => {
 	Post.belongsTo(models.User, {
-		foreignKey: 'AuthorID',
+		foreignKey: 'author_id',
 		as: 'author',
 		onDelete: 'SET NULL',
 	});
 };
-
-await Post.sync();
 
 export default Post;

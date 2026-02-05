@@ -1,7 +1,6 @@
 // controllers/authController.js
 import { validationResult } from 'express-validator';
 import ApiError from '../exceptions/api-error.js';
-import userService from '../service/user-service.js';
 import authService from '../service/authService.js';
 
 class AuthController {
@@ -31,7 +30,7 @@ class AuthController {
 	login = async (req, res, next) => {
 		try {
 			const { email, password } = req.body;
-			const result = await userService.login({ email, password });
+			const result = await authService.login({ email, password });
 			res.cookie('refreshToken', result.refreshToken, {
 				maxAge: 30 * 24 * 60 * 60 * 1000,
 				httpOnly: true,
@@ -45,7 +44,7 @@ class AuthController {
 	logout = async (req, res, next) => {
 		try {
 			const { refreshToken } = req.cookies;
-			const token = await userService.logout(refreshToken);
+			const token = await authService.logout(refreshToken);
 			res.clearCookie('refreshToken');
 			return res.json(token);
 		} catch (e) {
@@ -56,7 +55,7 @@ class AuthController {
 	refresh = async (req, res, next) => {
 		try {
 			const { refreshToken } = req.cookies;
-			const result = await userService.refresh(refreshToken);
+			const result = await authService.refresh(refreshToken);
 			res.cookie('refreshToken', result.refreshToken, {
 				maxAge: 30 * 24 * 60 * 60 * 1000,
 				httpOnly: true,
@@ -70,7 +69,7 @@ class AuthController {
 	passwordReset = async (req, res, next) => {
 		try {
 			const user = req.user;
-			const result = await userService.passwordReset(user.email);
+			const result = await authService.passwordReset(user.id);
 			return res.json(result);
 		} catch (e) {
 			next(e);
@@ -81,7 +80,7 @@ class AuthController {
 		try {
 			const { newPassword } = req.body;
 			const resetLink = req.params.confirm_token;
-			const result = await userService.passwordResetConfirm(
+			const result = await authService.passwordResetConfirm(
 				newPassword,
 				resetLink,
 			);
@@ -95,7 +94,7 @@ class AuthController {
 		try {
 			const activationLink = req.params.link;
 			console.log('Activation link: ', activationLink);
-			await userService.activate(activationLink);
+			await authService.activate(activationLink);
 			return res.redirect(process.env.CLIENT_URL);
 		} catch (error) {
 			console.error('Error activating in:', error);

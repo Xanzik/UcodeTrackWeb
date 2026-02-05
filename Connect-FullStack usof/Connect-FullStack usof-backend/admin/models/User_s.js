@@ -18,15 +18,17 @@ const User = sequelize.define(
 			type: DataTypes.STRING(255),
 			allowNull: false,
 		},
-		full_name: {
+		fullName: {
 			type: DataTypes.STRING(255),
+			field: 'full_name',
 		},
 		email: {
 			type: DataTypes.STRING(255),
 			allowNull: false,
 		},
-		profile_picture: {
+		profilePicture: {
 			type: DataTypes.STRING(255),
+			field: 'profile_picture',
 		},
 		rating: {
 			type: DataTypes.INTEGER,
@@ -40,14 +42,17 @@ const User = sequelize.define(
 			type: DataTypes.BOOLEAN,
 			defaultValue: 0,
 		},
-		activation_link: {
+		activationLink: {
 			type: DataTypes.TEXT,
+			field: 'activation_link',
 		},
-		reset_link: {
+		resetLink: {
 			type: DataTypes.TEXT,
+			field: 'reset_link',
 		},
-		refresh_token: {
+		refreshToken: {
 			type: DataTypes.TEXT,
+			field: 'refresh_token',
 		},
 	},
 	{
@@ -64,6 +69,9 @@ const User = sequelize.define(
 				],
 			},
 		},
+		timestamps: true,
+		createdAt: 'created_at',
+		updatedAt: 'updated_at',
 	},
 );
 

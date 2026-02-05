@@ -1,8 +1,6 @@
 import postService from '../service/postService.js';
 import likeService from '../service/likeService.js';
 
-import ApiError from '../exceptions/api-error.js';
-
 class PostController {
 	getAllPosts = async (req, res, next) => {
 		try {
@@ -25,9 +23,6 @@ class PostController {
 		try {
 			const postId = req.params.post_id;
 			const post = await postService.getPostByID(postId);
-			if (!post) {
-				throw ApiError.BadRequest('Post with this id does not exist');
-			}
 			return res.json(post);
 		} catch (e) {
 			next(e);
@@ -54,6 +49,7 @@ class PostController {
 		}
 	};
 
+	//todo: Перенести в commentController
 	createComment = async (req, res, next) => {
 		try {
 			const user = req.user;
@@ -105,26 +101,14 @@ class PostController {
 		try {
 			const user = req.user;
 			const postId = req.params.post_id;
-			const post = await postService.getPostByID(postId);
-			if (user.id === post[0].author_id) {
-				const { content, categories } = req.body;
-				const updatedPost = await postService.updatePost(
-					postId,
-					{ content },
-					categories,
-					user,
-				);
-				return res.json(updatedPost);
-			} else if (user.role === 'admin') {
-				const { status, categories } = req.body;
-				const updatedPost = await postService.updatePost(
-					postId,
-					{ status },
-					categories,
-					user,
-				);
-				return res.json(updatedPost);
-			}
+			const updatedData = req.body;
+			const result = await postService.updatePost(
+				postId,
+				updatedData,
+				updatedData.categories,
+				user,
+			);
+			return res.json(result);
 		} catch (e) {
 			next(e);
 		}
@@ -150,7 +134,7 @@ class PostController {
 			next(e);
 		}
 	};
-
+	//todo Later
 	getLikesForPost = async (req, res, next) => {
 		try {
 			const postId = req.params.post_id;
@@ -164,7 +148,7 @@ class PostController {
 			next(e);
 		}
 	};
-
+	//todo Later
 	createLike = async (req, res, next) => {
 		try {
 			const postId = req.params.post_id;
@@ -180,7 +164,7 @@ class PostController {
 			next(e);
 		}
 	};
-
+	//todo Later
 	deleteLike = async (req, res, next) => {
 		try {
 			const postId = req.params.post_id;
@@ -196,7 +180,7 @@ class PostController {
 			next(e);
 		}
 	};
-
+	//todo Later
 	getDislikesForPost = async (req, res, next) => {
 		try {
 			const postId = req.params.post_id;
@@ -210,7 +194,7 @@ class PostController {
 			next(e);
 		}
 	};
-
+	//todo Later
 	createDislike = async (req, res, next) => {
 		try {
 			const postId = req.params.post_id;
@@ -226,7 +210,7 @@ class PostController {
 			next(e);
 		}
 	};
-
+	//todo Later
 	deleteDislike = async (req, res, next) => {
 		try {
 			const postId = req.params.post_id;

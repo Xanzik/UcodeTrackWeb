@@ -79,7 +79,7 @@ const Profile = ({ allPosts, message }) => {
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   const userPosts = profileUser
-    ? allPosts.filter((post) => post.author_id === profileUser.id)
+    ? allPosts.filter((post) => post.authorId === profileUser.id)
     : [];
 
   console.log(userPosts);
@@ -104,7 +104,7 @@ const Profile = ({ allPosts, message }) => {
     }
     if (
       users.some(
-        (user) => user.login === formData.login && user.id !== profileUser.id
+        (user) => user.login === formData.login && user.id !== profileUser.id,
       )
     ) {
       setError("The login is already occupied.");
@@ -132,7 +132,7 @@ const Profile = ({ allPosts, message }) => {
       const formAvatarData = new FormData();
       formAvatarData.append("file", selectedFile);
       await dispatch(changeAvatar(formAvatarData, profileUser.id));
-      await dispatch(updateUserProfile(formData, profileUser.id));
+      // await dispatch(updateUserProfile(formData, profileUser.id));
       await dispatch(getUsers());
       event.target.value = null;
     }

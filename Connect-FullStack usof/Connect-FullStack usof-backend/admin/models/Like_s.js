@@ -1,73 +1,70 @@
 import { DataTypes } from 'sequelize';
 import sequelize from '../../utils/db_s.js';
 
-const Like = sequelize.define('Like', {
-	id: {
-		type: DataTypes.INTEGER,
-		primaryKey: true,
-		autoIncrement: true,
-	},
-	Type: {
-		type: DataTypes.ENUM('like', 'dislike'),
-		defaultValue: 'like',
-	},
-	AuthorID: {
-		type: DataTypes.INTEGER,
-		allowNull: false,
-		references: {
-			model: 'Users',
-			key: 'id',
+const Like = sequelize.define(
+	'Like',
+	{
+		id: {
+			type: DataTypes.INTEGER,
+			primaryKey: true,
+			autoIncrement: true,
 		},
-		onDelete: 'CASCADE',
-	},
-	PostID: {
-		type: DataTypes.INTEGER,
-		references: {
-			model: 'Posts',
-			key: 'id',
+		type: {
+			type: DataTypes.ENUM('like', 'dislike'),
+			defaultValue: 'like',
 		},
-		onDelete: 'CASCADE',
-	},
-	CommentID: {
-		type: DataTypes.INTEGER,
-		onDelete: 'CASCADE',
-		references: {
-			model: 'Comments',
-			key: 'id',
+		authorId: {
+			type: DataTypes.INTEGER,
+			allowNull: false,
+			references: {
+				model: 'Users',
+				key: 'id',
+			},
+			field: 'author_id',
+			onDelete: 'CASCADE',
+		},
+		postId: {
+			type: DataTypes.INTEGER,
+			references: {
+				model: 'Posts',
+				key: 'id',
+			},
+			field: 'post_id',
+			onDelete: 'CASCADE',
+		},
+		commentId: {
+			type: DataTypes.INTEGER,
+			onDelete: 'CASCADE',
+			references: {
+				model: 'Comments',
+				key: 'id',
+			},
+			field: 'comment_id',
 		},
 	},
-	createdAt: {
-		type: DataTypes.DATE,
-		allowNull: false,
-		defaultValue: sequelize.literal('CURRENT_TIMESTAMP'),
+	{
+		timestamps: true,
+		createdAt: 'created_at',
+		updatedAt: 'updated_at',
 	},
-	updatedAt: {
-		type: DataTypes.DATE,
-		allowNull: false,
-		defaultValue: sequelize.literal(
-			'CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP',
-		),
-	},
-});
+);
 
 Like.associate = (models) => {
 	Like.belongsTo(models.User, {
-		foreignKey: 'AuthorID',
+		foreignKey: 'author_id',
 		as: 'author',
 		onDelete: 'CASCADE',
 	});
 	Like.belongsTo(models.Post, {
-		foreignKey: 'PostID',
+		foreignKey: 'post_id',
 		as: 'post',
 		onDelete: 'CASCADE',
 	});
 	Like.belongsTo(models.Comment, {
-		foreignKey: 'CommentID',
+		foreignKey: 'comment_id',
 		as: 'comment',
 		onDelete: 'CASCADE',
 	});
 };
-
-await Like.sync();
 
 export default Like;

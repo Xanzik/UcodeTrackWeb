@@ -24,7 +24,7 @@ export const getPosts = (filters) => {
       const response = await PostService.getPosts(filters);
       dispatch({
         type: "GET_POSTS_SUCCESS",
-        payload: response.data.posts,
+        payload: response.data,
       });
     } catch (error) {
       console.error("Error fetching posts:", error);
@@ -60,7 +60,7 @@ export const updatePost = (id, updatedContent, updatedCategories) => {
       const response = await PostService.updatePost(
         id,
         updatedContent,
-        updatedCategories
+        updatedCategories,
       );
       dispatch({
         type: "UPDATE_POST_SUCCESS",

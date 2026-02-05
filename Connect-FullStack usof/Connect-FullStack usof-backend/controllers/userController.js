@@ -1,4 +1,4 @@
-import userService from '../service/user-service.js';
+import userService from '../service/userService.js';
 import ApiError from '../exceptions/api-error.js';
 import { UpdateUserDTO } from '../dto/user_dto.js';
 
@@ -50,7 +50,8 @@ class UserController {
 		try {
 			const file = req.files.file;
 			const user = req.user;
-			const result = await userService.updateUserAvatar(file, user);
+			const userId = user.id;
+			const result = await userService.updateUserAvatar(file, userId);
 			return res.json(result);
 		} catch (e) {
 			next(e);
@@ -60,7 +61,11 @@ class UserController {
 	updateUser = async (req, res, next) => {
 		try {
 			const userId = req.params.user_id;
-			const dto = new UpdateUserDTO(req.body);
+			const userData = {
+				...req.body,
+				id: userId,
+			};
+			const dto = new UpdateUserDTO(userData);
 			const result = await userService.updateUser(userId, dto);
 			return res.json(result);
 		} catch (e) {

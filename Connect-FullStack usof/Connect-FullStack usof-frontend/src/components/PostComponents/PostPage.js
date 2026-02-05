@@ -73,7 +73,7 @@ const PostPage = () => {
   const indexOfFirstComment = indexOfLastComment - commentsPerPage;
   const currentComments = comments.slice(
     indexOfFirstComment,
-    indexOfLastComment
+    indexOfLastComment,
   );
 
   const paginate = (pageNumber) => {
@@ -81,7 +81,7 @@ const PostPage = () => {
   };
 
   const rootComments = comments.filter(
-    (comment) => comment.ParentCommentID === null
+    (comment) => comment.ParentCommentID === null,
   );
 
   const handleCommentSubmit = async () => {
@@ -137,12 +137,12 @@ const PostPage = () => {
 
   const handleCategorySelect = (category) => {
     const isCategorySelected = editedCategories.some(
-      (c) => c.title === category.title
+      (c) => c.title === category.title,
     );
 
     if (isCategorySelected) {
       const updatedCategories = editedCategories.filter(
-        (c) => c.title !== category.title
+        (c) => c.title !== category.title,
       );
       setEditedCategories(updatedCategories);
     } else {
@@ -151,12 +151,12 @@ const PostPage = () => {
   };
 
   const filteredCategories = allCategories.filter((category) =>
-    category.title.toLowerCase().includes(searchText.toLowerCase())
+    category.title.toLowerCase().includes(searchText.toLowerCase()),
   );
 
   const handleSelectedCategoryRemove = (category) => {
     const updatedCategories = editedCategories.filter(
-      (c) => c.title !== category.title
+      (c) => c.title !== category.title,
     );
     setEditedCategories(updatedCategories);
   };
@@ -180,29 +180,29 @@ const PostPage = () => {
       <MenuBar />
       <Header />
       <div className={PostPageCSS["post-page"]}>
-        {selectUserById(users, post[0].author_id) ? (
+        {selectUserById(users, post.authorId) ? (
           <div className={PostPageCSS["user-info"]}>
-            <p>{selectUserById(users, post[0].author_id).login}</p>
+            <p>{selectUserById(users, post.authorId).login}</p>
             <p className={PostPageCSS["rating"]}>
-              {selectUserById(users, post[0].author_id).rating}
+              {selectUserById(users, post.authorId).rating}
             </p>
-            <p>{new Date(post[0].updatedAt).toLocaleString()}</p>
-            <img
+            <p>{new Date(post.updatedAt).toLocaleString()}</p>
+            <img5
               src={
-                selectUserById(users, post[0].author_id).profile_picture
+                selectUserById(users, post.authorId).profile_picture
                   ? `${URL}/static/${
-                      selectUserById(users, post[0].author_id).profile_picture
+                      selectUserById(users, post.authorId).profile_picture
                     }`
                   : defaultAvatar
               }
               alt="User Avatar"
-              onClick={() => handleAvatarClick(post[0].author_id)}
+              onClick={() => handleAvatarClick(post.authorId)}
             />
           </div>
         ) : (
           <p>Author: Unknown</p>
         )}
-        <h2 className={PostPageCSS["post-title"]}>{post[0].Title}</h2>
+        <h2 className={PostPageCSS["post-title"]}>{post.Title}</h2>
         <div className={PostPageCSS["post-content"]}>
           {isEditing ? (
             <textarea
@@ -213,15 +213,15 @@ const PostPage = () => {
           ) : (
             <div>
               <div className={PostPageCSS["postContainer"]}>
-                <p className={PostPageCSS["content"]}>{post[0].Content}</p>
-                {post[0].screenshot && (
+                <p className={PostPageCSS["content"]}>{post.Content}</p>
+                {post.screenshot && (
                   <a
-                    href={`${URL}/static/${post[0].screenshot}`}
+                    href={`${URL}/static/${post.screenshot}`}
                     target="_blank"
                     rel="noopener noreferrer"
                   >
                     <img
-                      src={`${URL}/static/${post[0].screenshot}`}
+                      src={`${URL}/static/${post.screenshot}`}
                       alt="Post Screenshot"
                       className={PostPageCSS["postImage"]}
                     />
@@ -289,7 +289,7 @@ const PostPage = () => {
         <PostLikes postId={postId} />
         <br></br>
 
-        {currentUser.id === post[0].author_id && (
+        {currentUser.id === post.authorId && (
           <div className={PostPageCSS["edit-button-container"]}>
             {isEditing ? (
               <>
@@ -395,13 +395,13 @@ const PostPage = () => {
                         parent_id={comment.id}
                         onDelete={handleDeleteComment}
                         replies={comments.filter(
-                          (reply) => reply.ParentCommentID === comment.id
+                          (reply) => reply.ParentCommentID === comment.id,
                         )}
                         onAvatar={handleAvatarClick}
                       />
                     </div>
                   </li>
-                )
+                ),
               )}
             </ul>
           ) : null}

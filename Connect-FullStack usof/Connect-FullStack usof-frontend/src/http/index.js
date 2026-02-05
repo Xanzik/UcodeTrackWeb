@@ -35,7 +35,7 @@ $api.interceptors.response.use(
       }
     }
     throw error;
-  }
+  },
 );
 
 export default $api;

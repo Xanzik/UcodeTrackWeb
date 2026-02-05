@@ -18,5 +18,6 @@ export class UpdateUserDTO {
 		this.login = user.login;
 		this.full_name = user.full_name;
 		this.profile_picture = user.profile_picture;
+		this.reset_link = user.reset_link;
 	}
 }
