@@ -29,39 +29,11 @@ class PostController {
 		}
 	};
 
-	getCommentsForPost = async (req, res, next) => {
-		try {
-			const postId = req.params.post_id;
-			const comments = await postService.getCommentsForPost(postId);
-			return res.json(comments);
-		} catch (e) {
-			next(e);
-		}
-	};
-
 	getCategoriesForPost = async (req, res, next) => {
 		try {
 			const postId = req.params.post_id;
 			const comments = await postService.getCategoriesForPost(postId);
 			return res.json(comments);
-		} catch (e) {
-			next(e);
-		}
-	};
-
-	//todo: Перенести в commentController
-	createComment = async (req, res, next) => {
-		try {
-			const user = req.user;
-			const postId = req.params.post_id;
-			const { content, replyCommentID } = req.body;
-			const post = await postService.createComment(
-				content,
-				postId,
-				user,
-				replyCommentID,
-			);
-			return res.json(post);
 		} catch (e) {
 			next(e);
 		}
@@ -154,10 +126,10 @@ class PostController {
 			const postId = req.params.post_id;
 			const user = req.user;
 			const like = await likeService.createLike(
-				postId,
 				user,
 				'like',
 				'post',
+				postId,
 			);
 			return res.json(like);
 		} catch (e) {
@@ -200,10 +172,10 @@ class PostController {
 			const postId = req.params.post_id;
 			const user = req.user;
 			const like = await likeService.createLike(
-				postId,
 				user,
 				'dislike',
 				'post',
+				postId,
 			);
 			return res.json(like);
 		} catch (e) {

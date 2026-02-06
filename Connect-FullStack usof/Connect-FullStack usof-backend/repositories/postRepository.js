@@ -1,4 +1,6 @@
-import { Post as PostModel } from '../admin/models/index.js';
+import models from '../admin/models/index.js';
+
+const PostModel = models.Post;
 
 class PostRepository {
 	async findById(id, include = {}) {

@@ -1,41 +1,54 @@
 // CategoryService.js
-import CategoryModel from '../models/Category.js';
+import models from '../admin/models/index.js';
+import ApiError from '../exceptions/api-error.js';
+import { CategoryUpdateDTO } from '../dto/category_dto.js';
+
+const CategoryModel = models.Category;
 
 class categoryService {
-  async createCategory(title) {
-    const Category = await CategoryModel.createCategory(title);
-    return Category;
-  }
+	async createCategory(title) {
+		return CategoryModel.create(title);
+	}
 
-  async getCategories() {
-    const Categories = await CategoryModel.getCategories();
-    return Categories;
-  }
+	async getCategories() {
+		return CategoryModel.findAll();
+	}
 
-  async getCategoryByID(id) {
-    const Category = await CategoryModel.getCategoryByID(id);
-    return Category;
-  }
+	async getCategoryByID(id) {
+		return CategoryModel.findByPk(id);
+	}
 
-  async getPostsByCategory(id) {
-    const posts = await CategoryModel.getPostsByCategory(id);
-    return posts;
-  }
+	async getPostsByCategory(id) {
+		const category = await CategoryModel.findByPk(id);
+		if (!category) {
+			throw ApiError.BadRequest(
+				'Category with provided ID does not exist',
+			);
+		}
+		return category.getPosts();
+	}
 
-  async updateCategory(id, newData) {
-    const Category = await CategoryModel.updateCategory(id, newData);
-    return Category;
-  }
+	async updateCategory(id, newData) {
+		const category = await CategoryModel.findByPk(id);
+		if (!category) {
+			throw ApiError.BadRequest(
+				'Category with provided ID does not exist',
+			);
+		}
+		const categoryDto = new CategoryUpdateDTO(newData);
+		await category.update(categoryDto);
+		return category;
+	}
 
-  async deleteCategory(id) {
-    const Category = await CategoryModel.deleteCategory(id);
-    return Category;
-  }
-
-  async getCategoryIds(categories) {
-    const Categories = await CategoryModel.getCategoryIds(categories);
-    return Categories;
-}
+	async deleteCategory(id) {
+		const category = await CategoryModel.findByPk(id);
+		if (!category) {
+			throw ApiError.BadRequest(
+				'Category with provided ID does not exist',
+			);
+		}
+		return category.destroy();
+	}
 }
 
 export default new categoryService();

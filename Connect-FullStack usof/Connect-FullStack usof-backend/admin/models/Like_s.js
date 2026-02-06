@@ -17,7 +17,7 @@ const Like = sequelize.define(
 			type: DataTypes.INTEGER,
 			allowNull: false,
 			references: {
-				model: 'Users',
+				model: 'User',
 				key: 'id',
 			},
 			field: 'author_id',
@@ -26,7 +26,7 @@ const Like = sequelize.define(
 		postId: {
 			type: DataTypes.INTEGER,
 			references: {
-				model: 'Posts',
+				model: 'Post',
 				key: 'id',
 			},
 			field: 'post_id',
@@ -36,7 +36,7 @@ const Like = sequelize.define(
 			type: DataTypes.INTEGER,
 			onDelete: 'CASCADE',
 			references: {
-				model: 'Comments',
+				model: 'Comment',
 				key: 'id',
 			},
 			field: 'comment_id',

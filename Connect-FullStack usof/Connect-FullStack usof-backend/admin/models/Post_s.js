@@ -49,9 +49,22 @@ const Post = sequelize.define(
 
 Post.associate = (models) => {
 	Post.belongsTo(models.User, {
-		foreignKey: 'author_id',
+		foreignKey: 'authorId',
 		as: 'author',
 		onDelete: 'SET NULL',
+	});
+
+	Post.hasMany(models.Comment, {
+		foreignKey: 'postId',
+		as: 'comments',
+		onDelete: 'CASCADE',
+	});
+
+	Post.belongsToMany(models.Category, {
+		through: 'post_categories',
+		foreignKey: 'postId',
+		otherKey: 'categoryId',
+		as: 'categories',
 	});
 };
 

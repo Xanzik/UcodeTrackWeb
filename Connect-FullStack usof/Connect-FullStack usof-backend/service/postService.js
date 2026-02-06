@@ -1,17 +1,14 @@
 // postService.js
 import { v4 as uuidv4 } from 'uuid';
 import fs from 'fs';
-import {
-	Category as CategoryModel,
-	Post as PostModel,
-} from '../admin/models/index.js';
-import commentService from './commentService.js';
+import models from '../admin/models/index.js';
 import { literal, Op } from 'sequelize';
 import PostRepository from '../repositories/postRepository.js';
 import ApiError from '../exceptions/api-error.js';
 import { PostBlockDTO } from '../dto/post_dto.js';
-import Category from '../models/Category.js';
-import Comment from '../models/Comment.js';
+
+const PostModel = models.Post;
+const CategoryModel = models.Category;
 
 class PostService {
 	async getAllPosts(filters, user) {
@@ -74,12 +71,12 @@ class PostService {
 		return post;
 	}
 
-	async getCommentsForPost(id) {
-		return await Comment.getCommentsForPost(id);
-	}
-
 	async getCategoriesForPost(id) {
-		return await Category.getCategoriesForPost(id);
+		const post = await PostRepository.findById(id);
+		if (!post) {
+			throw ApiError.BadRequest('Post with this id does not exist');
+		}
+		return post.getCategories();
 	}
 
 	async createPost(title, content, categories, user) {
@@ -92,16 +89,6 @@ class PostService {
 			await post.setCategories(categories);
 		}
 		return post;
-	}
-
-	//todo: Replace
-	async createComment(content, postId, user, replyCommentID) {
-		return await commentService.createComment(
-			content,
-			user,
-			postId,
-			replyCommentID,
-		);
 	}
 
 	async updatePost(postId, newData, categories, user) {

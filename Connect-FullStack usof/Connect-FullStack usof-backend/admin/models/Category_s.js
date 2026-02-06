@@ -21,4 +21,13 @@ const Category = sequelize.define(
 	{ timestamps: true, createdAt: 'created_at', updatedAt: 'updated_at' },
 );
 
+Category.associate = (models) => {
+	Category.belongsToMany(models.Post, {
+		through: 'post_categories',
+		foreignKey: 'categoryId',
+		otherKey: 'postId',
+		as: 'posts',
+	});
+};
+
 export default Category;
