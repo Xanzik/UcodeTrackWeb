@@ -110,17 +110,12 @@ class PostController {
 	getLikesForPost = async (req, res, next) => {
 		try {
 			const postId = req.params.post_id;
-			const like = await likeService.getLikesForPost(
-				postId,
-				'like',
-				'post',
-			);
+			const like = await likeService.getLikes('like', 'post', postId);
 			return res.json(like);
 		} catch (e) {
 			next(e);
 		}
 	};
-	//todo Later
 	createLike = async (req, res, next) => {
 		try {
 			const postId = req.params.post_id;
@@ -136,37 +131,33 @@ class PostController {
 			next(e);
 		}
 	};
-	//todo Later
+
 	deleteLike = async (req, res, next) => {
 		try {
 			const postId = req.params.post_id;
 			const user = req.user;
 			const like = await likeService.deleteLike(
-				postId,
 				user,
 				'like',
 				'post',
+				postId,
 			);
 			return res.json(like);
 		} catch (e) {
 			next(e);
 		}
 	};
-	//todo Later
+
 	getDislikesForPost = async (req, res, next) => {
 		try {
 			const postId = req.params.post_id;
-			const like = await likeService.getLikesForPost(
-				postId,
-				'dislike',
-				'post',
-			);
+			const like = await likeService.getLikes('dislike', 'post', postId);
 			return res.json(like);
 		} catch (e) {
 			next(e);
 		}
 	};
-	//todo Later
+
 	createDislike = async (req, res, next) => {
 		try {
 			const postId = req.params.post_id;
@@ -182,16 +173,16 @@ class PostController {
 			next(e);
 		}
 	};
-	//todo Later
+
 	deleteDislike = async (req, res, next) => {
 		try {
 			const postId = req.params.post_id;
 			const user = req.user;
 			const like = await likeService.deleteLike(
-				postId,
 				user,
 				'dislike',
 				'post',
+				postId,
 			);
 			return res.json(like);
 		} catch (e) {

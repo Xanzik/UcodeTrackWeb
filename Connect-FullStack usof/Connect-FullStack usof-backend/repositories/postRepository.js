@@ -1,4 +1,4 @@
-import models from '../admin/models/index.js';
+import models from '../models/index.js';
 
 const PostModel = models.Post;
 

@@ -1,5 +1,4 @@
 import 'dotenv/config';
-import fs from 'fs';
 import { fileURLToPath } from 'url';
 import path, { dirname } from 'path';
 import express from 'express';
@@ -7,18 +6,6 @@ import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import fileUpload from 'express-fileupload';
 import { admin } from './admin/admin.js';
-import mysql from 'mysql2';
-import config from './utils/config.json' with { type: 'json' };
-
-const app = express();
-const port = 5000;
-
-const sqlScript = fs.readFileSync('./utils/db.sql', 'utf8');
-const sqlQueries = sqlScript.split(';').map((query) => query.trim());
-const connection = mysql.createConnection(config);
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
 
 import authRouter from './routes/authRouter.js';
 import userRouter from './routes/userRouter.js';
@@ -28,6 +15,13 @@ import commentRouter from './routes/commentRouter.js';
 import { adminRouter } from './admin/admin.js';
 
 import errorMiddleware from './middlewares/error-middlewares.js';
+import { initDB } from './db/index.js';
+
+const app = express();
+const port = process.env.PORT || 5000;
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 app.use(fileUpload({}));
 app.use(
@@ -47,17 +41,19 @@ app.use('/api', commentRouter);
 app.use(admin.options.rootPath, adminRouter);
 app.use(errorMiddleware);
 
-app.listen(port, () => {
-	console.log(`Server started on ${process.env.API_URL}`);
-});
+async function bootstrap() {
+	try {
+		await initDB();
 
-sqlQueries.forEach((sql) => {
-	if (sql) {
-		connection.query(sql, (err) => {
-			if (err) throw err;
-			console.log('updating db...');
+		app.listen(port, () => {
+			console.log(
+				`Server started on ${process.env.API_URL + process.env.PORT}`,
+			);
 		});
+	} catch (e) {
+		console.error('Failed to start server:', e);
+		process.exit(1);
 	}
-});
+}
 
-connection.end();
+bootstrap();

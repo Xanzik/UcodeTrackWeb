@@ -1,7 +1,7 @@
 // postService.js
 import { v4 as uuidv4 } from 'uuid';
 import fs from 'fs';
-import models from '../admin/models/index.js';
+import models from '../models/index.js';
 import { literal, Op } from 'sequelize';
 import PostRepository from '../repositories/postRepository.js';
 import ApiError from '../exceptions/api-error.js';

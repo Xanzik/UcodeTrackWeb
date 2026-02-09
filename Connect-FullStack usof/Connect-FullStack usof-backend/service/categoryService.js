@@ -1,5 +1,5 @@
 // CategoryService.js
-import models from '../admin/models/index.js';
+import models from '../models/index.js';
 import ApiError from '../exceptions/api-error.js';
 import { CategoryUpdateDTO } from '../dto/category_dto.js';
 

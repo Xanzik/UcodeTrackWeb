@@ -1,7 +1,7 @@
 import ApiError from '../exceptions/api-error.js';
 import bcrypt from 'bcrypt';
 import { v4 as uuidv4 } from 'uuid';
-import UserModel from '../admin/models/User_s.js';
+import UserModel from '../models/User.js';
 import mailService from './mailService.js';
 import tokenService from './tokenService.js';
 import { UserDTO } from '../dto/user_dto.js';
@@ -44,7 +44,9 @@ class AuthService {
 				`${process.env.API_URL}/api/auth/activate/${activationLink}`,
 			);
 			const tokens = await tokenService.generateTokens({ email: email });
-			await tokenService.saveToken(email, tokens.refreshToken);
+			await user.update({
+				refreshToken: tokens.refreshToken,
+			});
 			return {
 				...tokens,
 				user: new UserDTO(user),
@@ -77,7 +79,10 @@ class AuthService {
 			role: user.role,
 		});
 		const user_dto = new UserDTO(user);
-		await tokenService.saveToken(email, tokens.refreshToken);
+		user.update({
+			refreshToken: tokens.refreshToken,
+		});
+		// await tokenService.saveToken(email, tokens.refreshToken);
 		return {
 			...tokens,
 			user: user_dto,
@@ -110,7 +115,9 @@ class AuthService {
 			role: user.role,
 		});
 		const userDto = new UserDTO(refresh_user);
-		await tokenService.saveToken(user.email, tokens.refreshToken);
+		await refresh_user.update({
+			refreshToken: tokens.refreshToken,
+		});
 		return {
 			...tokens,
 			user: userDto,

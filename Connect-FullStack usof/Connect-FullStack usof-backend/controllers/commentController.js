@@ -74,10 +74,10 @@ class commentController {
 			const id = req.params.comment_id;
 			const user = req.user;
 			const like = await likeService.createLike(
-				id,
 				user,
 				'like',
 				'comment',
+				id,
 			);
 			return res.json(like);
 		} catch (e) {
@@ -90,10 +90,10 @@ class commentController {
 			const id = req.params.comment_id;
 			const user = req.user;
 			const comment = await likeService.deleteLike(
-				id,
 				user,
 				'like',
 				'comment',
+				id,
 			);
 			return res.json(comment);
 		} catch (e) {
@@ -106,10 +106,10 @@ class commentController {
 			const id = req.params.comment_id;
 			const user = req.user;
 			const like = await likeService.createLike(
-				id,
 				user,
 				'dislike',
 				'comment',
+				id,
 			);
 			return res.json(like);
 		} catch (e) {
@@ -122,10 +122,10 @@ class commentController {
 			const id = req.params.comment_id;
 			const user = req.user;
 			const comment = await likeService.deleteLike(
-				id,
 				user,
 				'dislike',
 				'comment',
+				id,
 			);
 			return res.json(comment);
 		} catch (e) {

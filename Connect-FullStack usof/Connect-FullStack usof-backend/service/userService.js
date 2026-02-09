@@ -1,4 +1,4 @@
-import UserModel from '../admin/models/User_s.js';
+import UserModel from '../models/User.js';
 import mailService from './mailService.js';
 import { v4 as uuidv4 } from 'uuid';
 import fs from 'fs';
@@ -50,7 +50,9 @@ class UserService {
 				`${process.env.API_URL}/api/auth/activate/${activationLink}`,
 			);
 			const tokens = await tokenService.generateTokens({ email });
-			await tokenService.saveToken(email, tokens.refreshToken);
+			await user.update({
+				refreshToken: tokens.refreshToken,
+			});
 			return {
 				...tokens,
 				user: user.email,

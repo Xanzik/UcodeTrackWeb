@@ -2,11 +2,11 @@ import AdminJS from 'adminjs';
 import * as AdminJSSequelize from '@adminjs/sequelize';
 import AdminJSExpress from '@adminjs/express';
 
-import User from './models/User_s.js';
-import Post from './models/Post_s.js';
-import Like from './models/Like_s.js';
-import Comment from './models/Comment_s.js';
-import Category from './models/Category_s.js';
+import User from '../models/User.js';
+import Post from '../models/Post.js';
+import Like from '../models/Like.js';
+import Comment from '../models/Comment.js';
+import Category from '../models/Category.js';
 import authService from '../service/authService.js';
 
 const authenticate = async (email, password) => {

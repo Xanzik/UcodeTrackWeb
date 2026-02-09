@@ -1,4 +1,4 @@
-import models from '../admin/models/index.js';
+import models from '../models/index.js';
 import ApiError from '../exceptions/api-error.js';
 
 const CommentModel = models.Comment;
