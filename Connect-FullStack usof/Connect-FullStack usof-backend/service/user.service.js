@@ -1,12 +1,12 @@
-import UserModel from '../models/User.js';
-import mailService from './mailService.js';
+import UserModel from '../models/user.model.js';
+import mailService from './mail.service.js';
 import { v4 as uuidv4 } from 'uuid';
 import fs from 'fs';
 import bcrypt from 'bcrypt';
-import tokenService from './tokenService.js';
-import ApiError from '../exceptions/api-error.js';
-import { UserDTO } from '../dto/user_dto.js';
-import APIError from '../exceptions/api-error.js';
+import tokenService from './token.service.js';
+import ApiError from '../exceptions/api.error.js';
+import { UpdateUserDTO, UserDTO } from '../dto/user.dto.js';
+import APIError from '../exceptions/api.error.js';
 
 class UserService {
 	async getUsers() {
@@ -16,6 +16,9 @@ class UserService {
 
 	async getUserByID(id) {
 		const user = await UserModel.findByPk(Number(id));
+		if (!user) {
+			throw new ApiError('User not found');
+		}
 		return new UserDTO(user);
 	}
 
@@ -82,14 +85,13 @@ class UserService {
 		}
 	}
 
-	async updateUser(id, dto) {
+	async updateUser(id, userData) {
 		const user = await UserModel.findByPk(Number(id));
 		if (!user) {
 			throw APIError.BadRequest('User does not exist');
 		}
-
+		const dto = new UpdateUserDTO(userData);
 		await user.update(dto);
-
 		return new UserDTO(user);
 	}
 

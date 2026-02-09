@@ -1,8 +1,8 @@
-import User from './User.js';
-import Post from './Post.js';
-import Category from './Category.js';
-import Comment from './Comment.js';
-import Like from './Like.js';
+import User from './user.model.js';
+import Post from './post.model.js';
+import Category from './category.model.js';
+import Comment from './comment.model.js';
+import Like from './like.model.js';
 
 const models = {
 	User,

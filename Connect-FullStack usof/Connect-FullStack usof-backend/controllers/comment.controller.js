@@ -1,0 +1,174 @@
+import commentService from '../service/comment.service.js';
+import likeService from '../service/like.service.js';
+
+class commentController {
+	createComment = async (req, res, next) => {
+		try {
+			const user = req.user;
+			const postId = req.params.post_id;
+			const { content, replyCommentId } = req.body;
+			const post = await commentService.createComment(
+				content,
+				user,
+				postId,
+				replyCommentId,
+			);
+			return res.json(post);
+		} catch (e) {
+			next(e);
+		}
+	};
+
+	getComment = async (req, res, next) => {
+		try {
+			const id = req.params.comment_id;
+			const comment = await commentService.getComment(id);
+			return res.json(comment);
+		} catch (e) {
+			next(e);
+		}
+	};
+
+	getRepliesForComment = async (req, res, next) => {
+		try {
+			const id = req.params.comment_id;
+			const comment = await commentService.getRepliesForComment(id);
+			return res.json(comment);
+		} catch (e) {
+			next(e);
+		}
+	};
+
+	getCommentsForPost = async (req, res, next) => {
+		try {
+			const postId = req.params.post_id;
+			const comments = await commentService.getCommentsForPost(postId);
+			return res.json(comments);
+		} catch (e) {
+			next(e);
+		}
+	};
+
+	getLikesByComment = async (req, res, next) => {
+		try {
+			const id = req.params.comment_id;
+			const likes = await likeService.getLikes(id, 'like');
+			return res.json(likes);
+		} catch (e) {
+			next(e);
+		}
+	};
+
+	getDislikesByComment = async (req, res, next) => {
+		try {
+			const id = req.params.comment_id;
+			const likes = await likeService.getLikes(id, 'dislike');
+			return res.json(likes);
+		} catch (e) {
+			next(e);
+		}
+	};
+
+	createLike = async (req, res, next) => {
+		try {
+			const id = req.params.comment_id;
+			const user = req.user;
+			const like = await likeService.createLike(
+				user,
+				'like',
+				'comment',
+				id,
+			);
+			return res.json(like);
+		} catch (e) {
+			next(e);
+		}
+	};
+
+	deleteLike = async (req, res, next) => {
+		try {
+			const id = req.params.comment_id;
+			const user = req.user;
+			const comment = await likeService.deleteLike(
+				user,
+				'like',
+				'comment',
+				id,
+			);
+			return res.json(comment);
+		} catch (e) {
+			next(e);
+		}
+	};
+
+	createDislike = async (req, res, next) => {
+		try {
+			const id = req.params.comment_id;
+			const user = req.user;
+			const like = await likeService.createLike(
+				user,
+				'dislike',
+				'comment',
+				id,
+			);
+			return res.json(like);
+		} catch (e) {
+			next(e);
+		}
+	};
+
+	deleteDislike = async (req, res, next) => {
+		try {
+			const id = req.params.comment_id;
+			const user = req.user;
+			const comment = await likeService.deleteLike(
+				user,
+				'dislike',
+				'comment',
+				id,
+			);
+			return res.json(comment);
+		} catch (e) {
+			next(e);
+		}
+	};
+
+	updateComment = async (req, res, next) => {
+		try {
+			const id = req.params.comment_id;
+			const status = req.body.status;
+			const user = req.user;
+			const comment = await commentService.updateComment(
+				id,
+				status,
+				user,
+			);
+			return res.json(comment);
+		} catch (e) {
+			next(e);
+		}
+	};
+
+	blockComment = async (req, res, next) => {
+		try {
+			const id = req.params.comment_id;
+			const comment = await commentService.blockComment(id);
+			return res.json(comment);
+		} catch (e) {
+			next(e);
+		}
+	};
+
+	deleteComment = async (req, res, next) => {
+		try {
+			const id = req.params.comment_id;
+			const user = req.user;
+			const comment = await commentService.deleteComment(id, user);
+			return res.json(comment);
+		} catch (e) {
+			next(e);
+		}
+	};
+}
+
+export default new commentController();

@@ -1,0 +1,194 @@
+import postService from '../service/post.service.js';
+import likeService from '../service/like.service.js';
+
+class PostController {
+	getAllPosts = async (req, res, next) => {
+		try {
+			const filters = {
+				category: req.query.category,
+				dateFrom: req.query.dateFrom,
+				dateTo: req.query.dateTo,
+				status: req.query.status,
+				sortBy: req.query.sortBy,
+			};
+			const user = req.user;
+			const posts = await postService.getAllPosts(filters, user);
+			return res.json(posts);
+		} catch (e) {
+			next(e);
+		}
+	};
+
+	getPostByID = async (req, res, next) => {
+		try {
+			const postId = req.params.post_id;
+			const post = await postService.getPostByID(postId);
+			return res.json(post);
+		} catch (e) {
+			next(e);
+		}
+	};
+
+	getCategoriesForPost = async (req, res, next) => {
+		try {
+			const postId = req.params.post_id;
+			const comments = await postService.getCategoriesForPost(postId);
+			return res.json(comments);
+		} catch (e) {
+			next(e);
+		}
+	};
+
+	createPost = async (req, res, next) => {
+		try {
+			const { title, content, categories } = req.body;
+			const user = req.user;
+			const post = await postService.createPost(
+				title,
+				content,
+				categories,
+				user,
+			);
+			return res.json(post);
+		} catch (e) {
+			next(e);
+		}
+	};
+
+	updatePostScreenshot = async (req, res, next) => {
+		try {
+			const { screenshot } = req.files;
+			const postId = req.params.post_id;
+			const post = await postService.updatePostScreenshot(
+				screenshot,
+				postId,
+			);
+			return res.json(post);
+		} catch (e) {
+			next(e);
+		}
+	};
+
+	updatePost = async (req, res, next) => {
+		try {
+			const user = req.user;
+			const postId = req.params.post_id;
+			const updatedData = req.body;
+			const result = await postService.updatePost(
+				postId,
+				updatedData,
+				updatedData.categories,
+				user,
+			);
+			return res.json(result);
+		} catch (e) {
+			next(e);
+		}
+	};
+
+	deletePost = async (req, res, next) => {
+		try {
+			const user = req.user;
+			const postId = req.params.post_id;
+			const post = await postService.deletePost(postId, user);
+			return res.json(post);
+		} catch (e) {
+			next(e);
+		}
+	};
+
+	blockPost = async (req, res, next) => {
+		try {
+			const postId = req.params.post_id;
+			const post = await postService.blockPost(postId);
+			return res.json(post);
+		} catch (e) {
+			next(e);
+		}
+	};
+	//todo Later
+	getLikesForPost = async (req, res, next) => {
+		try {
+			const postId = req.params.post_id;
+			const like = await likeService.getLikes('like', 'post', postId);
+			return res.json(like);
+		} catch (e) {
+			next(e);
+		}
+	};
+	createLike = async (req, res, next) => {
+		try {
+			const postId = req.params.post_id;
+			const user = req.user;
+			const like = await likeService.createLike(
+				user,
+				'like',
+				'post',
+				postId,
+			);
+			return res.json(like);
+		} catch (e) {
+			next(e);
+		}
+	};
+
+	deleteLike = async (req, res, next) => {
+		try {
+			const postId = req.params.post_id;
+			const user = req.user;
+			const like = await likeService.deleteLike(
+				user,
+				'like',
+				'post',
+				postId,
+			);
+			return res.json(like);
+		} catch (e) {
+			next(e);
+		}
+	};
+
+	getDislikesForPost = async (req, res, next) => {
+		try {
+			const postId = req.params.post_id;
+			const like = await likeService.getLikes('dislike', 'post', postId);
+			return res.json(like);
+		} catch (e) {
+			next(e);
+		}
+	};
+
+	createDislike = async (req, res, next) => {
+		try {
+			const postId = req.params.post_id;
+			const user = req.user;
+			const like = await likeService.createLike(
+				user,
+				'dislike',
+				'post',
+				postId,
+			);
+			return res.json(like);
+		} catch (e) {
+			next(e);
+		}
+	};
+
+	deleteDislike = async (req, res, next) => {
+		try {
+			const postId = req.params.post_id;
+			const user = req.user;
+			const like = await likeService.deleteLike(
+				user,
+				'dislike',
+				'post',
+				postId,
+			);
+			return res.json(like);
+		} catch (e) {
+			next(e);
+		}
+	};
+}
+
+export default new PostController();

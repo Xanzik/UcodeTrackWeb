@@ -7,14 +7,14 @@ import cors from 'cors';
 import fileUpload from 'express-fileupload';
 import { admin } from './admin/admin.js';
 
-import authRouter from './routes/authRouter.js';
-import userRouter from './routes/userRouter.js';
-import categoryRouter from './routes/categoryRouter.js';
-import postRouter from './routes/postRouter.js';
-import commentRouter from './routes/commentRouter.js';
+import authRouter from './routes/auth.router.js';
+import userRouter from './routes/user.router.js';
+import categoryRouter from './routes/category.router.js';
+import postRouter from './routes/post.router.js';
+import commentRouter from './routes/comment.router.js';
 import { adminRouter } from './admin/admin.js';
 
-import errorMiddleware from './middlewares/error-middlewares.js';
+import errorMiddleware from './middlewares/error.middleware.js';
 import { initDB } from './db/index.js';
 
 const app = express();

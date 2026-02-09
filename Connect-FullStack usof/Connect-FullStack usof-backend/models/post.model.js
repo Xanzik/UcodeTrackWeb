@@ -1,4 +1,4 @@
-// models/Post.js
+// models/post.model.js
 import { DataTypes } from 'sequelize';
 import sequelize from '../db/db.js';
 

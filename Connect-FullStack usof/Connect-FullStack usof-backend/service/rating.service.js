@@ -1,5 +1,5 @@
 import models from '../models/index.js';
-import ApiError from '../exceptions/api-error.js';
+import ApiError from '../exceptions/api.error.js';
 
 const UserModel = models.User;
 

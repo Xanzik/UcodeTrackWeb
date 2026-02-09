@@ -1,4 +1,4 @@
-// models/Comment.js
+// models/comment.model.js
 import { DataTypes } from 'sequelize';
 import sequelize from '../db/db.js';
 

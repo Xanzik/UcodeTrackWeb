@@ -1,10 +1,10 @@
-import ApiError from '../exceptions/api-error.js';
+import ApiError from '../exceptions/api.error.js';
 import bcrypt from 'bcrypt';
 import { v4 as uuidv4 } from 'uuid';
-import UserModel from '../models/User.js';
-import mailService from './mailService.js';
-import tokenService from './tokenService.js';
-import { UserDTO } from '../dto/user_dto.js';
+import UserModel from '../models/user.model.js';
+import mailService from './mail.service.js';
+import tokenService from './token.service.js';
+import { UserDTO } from '../dto/user.dto.js';
 import { Op } from 'sequelize';
 
 class AuthService {
