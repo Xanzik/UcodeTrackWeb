@@ -1,0 +1,13 @@
+.form {
+    display: flex;
+    min-width: 300px;
+    flex-direction: column;
+    background-color: #020111;
+    padding: 50px;
+    border-radius: 100px;
+    border: 2px solid #2196f3;
+    box-shadow: 0 0 50px rgba(255, 255, 255, 0.2);
+    color: #fff;
+    text-align: center;
+    gap: 15px;
+}

@@ -1,0 +1,19 @@
+.logo {
+    font-size: 4.5em;
+    font-weight: 800;
+    text-shadow: 4px 4px 8px rgba(0, 0, 0, 0.7);
+    margin: 30px 0;
+    letter-spacing: 4px;
+    font-family: "Montserrat", sans-serif;
+    text-transform: uppercase;
+    animation: colorChange 5s infinite alternate;
+}
+
+@keyframes colorChange {
+    from {
+        color: #3498db;
+    }
+    to {
+        color: #e74c3c;
+    }
+}
