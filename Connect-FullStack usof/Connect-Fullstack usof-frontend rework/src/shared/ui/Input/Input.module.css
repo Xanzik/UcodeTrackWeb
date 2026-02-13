@@ -1,10 +1,20 @@
-.input {
-    padding: 10px;
-    margin-bottom: 10px;
-    background-color: #020111;
-    color: #fff;
-    border: 1px solid #2196f3;
-    border-radius: 4px;
+.input{
     width: 100%;
-    box-sizing: border-box;
+    padding: 14px 18px;
+    border-radius: 10px;
+    border: 1px solid rgba(127,215,255,.18);
+    background: rgba(0,0,0,.12);
+    color: rgba(180,240,255,.95);
+    outline: none;
+    transition: .25s ease;
+}
+
+.input::placeholder{
+    color: rgba(180,240,255,.45);
+    letter-spacing: 1px;
+}
+
+.input:focus{
+    border-color: rgba(42,168,255,.55);
+    box-shadow: 0 0 18px rgba(42,168,255,.22);
 }

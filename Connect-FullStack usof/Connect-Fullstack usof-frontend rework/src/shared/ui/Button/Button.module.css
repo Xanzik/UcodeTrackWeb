@@ -1,11 +1,22 @@
 .button {
-    padding: 10px;
-    margin-top: 10px;
-    background-color: #2196f3;
-    color: #020111;
+    padding: 14px 16px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    color: #02101a;
     border: none;
-    border-radius: 4px;
+    border-radius: 10px;
     cursor: pointer;
     width: 100%;
-    max-width: 150px;
+    background: #2a9cff;
+    box-shadow:
+            0 0 0 1px rgba(255,255,255,.06) inset,
+            0 0 22px rgba(42,168,255,.35);
+    transition:.25s ease;
+}
+
+.button:hover {
+    transform: translateY(-1px);
+    box-shadow:
+            0 0 0 1px rgba(255,255,255,.08) inset,
+            0 0 30px rgba(42,168,255,.55);
 }

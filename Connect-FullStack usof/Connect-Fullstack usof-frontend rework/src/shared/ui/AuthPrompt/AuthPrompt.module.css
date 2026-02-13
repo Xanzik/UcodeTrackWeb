@@ -1,0 +1,11 @@
+.auth-prompt__link{
+    display:flex;
+    justify-content:space-between;
+    font-size: 12px;
+    letter-spacing: 1px;
+    color: rgba(127,215,255,.65);
+    text-decoration:none;
+    transition:.2s;
+}
+
+.auth-prompt__link:hover{ color: rgba(127,215,255,.95); }
