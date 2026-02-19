@@ -1,35 +1,26 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
-import type { UserDTO } from "./types";
+import type { IUser } from "@/entities/user";
 
 type UserState = {
-  auth: null | {
-    user: UserDTO;
-    accessToken?: string;
-  };
+  user: IUser | null;
 };
 
 const initialState: UserState = {
-  auth: null,
+  user: null,
 };
 
 const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
-    setAuth(
-      state,
-      action: PayloadAction<{ user: UserDTO; accessToken?: string }>,
-    ) {
-      state.auth = {
-        user: action.payload.user,
-        accessToken: action.payload.accessToken,
-      };
+    setUser(state, action: PayloadAction<IUser>) {
+      state.user = action.payload;
     },
-    clearAuth(state) {
-      state.auth = null;
+    clearUser(state) {
+      state.user = null;
     },
   },
 });
 
-export const { setAuth, clearAuth } = userSlice.actions;
+export const { setUser, clearUser } = userSlice.actions;
 export const userReducer = userSlice.reducer;

@@ -1,11 +1,16 @@
 import ApiError from '../exceptions/api.error.js';
 
-export default function errorHandler(err, req, res) {
-	console.log(err);
+export default function errorHandler(err, req, res, next) {
+	console.error(err);
+
 	if (err instanceof ApiError) {
-		return res
-			.status(err.status)
-			.json({ message: err.message, errors: err.errors });
+		return res.status(err.status).json({
+			message: err.message,
+			errors: err.errors,
+		});
 	}
-	return res.status(500).json({ message: 'Unknown Error' });
+
+	return res.status(500).json({
+		message: 'Unknown error',
+	});
 }
