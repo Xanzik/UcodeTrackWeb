@@ -21,42 +21,37 @@ class AuthService {
 			);
 		}
 
-		try {
-			const isUserExists = await UserModel.findOne({
-				where: {
-					[Op.or]: [{ login }, { email }],
-				},
-				attributes: ['login', 'email'],
-			});
-			if (isUserExists) {
-				throw ApiError.BadRequest('User already exists');
-			}
-			const hashedPassword = await bcrypt.hash(password, 3);
-			const activationLink = uuidv4();
-			const user = await UserModel.create({
-				login,
-				email,
-				password: hashedPassword,
-				activation_link: activationLink,
-			});
-			await mailService.sendActivationMail(
-				email,
-				`${process.env.API_URL}/api/auth/activate/${activationLink}`,
-			);
-			const tokens = await tokenService.generateTokens({ email: email });
-			await user.update({
-				refreshToken: tokens.refreshToken,
-			});
-			return {
-				...tokens,
-				user: new UserDTO(user),
-				status: 0,
-				message: 'User registered successfully',
-			};
-		} catch (error) {
-			console.log(error.message);
-			throw ApiError.BadRequest('Error registering user:', error);
+		const isUserExists = await UserModel.findOne({
+			where: {
+				[Op.or]: [{ login }, { email }],
+			},
+			attributes: ['login', 'email'],
+		});
+		if (isUserExists) {
+			throw ApiError.BadRequest('User already exists');
 		}
+		const hashedPassword = await bcrypt.hash(password, 3);
+		const activationLink = uuidv4();
+		const user = await UserModel.create({
+			login,
+			email,
+			password: hashedPassword,
+			activationLink,
+		});
+		await mailService.sendActivationMail(
+			email,
+			`${process.env.CLIENT_URL}/activate/${activationLink}`,
+		);
+		const tokens = await tokenService.generateTokens({ email: email });
+		await user.update({
+			refreshToken: tokens.refreshToken,
+		});
+		return {
+			...tokens,
+			user: new UserDTO(user),
+			status: 0,
+			message: 'User registered successfully',
+		};
 	}
 
 	async login(userData) {

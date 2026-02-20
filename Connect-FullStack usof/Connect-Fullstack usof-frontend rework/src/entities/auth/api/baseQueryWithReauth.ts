@@ -1,25 +1,27 @@
-import type { BaseQueryFn } from "@reduxjs/toolkit/query/react";
+import type {
+  BaseQueryFn,
+  FetchArgs,
+  FetchBaseQueryError,
+} from "@reduxjs/toolkit/query/react";
 import { baseQuery } from "@/shared/api";
-import { logout, setAccessToken } from "@/entities/auth/model/slice.ts";
-import type { AuthResponse } from "@/entities/auth/model/types.ts";
+import { authApi } from "@/entities/auth";
 
-export const baseQueryWithAuth: BaseQueryFn = async (args, api, extra) => {
-  let result = await baseQuery(args, api, extra);
+export const baseQueryWithAuth: BaseQueryFn<
+  string | FetchArgs,
+  unknown,
+  FetchBaseQueryError
+> = async (args, api, extra) => {
+  const result = await baseQuery(args, api, extra);
+  const url = typeof args === "string" ? args : args.url;
+  if (url.includes("/auth/refresh")) {
+    return result;
+  }
   if (result.error?.status === 401) {
-    const refreshResult = await baseQuery(
-      {
-        url: "/auth/refresh",
-        method: "POST",
-      },
-      api,
-      extra,
-    );
-    if (refreshResult.data) {
-      const data = refreshResult.data as AuthResponse;
-      api.dispatch(setAccessToken(data.accessToken));
-      result = await baseQuery(args, api, extra);
-    } else {
-      api.dispatch(logout());
+    const refreshData = await api
+      .dispatch(authApi.endpoints.refresh.initiate())
+      .unwrap();
+    if (refreshData) {
+      return baseQuery(args, api, extra);
     }
   }
   return result;

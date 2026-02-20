@@ -89,7 +89,9 @@ class AuthController {
 			const activationLink = req.params.link;
 			console.log('Activation link: ', activationLink);
 			await authService.activate(activationLink);
-			return res.redirect(process.env.CLIENT_URL);
+			return res
+				.status(200)
+				.json({ message: 'Activation link activated' });
 		} catch (error) {
 			console.error('Error activating in:', error);
 			res.status(500).json({ message: 'Failed to activate' });

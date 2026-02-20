@@ -1,5 +1,12 @@
 export const routes = {
-  home: () => "/",
-  login: () => "/login",
-  register: () => "/register",
+  home: {
+    path: "/",
+  },
+  login: { path: "/login" },
+  register: {
+    path: "/register",
+  },
+  activateAccount: {
+    path: `/activate/:token`,
+  },
 } as const;

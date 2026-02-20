@@ -8,15 +8,15 @@ import { Heading } from "@/shared/ui/Heading";
 import { AuthPrompt } from "@/shared/ui/AuthPrompt";
 import { Status } from "@/shared/ui/Status";
 import { useLoginMutation } from "@/entities/auth";
+import { Divider } from "@/shared/ui/Divider/Divider.tsx";
 
 export function LoginForm() {
-  const [login, { isLoading, error }] = useLoginMutation();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [login, { isLoading, error }] = useLoginMutation();
 
   const onSubmit = async (e: SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(email, password);
     await login({ email, password });
   };
 
@@ -39,14 +39,26 @@ export function LoginForm() {
         name="password"
         id="password"
         placeholder="PASSWORD"
+        autoComplete="on"
         onChange={(e) => setPassword(e.target.value)}
       />
-      {error && <div>Error</div>}
+      {error && "status" in error && (
+        <div>
+          {typeof error.data === "string"
+            ? error.data
+            : error.data &&
+                typeof error.data === "object" &&
+                "message" in error.data
+              ? String((error.data as any).message)
+              : `Ошибка ${error.status}`}
+        </div>
+      )}
       <Button>LOGIN</Button>
       <div className={cn(styles["prompt_container"])}>
         <AuthPrompt text={"FORGOT PASSWORD?"} to={"/register"} />
         <AuthPrompt text={"CREATE ACCOUNT?"} to={"/register"} />
       </div>
+      <Divider />
       <Status text="SYSTEM ONLINE" status="online" />
     </form>
   );

@@ -2,9 +2,7 @@
     display: flex;
     gap: 8px;
     justify-content: center;
-    align-items: baseline;
-    padding-top: 18px;
-    border-top: 1px solid rgba(127,215,255,.12);
+    align-items: center;
     font-size: 12px;
     letter-spacing: 2px;
     color: rgba(127,215,255,.55);

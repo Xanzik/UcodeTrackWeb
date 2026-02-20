@@ -2,12 +2,10 @@ import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 
 type AuthState = {
   accessToken: string | null;
-  refreshToken: string;
 };
 
 const initialState: AuthState = {
   accessToken: "",
-  refreshToken: "",
 };
 
 const authSlice = createSlice({
