@@ -4,9 +4,12 @@ import cn from "classnames";
 import styles from "./Input.module.css";
 
 export const Input = forwardRef<HTMLInputElement, InputProps>(
-  ({ className, ...props }, ref) => {
+  ({ className, startSlot, ...props }, ref) => {
     return (
-      <input ref={ref} className={cn(styles["input"], className)} {...props} />
+      <div className={cn(styles["input"], className)}>
+        {startSlot}
+        <input ref={ref} className={cn(styles["input__field"])} {...props} />
+      </div>
     );
   },
 );

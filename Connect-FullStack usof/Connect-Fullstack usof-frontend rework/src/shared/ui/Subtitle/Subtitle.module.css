@@ -1,0 +1,12 @@
+.subtitle {
+    font-size: 12px;
+    letter-spacing: 3px;
+}
+
+.dark {
+    color: rgba(127,215,255,.65);
+}
+
+.light {
+    color: rgba(180,240,255,.92);
+}

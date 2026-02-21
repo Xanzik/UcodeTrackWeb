@@ -13,7 +13,7 @@
     /*        0 0 0 1px rgba(20, 151, 255, .10) inset,*/
     /*        0 0 34px rgba(20, 151, 255, .18),*/
     /*        0 0 120px rgba(14, 111, 203, .12);*/
-    border: 1.5px solid rgba(42,168,255,.35);
+    border: 2px solid rgba(42,168,255,.35);
 
     box-shadow:
             0 0 0 1px rgba(42,168,255,.18),
@@ -24,13 +24,6 @@
     text-align: center;
     align-items: center;
     gap: 15px;
-}
-
-.subtitle{
-    font-size: 12px;
-    letter-spacing: 2.5px;
-    color: rgba(127,215,255,.65);
-    margin-bottom: 28px;
 }
 
 .prompt_container {

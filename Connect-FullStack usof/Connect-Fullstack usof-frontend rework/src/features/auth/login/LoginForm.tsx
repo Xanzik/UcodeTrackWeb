@@ -8,7 +8,8 @@ import { Heading } from "@/shared/ui/Heading";
 import { AuthPrompt } from "@/shared/ui/AuthPrompt";
 import { Status } from "@/shared/ui/Status";
 import { useLoginMutation } from "@/entities/auth";
-import { Divider } from "@/shared/ui/Divider/Divider.tsx";
+import { Subtitle } from "@/shared/ui/Subtitle";
+import { Divider } from "@/shared/ui/Divider";
 
 export function LoginForm() {
   const [email, setEmail] = useState("");
@@ -24,7 +25,7 @@ export function LoginForm() {
     <form className={cn(styles["form"])} onSubmit={onSubmit}>
       <Badge>TECHVERSE QA</Badge>
       <Heading>LOGIN</Heading>
-      <p className={cn(styles["subtitle"])}>AUTHORIZATION IN THE SYSTEM</p>
+      <Subtitle>AUTHORIZATION IN THE SYSTEM</Subtitle>
       {isLoading && <div>Login</div>}
       <Input
         type="email"

@@ -1,4 +1,11 @@
-.input{
+.input {
+    display: flex;
+    width: 100%;
+    min-width: 220px;
+    position: relative;
+}
+
+.input__field{
     width: 100%;
     padding: 14px 18px;
     border-radius: 10px;
@@ -9,12 +16,12 @@
     transition: .25s ease;
 }
 
-.input::placeholder{
+.input__field::placeholder{
     color: rgba(180,240,255,.45);
     letter-spacing: 1px;
 }
 
-.input:focus{
+.input__field:focus{
     border-color: rgba(42,168,255,.55);
     box-shadow: 0 0 18px rgba(42,168,255,.22);
 }

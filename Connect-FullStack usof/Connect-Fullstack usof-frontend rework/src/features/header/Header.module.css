@@ -1,0 +1,129 @@
+.header {
+    padding: 2px;
+}
+
+.header__wrapper {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    padding: 14px 32px;
+    /*border-radius: 26px;*/
+
+    background:
+            radial-gradient(900px 300px at 50% 0%, rgba(42,168,255,.10), transparent 55%),
+            linear-gradient(180deg, rgba(4,7,18,.70), rgba(3,5,12,.62));
+
+    border: 1px solid rgba(42,168,255,.28);
+    box-shadow:
+            0 0 0 1px rgba(42,168,255,.12),
+            0 0 40px rgba(42,168,255,.14),
+            0 18px 60px rgba(0,0,0,.45),
+            inset 0 0 42px rgba(42,168,255,.06);
+
+    backdrop-filter: blur(10px);
+    position: relative;
+}
+
+.header__wrapper::before{
+    border-radius: 34px;
+    background: radial-gradient(1200px 500px at 50% 0%, rgba(42,168,255,.20), transparent 55%);
+    filter: blur(14px);
+    opacity: .35;
+}
+
+.header__left, .header__right, .header__center {
+    flex: 1;
+}
+
+.header__left {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.header__subtitles {
+    display:flex; flex-direction:column; line-height:1.1;
+}
+
+.header__center{
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.search__form {
+    display:flex;
+    gap: 8px;
+    width: 100%;
+}
+
+.searchIcon{
+    position: absolute;
+    color: rgba(127,215,255,.65);
+    font-size: 14px;
+    top: 49%;
+    margin-left: 11px;
+    transform: translate(-50%, -50%);
+}
+
+.header__right{
+    display:flex;
+    align-items:center;
+    justify-content:flex-end;
+    gap: 14px;
+    margin-right: 0;
+}
+
+.userMeta{
+    display:flex;
+    flex-direction:column;
+    align-items:flex-end;
+    gap: 6px;
+}
+
+.roleChip{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    padding: 6px 10px;
+    border-radius: 999px;
+    border: 1px solid rgba(127,215,255,.18);
+    background: rgba(0,0,0,.10);
+    color: rgba(180,240,255,.78);
+    font-size: 11px;
+    letter-spacing: 2px;
+    box-shadow: inset 0 0 18px rgba(42,168,255,.06);
+}
+
+.nickname{
+    font-size: 12px;
+    letter-spacing: 2px;
+    color: rgba(180,240,255,.92);
+    text-shadow: 0 0 14px rgba(42,168,255,.12);
+}
+
+.avatarWrap{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    border-radius: 999px;
+
+    border: 1.5px solid rgba(42,168,255,.45);
+    box-shadow: 0 0 18px rgba(42,168,255,.20), inset 0 0 12px rgba(42,168,255,.10);
+    background: rgba(0,0,0,.14);
+    overflow: hidden;
+}
+
+.avatar{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.avatarFallback{
+    color: rgba(180,240,255,.9);
+    font-weight: 800;
+}

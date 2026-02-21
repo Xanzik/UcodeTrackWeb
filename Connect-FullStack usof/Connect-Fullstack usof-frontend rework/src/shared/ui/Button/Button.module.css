@@ -1,16 +1,22 @@
 .button {
-    padding: 14px 16px;
+    padding: 14px 32px;
     font-weight: 700;
     letter-spacing: 3px;
-    color: #02101a;
+    color: rgba(120, 220, 255, .95);
     border: none;
     border-radius: 10px;
     cursor: pointer;
-    width: 100%;
-    background: #2a9cff;
+    /*width: 100%;*/
+    /*background: #2a9cff;*/
+    /*box-shadow:*/
+    /*        0 0 0 1px rgba(255,255,255,.06) inset,*/
+    /*        0 0 22px rgba(42,168,255,.35);*/
+    background: none;
     box-shadow:
-            0 0 0 1px rgba(255,255,255,.06) inset,
-            0 0 22px rgba(42,168,255,.35);
+            0 0 0 1px rgba(42,168,255,.18),
+            0 0 55px rgba(42,168,255,.18),
+            0 20px 80px rgba(0,0,0,.55),
+            inset 0 0 55px rgba(42,168,255,.08);
     transition:.25s ease;
 }
 
