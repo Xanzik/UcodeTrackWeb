@@ -1,6 +1,6 @@
-import models from '../models/index.js';
-import ApiError from '../exceptions/api.error.js';
-import RatingService from './rating.service.js';
+import models from '../../models/index.js';
+import ApiError from '../../exceptions/api.error.js';
+import RatingService from '../rating/rating.service.js';
 
 const LikeModel = models.Like;
 const PostModel = models.Post;

@@ -54,6 +54,14 @@ const User = sequelize.define(
 			type: DataTypes.TEXT,
 			field: 'refresh_token',
 		},
+		createdAt: {
+			type: DataTypes.DATE,
+			field: 'created_at',
+		},
+		updatedAt: {
+			type: DataTypes.DATE,
+			field: 'updated_at',
+		},
 	},
 	{
 		scopes: {
@@ -70,8 +78,6 @@ const User = sequelize.define(
 			},
 		},
 		timestamps: true,
-		createdAt: 'created_at',
-		updatedAt: 'updated_at',
 	},
 );
 

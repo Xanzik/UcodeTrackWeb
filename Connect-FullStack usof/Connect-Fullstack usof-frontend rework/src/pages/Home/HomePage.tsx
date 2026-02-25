@@ -22,6 +22,7 @@ export function HomePage() {
           onSubmit={submit}
           placeholder="Search posts..."
         />
+        <Subtitle>Found {posts?.length} posts</Subtitle>
       </div>
       {posts && <PostList posts={posts} />}
     </div>

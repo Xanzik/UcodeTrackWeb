@@ -41,11 +41,17 @@ const Like = sequelize.define(
 			},
 			field: 'comment_id',
 		},
+		createdAt: {
+			type: DataTypes.DATE,
+			field: 'created_at',
+		},
+		updatedAt: {
+			type: DataTypes.DATE,
+			field: 'updated_at',
+		},
 	},
 	{
 		timestamps: true,
-		createdAt: 'created_at',
-		updatedAt: 'updated_at',
 	},
 );
 

@@ -1,5 +1,5 @@
-import commentService from '../service/comment.service.js';
-import likeService from '../service/like.service.js';
+import commentService from '../service/comment/comment.service.js';
+import likeService from '../service/like/like.service.js';
 
 class commentController {
 	createComment = async (req, res, next) => {

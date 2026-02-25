@@ -25,7 +25,7 @@ router.get(
 	authMiddleware,
 	postController.getCategoriesForPost,
 );
-router.get('/posts/:post_id', authMiddleware, postController.getPostByID);
+router.get('/posts/:post_id', postController.getPostByID);
 router.post(
 	'/posts/:post_id/block',
 	authMiddleware,

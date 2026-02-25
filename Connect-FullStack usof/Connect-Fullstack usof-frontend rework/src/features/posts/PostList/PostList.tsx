@@ -6,7 +6,7 @@ export function PostList({ posts }: PostListProps) {
   return (
     <div className={styles["post__list"]}>
       {posts.map((post) => (
-        <Post post={post} />
+        <Post post={post} key={post.id} />
       ))}
     </div>
   );

@@ -1,10 +1,13 @@
 // Post.service.js
 import { v4 as uuidv4 } from 'uuid';
 import fs from 'fs';
-import models from '../models/index.js';
-import { literal, Op } from 'sequelize';
-import ApiError from '../exceptions/api.error.js';
-import { PostBlockDTO } from '../dto/post.dto.js';
+import models from '../../models/index.js';
+import ApiError from '../../exceptions/api.error.js';
+import { PostBlockDTO } from '../../dto/post.dto.js';
+import { buildPostWhere } from './query/post.query.where.js';
+import { buildPostInclude } from './query/post.query.include.js';
+import { buildPostOrder } from './query/post.query.order.js';
+import { buildPostAttributes } from './query/post.query.attributes.js';
 
 const PostModel = models.Post;
 const CategoryModel = models.Category;
@@ -12,67 +15,11 @@ const UserModel = models.User;
 
 class PostService {
 	async getAllPosts(filters, user) {
-		const where = {};
-
-		where.updated_at = {
-			[Op.gte]: filters.dateFrom || new Date('1970-01-01'),
-			[Op.lte]: filters.dateTo || new Date('3000-01-01'),
-		};
-		console.log(user);
-		if (filters.status && user.role === 'admin') {
-			where.status = filters.status;
-		} else {
-			where[Op.or] = [
-				{ status: 'active' },
-				...(user?.id
-					? [{ status: 'inactive', authorId: user.id }]
-					: []),
-			];
-		}
-
-		const include = [];
-		if (filters.category && filters.category.length > 0) {
-			include.push({
-				model: CategoryModel,
-				as: 'categories',
-				where: { title: { [Op.in]: filters.category } },
-				through: { attributes: [] },
-				required: true,
-			});
-		}
-
-		let order;
-		if (filters.sortBy === 'likes') {
-			order = [
-				[
-					literal(`(
-            SELECT COUNT(*)
-            FROM likes AS like
-            WHERE like.PostID = Post.id
-          )`),
-					'DESC',
-				],
-			];
-		} else {
-			order = [['updated_at', 'DESC']];
-		}
 		const posts = await PostModel.findAll({
-			where,
-			include: {
-				...include,
-				model: UserModel,
-				as: 'author',
-				attributes: [
-					'id',
-					'login',
-					'fullName',
-					'email',
-					'profilePicture',
-					'rating',
-					'role',
-				],
-			},
-			order,
+			where: buildPostWhere(filters, user),
+			attributes: buildPostAttributes(),
+			include: buildPostInclude(filters, CategoryModel, UserModel),
+			order: buildPostOrder(filters),
 			distinct: true,
 		});
 		return posts.map((post) => post.toJSON());
@@ -80,21 +27,7 @@ class PostService {
 
 	async getPostByID(id) {
 		const post = await PostModel.findByPk(id, {
-			include: [
-				{
-					model: UserModel,
-					as: 'author',
-					attributes: [
-						'id',
-						'login',
-						'fullName',
-						'email',
-						'profilePicture',
-						'rating',
-						'role',
-					],
-				},
-			],
+			include: buildPostInclude([], CategoryModel, UserModel),
 		});
 		if (!post) {
 			throw ApiError.BadRequest('Post with this id does not exist');

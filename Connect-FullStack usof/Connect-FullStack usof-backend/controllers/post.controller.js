@@ -1,5 +1,5 @@
-import postService from '../service/post.service.js';
-import likeService from '../service/like.service.js';
+import postService from '../service/post/post.service.js';
+import likeService from '../service/like/like.service.js';
 
 class PostController {
 	getAllPosts = async (req, res, next) => {

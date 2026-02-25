@@ -17,8 +17,16 @@ const Category = sequelize.define(
 		description: {
 			type: DataTypes.TEXT,
 		},
+		createdAt: {
+			type: DataTypes.DATE,
+			field: 'created_at',
+		},
+		updatedAt: {
+			type: DataTypes.DATE,
+			field: 'updated_at',
+		},
 	},
-	{ timestamps: true, createdAt: 'created_at', updatedAt: 'updated_at' },
+	{ timestamps: true },
 );
 
 Category.associate = (models) => {

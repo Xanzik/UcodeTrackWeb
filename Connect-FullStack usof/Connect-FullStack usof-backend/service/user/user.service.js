@@ -1,12 +1,12 @@
-import UserModel from '../models/user.model.js';
-import mailService from './mail.service.js';
+import UserModel from '../../models/user.model.js';
+import mailService from '../mail/mail.service.js';
 import { v4 as uuidv4 } from 'uuid';
 import fs from 'fs';
 import bcrypt from 'bcrypt';
-import tokenService from './token.service.js';
-import ApiError from '../exceptions/api.error.js';
-import { UpdateUserDTO, UserDTO } from '../dto/user.dto.js';
-import APIError from '../exceptions/api.error.js';
+import tokenService from '../auth/token.service.js';
+import ApiError from '../../exceptions/api.error.js';
+import { UpdateUserDTO, UserDTO } from '../../dto/user.dto.js';
+import APIError from '../../exceptions/api.error.js';
 
 class UserService {
 	async getUsers() {

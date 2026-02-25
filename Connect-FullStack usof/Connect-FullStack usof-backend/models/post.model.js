@@ -39,11 +39,17 @@ const Post = sequelize.define(
 		screenshot: {
 			type: DataTypes.STRING(255),
 		},
+		createdAt: {
+			type: DataTypes.DATE,
+			field: 'created_at',
+		},
+		updatedAt: {
+			type: DataTypes.DATE,
+			field: 'updated_at',
+		},
 	},
 	{
 		timestamps: true,
-		createdAt: 'created_at',
-		updatedAt: 'updated_at',
 	},
 );
 

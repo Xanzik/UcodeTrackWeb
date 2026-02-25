@@ -2,7 +2,7 @@ import AdminJS from 'adminjs';
 import * as AdminJSSequelize from '@adminjs/sequelize';
 import AdminJSExpress from '@adminjs/express';
 
-import authService from '../service/auth.service.js';
+import authService from '../service/auth/auth.service.js';
 
 import models from '../models/index.js';
 

@@ -1,7 +1,7 @@
 // CategoryService.js
-import models from '../models/index.js';
-import ApiError from '../exceptions/api.error.js';
-import { CategoryUpdateDTO } from '../dto/category.dto.js';
+import models from '../../models/index.js';
+import ApiError from '../../exceptions/api.error.js';
+import { CategoryUpdateDTO } from '../../dto/category.dto.js';
 
 const CategoryModel = models.Category;
 
