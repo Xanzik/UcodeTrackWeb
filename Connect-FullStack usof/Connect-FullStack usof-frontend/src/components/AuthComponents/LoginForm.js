@@ -74,7 +74,7 @@ const LoginForm = () => {
             message.toLowerCase() === "success"
               ? toast.TYPE.SUCCESS
               : toast.TYPE.ERROR,
-        }
+        },
       );
       dispatch({ type: "CLEAR_MESSAGE" });
     }
@@ -165,7 +165,7 @@ const LoginForm = () => {
           className={LoginCSS["scifi-toggle-button"]}
           onClick={handleFormToggle}
         >
-          {isLoginFormOpen ? "Still not registered?" : "Back to login"}
+          {isLoginFormOpen ? "Still not registered?" : "Back to Login"}
         </button>
       </div>
     </div>

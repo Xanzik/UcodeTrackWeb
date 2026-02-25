@@ -158,7 +158,7 @@ export const fetchLikesForPost = (postId) => {
       });
       return response.data;
     } catch (error) {
-      console.error("Error fetching likes for post:", error);
+      console.error("Error fetching likes for Post:", error);
       dispatch({
         type: "FETCH_LIKES_FOR_POST_ERROR",
         payload: error,
@@ -181,7 +181,7 @@ export const fetchDislikesForPost = (postId) => {
       });
       return response.data;
     } catch (error) {
-      console.error("Error fetching dislikes for post:", error);
+      console.error("Error fetching dislikes for Post:", error);
       dispatch({
         type: "FETCH_DISLIKES_FOR_POST_ERROR",
         payload: error,

@@ -48,6 +48,21 @@ export const authApi = createApi({
         }
       },
     }),
+    logout: build.mutation<void, void>({
+      query: () => ({
+        url: "auth/logout",
+        method: "POST",
+      }),
+      async onQueryStarted(_, { dispatch }) {
+        try {
+          dispatch(logout());
+        } catch (e) {
+          if (e instanceof Error) {
+            console.error(e.message);
+          }
+        }
+      },
+    }),
     refresh: build.mutation<AuthResponse, void>({
       query: () => ({
         url: `/auth/refresh`,
@@ -80,4 +95,5 @@ export const {
   useRefreshMutation,
   useRegisterMutation,
   useActivateAccountMutation,
+  useLogoutMutation,
 } = authApi;

@@ -7,9 +7,9 @@ export class PostBlockDTO {
 }
 
 // export class UpdatePostDTO {
-// 	constructor(post) {
-// 		this.id = post.id;
-// 		if (post.content !== undefined) this.content = post.content;
-// 		if (post.status !== undefined) this.status = post.status;
+// 	constructor(Post) {
+// 		this.id = Post.id;
+// 		if (Post.content !== undefined) this.content = Post.content;
+// 		if (Post.status !== undefined) this.status = Post.status;
 // 	}
 // }

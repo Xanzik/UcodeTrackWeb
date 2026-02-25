@@ -9,6 +9,7 @@ import { AuthPrompt } from "@/shared/ui/AuthPrompt";
 import { Status } from "@/shared/ui/Status";
 import { useRegisterMutation } from "@/entities/auth";
 import { Divider } from "@/shared/ui/Divider/Divider.tsx";
+import { Subtitle } from "@/shared/ui/Subtitle";
 
 export function RegisterForm() {
   const [email, setEmail] = useState("");
@@ -24,7 +25,7 @@ export function RegisterForm() {
     <form className={cn(styles["form"])} onSubmit={onSubmit}>
       <Badge>TECHVERSE QA</Badge>
       <Heading>REGISTER</Heading>
-      <p className={cn(styles["subtitle"])}>REGISTRATION IN THE SYSTEM</p>
+      <Subtitle>REGISTRATION IN THE SYSTEM</Subtitle>
       {isLoading && <div>Loading</div>}
       <Input
         type="email"
@@ -69,8 +70,8 @@ export function RegisterForm() {
       <Button>REGISTER</Button>
       <Divider />
       <div className={cn(styles["prompt_container"])}>
-        <AuthPrompt text={"FORGOT PASSWORD?"} to={"/login"} />
-        <AuthPrompt text={"HAVE AN ACCOUNT?"} to={"/login"} />
+        <AuthPrompt text={"FORGOT PASSWORD?"} to={"/Login"} />
+        <AuthPrompt text={"HAVE AN ACCOUNT?"} to={"/Login"} />
       </div>
       {isSuccess && <div>Success, please activate your mail</div>}
       <Status text="SYSTEM ONLINE" status="online" />

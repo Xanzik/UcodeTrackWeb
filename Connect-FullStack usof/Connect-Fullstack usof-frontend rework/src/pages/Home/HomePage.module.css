@@ -1,0 +1,15 @@
+.page {
+    display: flex;
+    flex-direction: column;
+    padding: 24px;
+    min-height: 100vh;
+}
+
+.page__header {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin: 0 auto 24px;
+    text-align: center;
+    align-items: center;
+}

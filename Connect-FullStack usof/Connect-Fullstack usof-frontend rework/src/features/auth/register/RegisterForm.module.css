@@ -21,13 +21,6 @@
     gap: 15px;
 }
 
-.subtitle{
-    font-size: 12px;
-    letter-spacing: 2.5px;
-    color: rgba(127,215,255,.65);
-    margin-bottom: 28px;
-}
-
 .prompt_container {
     display: flex;
     justify-content: space-between;

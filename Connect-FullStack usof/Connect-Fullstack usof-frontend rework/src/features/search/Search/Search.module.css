@@ -1,0 +1,14 @@
+.search__form {
+    display:flex;
+    gap: 8px;
+    width: 100%;
+}
+
+.search__icon {
+    position: absolute;
+    color: rgba(127,215,255,.65);
+    font-size: 14px;
+    top: 49%;
+    margin-left: 11px;
+    transform: translate(-50%, -50%);
+}

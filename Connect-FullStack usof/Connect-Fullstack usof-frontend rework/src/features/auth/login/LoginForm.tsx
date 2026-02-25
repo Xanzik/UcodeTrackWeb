@@ -56,8 +56,8 @@ export function LoginForm() {
       )}
       <Button>LOGIN</Button>
       <div className={cn(styles["prompt_container"])}>
-        <AuthPrompt text={"FORGOT PASSWORD?"} to={"/register"} />
-        <AuthPrompt text={"CREATE ACCOUNT?"} to={"/register"} />
+        <AuthPrompt text={"FORGOT PASSWORD?"} to={"/Register"} />
+        <AuthPrompt text={"CREATE ACCOUNT?"} to={"/Register"} />
       </div>
       <Divider />
       <Status text="SYSTEM ONLINE" status="online" />

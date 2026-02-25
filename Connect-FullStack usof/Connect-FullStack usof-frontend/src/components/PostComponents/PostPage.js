@@ -179,7 +179,7 @@ const PostPage = () => {
     <div>
       <MenuBar />
       <Header />
-      <div className={PostPageCSS["post-page"]}>
+      <div className={PostPageCSS["Post-page"]}>
         {selectUserById(users, post.authorId) ? (
           <div className={PostPageCSS["user-info"]}>
             <p>{selectUserById(users, post.authorId).login}</p>
@@ -202,8 +202,8 @@ const PostPage = () => {
         ) : (
           <p>Author: Unknown</p>
         )}
-        <h2 className={PostPageCSS["post-title"]}>{post.Title}</h2>
-        <div className={PostPageCSS["post-content"]}>
+        <h2 className={PostPageCSS["Post-title"]}>{post.Title}</h2>
+        <div className={PostPageCSS["Post-content"]}>
           {isEditing ? (
             <textarea
               className={PostPageCSS["edit-textarea"]}

@@ -35,7 +35,7 @@ class UserService {
 			);
 		}
 
-		// if (await checkExistingUser(login, email)) {
+		// if (await checkExistingUser(Login, email)) {
 		//   throw ApiError.BadRequest("User already exists");
 		// }
 

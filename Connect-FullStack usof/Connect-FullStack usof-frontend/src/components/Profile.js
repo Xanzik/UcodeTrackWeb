@@ -107,7 +107,7 @@ const Profile = ({ allPosts, message }) => {
         (user) => user.login === formData.login && user.id !== profileUser.id,
       )
     ) {
-      setError("The login is already occupied.");
+      setError("The Login is already occupied.");
       return;
     }
     await dispatch(updateUserProfile(formData, profileUser.id));

@@ -2,9 +2,9 @@ export const routes = {
   home: {
     path: "/",
   },
-  login: { path: "/login" },
+  login: { path: "/Login" },
   register: {
-    path: "/register",
+    path: "/Register",
   },
   activateAccount: {
     path: `/activate/:token`,

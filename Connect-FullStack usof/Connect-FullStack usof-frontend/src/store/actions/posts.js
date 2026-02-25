@@ -9,7 +9,7 @@ export const createPost = (title, content, categories) => {
         payload: response.data,
       });
     } catch (error) {
-      console.error("Error creating post:", error);
+      console.error("Error creating Post:", error);
       dispatch({
         type: "CREATE_POST_FAILURE",
         payload: error,
@@ -67,7 +67,7 @@ export const updatePost = (id, updatedContent, updatedCategories) => {
         payload: response.data,
       });
     } catch (error) {
-      console.error("Error updating post:", error);
+      console.error("Error updating Post:", error);
       dispatch({
         type: "UPDATE_POST_FAILURE",
         payload: error,
@@ -85,7 +85,7 @@ export const deletePost = (id) => {
         payload: id,
       });
     } catch (error) {
-      console.error("Error deleting post:", error);
+      console.error("Error deleting Post:", error);
       dispatch({
         type: "DELETE_POST_FAILURE",
         payload: error,

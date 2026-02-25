@@ -1,0 +1,1 @@
+export { ActivateAccountPage } from "./ActivateAccountPage";

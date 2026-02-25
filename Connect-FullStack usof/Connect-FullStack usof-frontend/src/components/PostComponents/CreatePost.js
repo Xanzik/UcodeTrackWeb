@@ -39,19 +39,19 @@ const CreatePost = () => {
 
   const handleSelectedCategoryRemove = (category) => {
     const updatedCategories = post.categories.filter(
-      (c) => c.title !== category.title
+      (c) => c.title !== category.title,
     );
     setPost({ ...post, categories: updatedCategories });
   };
 
   const handleCategorySelect = (category) => {
     const isCategorySelected = post.categories.some(
-      (c) => c.title === category.title
+      (c) => c.title === category.title,
     );
 
     if (isCategorySelected) {
       const updatedCategories = post.categories.filter(
-        (c) => c.title !== category.title
+        (c) => c.title !== category.title,
       );
       setPost({ ...post, categories: updatedCategories });
     } else {
@@ -60,7 +60,7 @@ const CreatePost = () => {
   };
 
   const filteredCategories = allCategories.filter((category) =>
-    category.title.toLowerCase().includes(searchText.toLowerCase())
+    category.title.toLowerCase().includes(searchText.toLowerCase()),
   );
 
   const handleScreenshotChange = (e) => {
@@ -80,7 +80,7 @@ const CreatePost = () => {
       const post_id = await PostService.createPost(
         post.title,
         post.content,
-        post.categories
+        post.categories,
       );
       if (screenshot) {
         await PostService.updatePostScreenshot(post_id.data, formScreenshot);
@@ -94,7 +94,7 @@ const CreatePost = () => {
       setScreenshot(null);
       navigate(`/post/${post_id.data}`);
     } catch (error) {
-      console.error("Error creating post:", error);
+      console.error("Error creating Post:", error);
     }
   };
 

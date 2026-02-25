@@ -1,4 +1,4 @@
-// post.service.js
+// Post.service.js
 import { v4 as uuidv4 } from 'uuid';
 import fs from 'fs';
 import models from '../models/index.js';
@@ -8,6 +8,7 @@ import { PostBlockDTO } from '../dto/post.dto.js';
 
 const PostModel = models.Post;
 const CategoryModel = models.Category;
+const UserModel = models.User;
 
 class PostService {
 	async getAllPosts(filters, user) {
@@ -17,13 +18,15 @@ class PostService {
 			[Op.gte]: filters.dateFrom || new Date('1970-01-01'),
 			[Op.lte]: filters.dateTo || new Date('3000-01-01'),
 		};
-
+		console.log(user);
 		if (filters.status && user.role === 'admin') {
 			where.status = filters.status;
 		} else {
 			where[Op.or] = [
 				{ status: 'active' },
-				{ status: 'inactive', authorId: user.id },
+				...(user?.id
+					? [{ status: 'inactive', authorId: user.id }]
+					: []),
 			];
 		}
 
@@ -55,7 +58,20 @@ class PostService {
 		}
 		const posts = await PostModel.findAll({
 			where,
-			include,
+			include: {
+				...include,
+				model: UserModel,
+				as: 'author',
+				attributes: [
+					'id',
+					'login',
+					'fullName',
+					'email',
+					'profilePicture',
+					'rating',
+					'role',
+				],
+			},
 			order,
 			distinct: true,
 		});
@@ -63,7 +79,23 @@ class PostService {
 	}
 
 	async getPostByID(id) {
-		const post = await PostModel.findByPk(id);
+		const post = await PostModel.findByPk(id, {
+			include: [
+				{
+					model: UserModel,
+					as: 'author',
+					attributes: [
+						'id',
+						'login',
+						'fullName',
+						'email',
+						'profilePicture',
+						'rating',
+						'role',
+					],
+				},
+			],
+		});
 		if (!post) {
 			throw ApiError.BadRequest('Post with this id does not exist');
 		}

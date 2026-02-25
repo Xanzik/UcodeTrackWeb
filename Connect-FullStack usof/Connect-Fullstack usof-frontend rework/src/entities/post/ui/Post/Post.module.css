@@ -1,0 +1,80 @@
+.post {
+    background: rgba(4, 7, 18, 0.7);
+    padding: 20px;
+    border-radius: 16px;
+    border: 1px solid rgba(42, 168, 255, 0.25);
+    box-shadow: 0 0 12px rgba(42, 168, 255, 0.1);
+}
+
+.postHeader {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 12px;
+}
+
+.rating {
+    font-size: 14px;
+    color: rgba(42, 168, 255, 0.85);
+}
+
+.postMeta {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+.category {
+    font-size: 12px;
+    color: rgba(127, 215, 255, 0.65);
+    text-transform: uppercase;
+}
+
+.date {
+    font-size: 12px;
+    color: rgba(127, 215, 255, 0.5);
+}
+
+.postTitle {
+    font-size: 18px;
+    font-weight: bold;
+    margin: 10px 0;
+    color: rgba(180, 240, 255, 0.95);
+}
+
+.postContent {
+    font-size: 14px;
+    line-height: 1.5;
+    margin-bottom: 20px;
+    color: rgba(180, 240, 255, 0.75);
+}
+
+.postFooter {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.status {
+    font-size: 12px;
+    background-color: #2aa8ff;
+    color: #fff;
+    padding: 6px 12px;
+    border-radius: 12px;
+    text-transform: uppercase;
+}
+
+.reactions {
+    display: flex;
+    gap: 20px;
+    font-size: 14px;
+}
+
+.likes,
+.comments {
+    color: rgba(180, 240, 255, 0.85);
+}
+
+.likes:hover,
+.comments:hover {
+    color: rgba(42, 168, 255, 0.95);
+}

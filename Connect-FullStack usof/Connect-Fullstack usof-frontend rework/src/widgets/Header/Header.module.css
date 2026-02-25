@@ -1,0 +1,53 @@
+.header {
+    padding: 2px;
+}
+
+.header__wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 18px;
+    padding: 14px 32px;
+    /*border-radius: 26px;*/
+
+    background:
+            radial-gradient(900px 300px at 50% 0%, rgba(42,168,255,.10), transparent 55%),
+            linear-gradient(180deg, rgba(4,7,18,.70), rgba(3,5,12,.62));
+
+    border: 1px solid rgba(42,168,255,.28);
+    box-shadow:
+            0 0 0 1px rgba(42,168,255,.12),
+            0 0 40px rgba(42,168,255,.14),
+            0 18px 60px rgba(0,0,0,.45),
+            inset 0 0 42px rgba(42,168,255,.06);
+
+    backdrop-filter: blur(10px);
+    position: relative;
+}
+
+.header__wrapper::before{
+    border-radius: 34px;
+    background: radial-gradient(1200px 500px at 50% 0%, rgba(42,168,255,.20), transparent 55%);
+    filter: blur(14px);
+    opacity: .35;
+}
+
+.header__left, .header__right, .header__center {
+    display: flex;
+    align-items: center;
+}
+
+.header__left {
+    gap: 14px;
+}
+
+.header__center{
+    justify-content: center;
+    max-width: 25%;
+    width: 100%;
+}
+
+.header__right{
+    justify-content:flex-end;
+    gap: 14px;
+}

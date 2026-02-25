@@ -1,5 +1,9 @@
 import type { IUser } from "@/entities/user";
 
+export interface AuthState {
+  accessToken: string | null;
+}
+
 export interface AuthResponse {
   accessToken: string;
   refreshToken: string;

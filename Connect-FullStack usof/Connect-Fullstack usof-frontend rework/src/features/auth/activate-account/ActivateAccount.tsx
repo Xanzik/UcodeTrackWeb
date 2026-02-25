@@ -30,7 +30,7 @@ export function ActivateAccount({ token }: { token: string }) {
   useEffect(() => {
     if (isSuccess) {
       setTimeout(() => {
-        navigate("/login");
+        navigate("/Login");
       }, 3000);
     }
   }, [isSuccess, navigate]);
@@ -66,7 +66,7 @@ export function ActivateAccount({ token }: { token: string }) {
 
         <p className={styles["message"]}>
           {isLoading && "Verifying token…"}
-          {isSuccess && "Account activated successfully. You can login now."}
+          {isSuccess && "Account activated successfully. You can Login now."}
           {isError && "Activation failed. Token is invalid or expired."}
           {!isLoading && !isSuccess && !isError && "Waiting for activation…"}
         </p>

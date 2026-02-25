@@ -1,0 +1,52 @@
+.user__meta {
+    display:flex;
+    flex-direction:column;
+    align-items:flex-end;
+    gap: 6px;
+}
+
+.user__role {
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    padding: 6px 10px;
+    border-radius: 999px;
+    border: 1px solid rgba(127,215,255,.18);
+    background: rgba(0,0,0,.10);
+    color: rgba(180,240,255,.78);
+    font-size: 11px;
+    letter-spacing: 2px;
+    box-shadow: inset 0 0 18px rgba(42,168,255,.06);
+}
+
+.user__login {
+    font-size: 12px;
+    letter-spacing: 2px;
+    color: rgba(180,240,255,.92);
+    text-shadow: 0 0 14px rgba(42,168,255,.12);
+}
+
+.user__avatar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    border-radius: 999px;
+
+    border: 1.5px solid rgba(42,168,255,.45);
+    box-shadow: 0 0 18px rgba(42,168,255,.20), inset 0 0 12px rgba(42,168,255,.10);
+    background: rgba(0,0,0,.14);
+    overflow: hidden;
+}
+
+.user__avatar-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.user__avatar-fallback {
+    color: rgba(180,240,255,.9);
+    font-weight: 800;
+}

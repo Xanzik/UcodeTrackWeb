@@ -1,24 +1,17 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { Layout } from "@/shared/ui/Layout/Layout.tsx";
-import LoginPage from "@/pages/login/LoginPage.tsx";
-import { routes } from "@/app/providers/router/routes.ts";
-import RegisterPage from "@/pages/register/RegisterPage.tsx";
-import { RequireAuth, RequireGuest } from "@/app/providers/router/guards.tsx";
-import ActivateAccountPage from "@/pages/activate-account/ActivateAccountPage.tsx";
-import HomePage from "@/pages/home/HomePage.tsx";
+import { routes } from "@/app/providers/router/routes";
+import { RegisterPage } from "@/pages/Register/RegisterPage";
+import { RequireGuest } from "@/app/providers/router/guards";
+import { AuthLayout } from "@/app/layouts/AuthLayout";
+import { Layout } from "@/app/layouts/Layout";
+import { LoginPage } from "@/pages/Login";
+import { ActivateAccountPage } from "@/pages/ActivateAccount";
+import { HomePage } from "@/pages/Home";
 
 const router = createBrowserRouter([
   {
-    element: <Layout />,
+    element: <AuthLayout />,
     children: [
-      {
-        path: routes.home.path,
-        element: (
-          <RequireAuth>
-            <HomePage />
-          </RequireAuth>
-        ),
-      },
       {
         path: routes.login.path,
         element: (
@@ -42,6 +35,15 @@ const router = createBrowserRouter([
             <ActivateAccountPage />
           </RequireGuest>
         ),
+      },
+    ],
+  },
+  {
+    element: <Layout />,
+    children: [
+      {
+        path: routes.home.path,
+        element: <HomePage />,
       },
     ],
   },

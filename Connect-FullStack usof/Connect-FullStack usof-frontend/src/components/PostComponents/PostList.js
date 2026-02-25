@@ -236,17 +236,17 @@ const PostsList = () => {
 
       <ul className={PostListCSS["posts-list"]}>
         {currentPost.map((post) => (
-          <li key={post.id} className={PostListCSS["post-container"]}>
-            <Link to={`/post/${post.id}`} className={PostListCSS["post-link"]}>
-              <div className={PostListCSS["post-content-wrapper"]}>
-                <div className={PostListCSS["post-details"]}>
-                  <h3 className={PostListCSS["post-title"]}>{post.Title}</h3>
-                  <p className={PostListCSS["post-content"]}>
+          <li key={post.id} className={PostListCSS["Post-container"]}>
+            <Link to={`/post/${post.id}`} className={PostListCSS["Post-link"]}>
+              <div className={PostListCSS["Post-content-wrapper"]}>
+                <div className={PostListCSS["Post-details"]}>
+                  <h3 className={PostListCSS["Post-title"]}>{post.Title}</h3>
+                  <p className={PostListCSS["Post-content"]}>
                     {post.content?.length > 100
                       ? post.content.substring(0, 100) + "..."
                       : post.content}
                   </p>
-                  <div className={PostListCSS["post-categories"]}>
+                  <div className={PostListCSS["Post-categories"]}>
                     {postCategories[post.id] &&
                       postCategories[post.id].map((category, index) => (
                         <span
@@ -257,12 +257,12 @@ const PostsList = () => {
                         </span>
                       ))}
                   </div>
-                  <div className={PostListCSS["post-info"]}>
-                    <p className={PostListCSS["post-date"]}>
+                  <div className={PostListCSS["Post-info"]}>
+                    <p className={PostListCSS["Post-date"]}>
                       {new Date(post.updatedAt).toLocaleString()}
                     </p>
                     <p
-                      className={`${PostListCSS["post-status"]} ${
+                      className={`${PostListCSS["Post-status"]} ${
                         post.status === "active"
                           ? PostListCSS["active"]
                           : PostListCSS["inactive"]
@@ -270,11 +270,11 @@ const PostsList = () => {
                     >
                       {post.status}
                     </p>
-                    <p className={PostListCSS["post-author"]}>
+                    <p className={PostListCSS["Post-author"]}>
                       {users.find((user) => user.id === post.authorId)?.login ||
                         "Loading..."}
                     </p>
-                    <p className={PostListCSS["post-rating"]}>
+                    <p className={PostListCSS["Post-rating"]}>
                       {users.find((user) => user.id === post.authorId)?.rating}
                     </p>
                     <img
@@ -289,7 +289,7 @@ const PostsList = () => {
                       }
                       alt="User Avatar"
                       onClick={() => handleAvatarClick(post.authorId)}
-                      className={PostListCSS["post-avatar"]}
+                      className={PostListCSS["Post-avatar"]}
                     />
                   </div>
                 </div>

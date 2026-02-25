@@ -6,7 +6,7 @@ import authMiddleware from '../middlewares/auth.middleware.js';
 import roleMiddleware from '../middlewares/role.middleware.js';
 
 router.post('/posts', authMiddleware, postController.createPost);
-router.get('/posts', authMiddleware, postController.getAllPosts);
+router.get('/posts', postController.getAllPosts);
 router.patch('/posts/:post_id', authMiddleware, postController.updatePost);
 router.delete('/posts/:post_id', authMiddleware, postController.deletePost);
 router.post(

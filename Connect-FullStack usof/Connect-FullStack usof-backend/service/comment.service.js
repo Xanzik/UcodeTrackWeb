@@ -22,7 +22,7 @@ class commentService {
 			}
 			if (parentComment.postId !== postId) {
 				throw ApiError.BadRequest(
-					'The comment does not belong to the current post.',
+					'The comment does not belong to the current Post.',
 				);
 			}
 		}
