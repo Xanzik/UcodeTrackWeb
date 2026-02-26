@@ -2,7 +2,6 @@ import { Input } from "@/shared/ui/Input";
 import styles from "./Search.module.css";
 import type { SubmitEvent } from "react";
 import type { SearchProps } from "./Search.props";
-import { Button } from "@/shared/ui/Button";
 
 export function Search({
   value,
@@ -26,7 +25,6 @@ export function Search({
         }
         placeholder={placeholder}
       />
-      <Button>Search</Button>
     </form>
   );
 }

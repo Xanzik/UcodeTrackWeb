@@ -11,72 +11,105 @@
 
 .post__center {
     display: flex;
+    gap: 8px;
     flex-direction: column;
     width: 100%;
 }
 
-.post__title {
-    font-size: 18px;
-    font-weight: bold;
-    color: #fff;
-}
-
-.rating {
-    font-size: 14px;
-    color: rgba(42, 168, 255, 0.85);
-}
-
-.postMeta {
+.post__meta {
     display: flex;
-    gap: 12px;
     align-items: center;
+    gap: 16px;
 }
 
-.category {
+.post__meta-login {
+    font-size: 16px;
+    letter-spacing: 2px;
+    color: rgba(180, 240, 255, .92);
+    text-shadow: 0 0 14px rgba(42, 168, 255, .12);
+}
+
+.post__meta-login-user {
+    color: #00ffd0;
+}
+
+.post__meta-login-admin {
+    color: rgba(255, 0, 0, 0.95);
+}
+
+.post__meta-rating {
+    color: #ffd966;
+}
+
+.post__meta-date {
     font-size: 12px;
-    color: rgba(127, 215, 255, 0.65);
+    letter-spacing: 1px;
+    color: rgba(0, 200, 255, 0.8);
     text-transform: uppercase;
 }
 
-.date {
-    font-size: 12px;
-    color: rgba(127, 215, 255, 0.5);
-}
-
-.postContent {
-    font-size: 14px;
-    line-height: 1.5;
-    margin-bottom: 20px;
-    color: rgba(180, 240, 255, 0.75);
-}
-
-.postFooter {
+.post__center-footer {
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    gap: 8px;
+}
+
+.count-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.post__title {
+    color: white;
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+
+.post__subtitle {
+    font-size: 14px;
+    color: rgba(200, 240, 255, 0.7);
+    line-height: 1.6;
+}
+
+.comment-icon {
+    width: 24px;
+    height: 24px;
+}
+
+.like-icon, .dislike-icon {
+    width: 32px;
+    height: 32px;
+}
+
+.comment-icon, .comment-count {
+    color: #008fff;
+}
+
+.like-icon, .likes-count {
+    color: #00ffad;
+}
+
+.dislike-icon, .dislikes-count {
+    color: #ff001f;
+}
+
+.post__category {
+    background: rgba(0, 200, 255, 0.1);
+    padding: 4px 12px;
+    border-radius: 14px;
+    color: #00e1ff;
+    border: 1px solid rgba(0, 200, 255, 0.4);
 }
 
 .status {
+    margin-left: auto;
+    padding: 6px 14px;
+    border-radius: 20px;
     font-size: 12px;
-    background-color: #2aa8ff;
-    color: #fff;
-    padding: 6px 12px;
-    border-radius: 12px;
-    text-transform: uppercase;
-}
-
-.reactions {
-    display: flex;
-    gap: 20px;
-    font-size: 14px;
-}
-
-.likes,
-.comments {
-    color: rgba(180, 240, 255, 0.85);
-}
-
-.likes:hover,
-.comments:hover {
-    color: rgba(42, 168, 255, 0.95);
+    letter-spacing: 1px;
+    background: rgba(0, 255, 150, 0.1);
+    color: #00ffd0;
+    border: 1px solid rgba(0, 255, 150, 0.4);
 }

@@ -13,7 +13,7 @@ import { getUsers } from "../../store/actions/user.js";
 
 import PostPageCSS from "../../styles/PostPage.module.css";
 
-const likeIMG = "/like.svg";
+const likeIMG = "/like-icon.svg";
 
 const PostLikes = ({ postId }) => {
   const dispatch = useDispatch();
@@ -26,10 +26,10 @@ const PostLikes = ({ postId }) => {
         const likesData = await dispatch(fetchLikesForPost(postId));
         const dislikeData = await dispatch(fetchDislikesForPost(postId));
         const userLike = likesData.find(
-          (like) => like.AuthorID === currentUser.id
+          (like) => like.AuthorID === currentUser.id,
         );
         const userDisLike = dislikeData.find(
-          (like) => like.AuthorID === currentUser.id
+          (like) => like.AuthorID === currentUser.id,
         );
         setIsLiked(!!userLike);
         setIsDisliked(!!userDisLike);
@@ -50,7 +50,7 @@ const PostLikes = ({ postId }) => {
       }
       const likesData = await dispatch(fetchLikesForPost(postId));
       const userLike = likesData.find(
-        (like) => like.AuthorID === currentUser.id
+        (like) => like.AuthorID === currentUser.id,
       );
       await dispatch(getUsers());
       setIsLiked(!!userLike);
