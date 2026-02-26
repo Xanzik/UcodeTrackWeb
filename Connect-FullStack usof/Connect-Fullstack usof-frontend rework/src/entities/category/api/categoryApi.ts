@@ -1,14 +1,14 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
 import { rawBaseQuery } from "@/shared/api/rawBaseQuery.ts";
-import type { IPost } from "@/entities/post/model/types.ts";
+import type { ICategory } from "@/entities/category/model/types.ts";
 
-export const postApi = createApi({
-  reducerPath: "postApi",
+export const categoryApi = createApi({
+  reducerPath: "categoryApi",
   baseQuery: rawBaseQuery,
   endpoints: (build) => ({
-    getAllPosts: build.query<IPost[], string | void>({
+    getAllCategories: build.query<ICategory[], string, void>({
       query: (search) => ({
-        url: "/posts",
+        url: "/categories",
         method: "GET",
         params: search ? { search } : undefined,
       }),
@@ -16,4 +16,4 @@ export const postApi = createApi({
   }),
 });
 
-export const { useGetAllPostsQuery } = postApi;
+export const { useGetAllCategoriesQuery } = categoryApi;

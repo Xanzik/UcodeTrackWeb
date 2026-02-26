@@ -10,7 +10,7 @@ router.post(
 	roleMiddleware,
 	categoryController.createCategory,
 );
-router.get('/categories', authMiddleware, categoryController.getCategories);
+router.get('/categories', categoryController.getCategories);
 router.get(
 	'/categories/:category_id',
 	authMiddleware,

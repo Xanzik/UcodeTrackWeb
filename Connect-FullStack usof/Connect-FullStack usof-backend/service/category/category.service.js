@@ -2,6 +2,7 @@
 import models from '../../models/index.js';
 import ApiError from '../../exceptions/api.error.js';
 import { CategoryUpdateDTO } from '../../dto/category.dto.js';
+import { Op } from 'sequelize';
 
 const CategoryModel = models.Category;
 
@@ -10,8 +11,15 @@ class categoryService {
 		return CategoryModel.create(title);
 	}
 
-	async getCategories() {
-		return CategoryModel.findAll();
+	async getCategories(search) {
+		const where = {};
+		if (search) {
+			console.log(search);
+			where.title = {
+				[Op.like]: `%${search}%`,
+			};
+		}
+		return CategoryModel.findAll({ where });
 	}
 
 	async getCategoryByID(id) {

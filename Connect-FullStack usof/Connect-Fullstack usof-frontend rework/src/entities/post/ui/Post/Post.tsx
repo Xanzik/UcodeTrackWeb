@@ -5,11 +5,11 @@ import { Subtitle } from "@/shared/ui/Subtitle";
 import CommentIcon from "@/shared/assets/comment-icon.svg?react";
 import LikeIcon from "@/shared/assets/like-icon.svg?react";
 import cn from "classnames";
+import { CategoryList } from "@/features/category/CategoryList/CategoryList.tsx";
 
 export function Post({ post }: PostProps) {
   const formatDate = (iso: string) => {
     const date = new Date(iso);
-
     return new Intl.DateTimeFormat("en-US", {
       month: "short",
       day: "2-digit",
@@ -40,11 +40,7 @@ export function Post({ post }: PostProps) {
             BY {post.author.login}
           </p>
           <p className={styles["post__meta-rating"]}>{post.author.rating}</p>
-          {post.categories.map((category) => (
-            <p key={category.id} className={styles["post__category"]}>
-              {category.title}
-            </p>
-          ))}
+          {post.categories && <CategoryList categories={post.categories} />}
         </div>
         <div className={styles["post__center-footer"]}>
           <div className={styles["count-container"]}>

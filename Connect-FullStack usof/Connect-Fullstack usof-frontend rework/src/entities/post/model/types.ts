@@ -1,4 +1,5 @@
 import type { IUser } from "@/entities/user";
+import type { ICategory } from "@/entities/category/model/types.ts";
 
 export interface IPost {
   id: number;
@@ -14,5 +15,5 @@ export interface IPost {
   likesCount: number;
   dislikesCount: number;
   author: IUser;
-  categories: [{ id: number; title: string }];
+  categories: ICategory[];
 }

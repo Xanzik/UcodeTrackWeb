@@ -1,7 +1,8 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { authApi, authReducer } from "@/entities/auth";
 import { userReducer } from "@/entities/user";
-import { postApi } from "@/entities/post/api/postApi.ts";
+import { categoryApi } from "@/entities/category";
+import { postApi } from "@/entities/post";
 
 export const store = configureStore({
   reducer: {
@@ -9,9 +10,13 @@ export const store = configureStore({
     user: userReducer,
     [authApi.reducerPath]: authApi.reducer,
     [postApi.reducerPath]: postApi.reducer,
+    [categoryApi.reducerPath]: categoryApi.reducer,
   },
   middleware: (gdm) =>
-    gdm().concat(authApi.middleware).concat(postApi.middleware),
+    gdm()
+      .concat(authApi.middleware)
+      .concat(postApi.middleware)
+      .concat(categoryApi.middleware),
 });
 
 export type RootState = ReturnType<typeof store.getState>;

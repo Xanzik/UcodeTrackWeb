@@ -13,7 +13,8 @@ class categoryController {
 
 	getCategories = async (req, res, next) => {
 		try {
-			const categories = await categoryService.getCategories();
+			const search = req.query.search;
+			const categories = await categoryService.getCategories(search);
 			return res.json(categories);
 		} catch (e) {
 			next(e);
