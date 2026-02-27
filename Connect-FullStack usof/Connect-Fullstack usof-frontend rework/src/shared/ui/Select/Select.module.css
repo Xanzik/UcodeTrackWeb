@@ -1,0 +1,33 @@
+.select {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 14px 44px 14px 18px;
+    border-radius: var(--input-r);
+    border: 1px solid rgba(127,215,255,.18);
+    background-color: rgba(0,0,0,.12);
+    color: rgba(180,240,255,.95);
+    outline: none;
+    transition: .25s ease;
+    appearance: none;
+    background-image:
+            linear-gradient(45deg, transparent 50%, rgba(180,240,255,.7) 50%),
+            linear-gradient(135deg, rgba(180,240,255,.7) 50%, transparent 50%);
+    background-position: right 18px center, right 12px center;
+    background-size: 6px 6px, 6px 6px;
+    background-repeat: no-repeat;
+}
+
+.select:focus {
+    border-color: rgba(42,168,255,.55);
+    box-shadow: 0 0 18px rgba(42,168,255,.22);
+}
+
+.select:disabled {
+    opacity: .6;
+    cursor: not-allowed;
+}
+
+.select option {
+    background-color: #020418;
+    color: rgba(180,240,255,.95);
+}

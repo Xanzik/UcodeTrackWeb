@@ -14,7 +14,6 @@ class categoryService {
 	async getCategories(search) {
 		const where = {};
 		if (search) {
-			console.log(search);
 			where.title = {
 				[Op.like]: `%${search}%`,
 			};

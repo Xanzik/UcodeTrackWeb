@@ -17,3 +17,8 @@ export interface IPost {
   author: IUser;
   categories: ICategory[];
 }
+
+export interface PostsGetRequest {
+  search?: string;
+  categories?: string[];
+}

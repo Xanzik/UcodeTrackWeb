@@ -72,6 +72,13 @@ Post.associate = (models) => {
 		otherKey: 'categoryId',
 		as: 'categories',
 	});
+
+	Post.belongsToMany(models.Category, {
+		through: 'post_categories',
+		foreignKey: 'postId',
+		otherKey: 'categoryId',
+		as: 'filterCategories',
+	});
 };
 
 export default Post;

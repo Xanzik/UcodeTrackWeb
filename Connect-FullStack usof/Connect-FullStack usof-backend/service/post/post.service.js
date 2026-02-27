@@ -14,9 +14,9 @@ const CategoryModel = models.Category;
 const UserModel = models.User;
 
 class PostService {
-	async getAllPosts(filters, user) {
+	async getAllPosts(filters, search, user) {
 		const posts = await PostModel.findAll({
-			where: buildPostWhere(filters, user),
+			where: buildPostWhere(filters, search, user),
 			attributes: buildPostAttributes(),
 			include: buildPostInclude(filters, CategoryModel, UserModel),
 			order: buildPostOrder(filters),

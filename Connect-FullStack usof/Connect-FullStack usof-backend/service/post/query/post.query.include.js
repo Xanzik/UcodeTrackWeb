@@ -1,7 +1,16 @@
 import { Op } from 'sequelize';
 
 export const buildPostInclude = (filters, CategoryModel, UserModel) => {
-	const include = [
+	const categories =
+		typeof filters.category === 'string'
+			? filters.category
+					.split(',')
+					.map((c) => c.trim())
+					.filter(Boolean)
+			: Array.isArray(filters.category)
+				? filters.category
+				: [];
+	return [
 		{
 			model: UserModel,
 			as: 'author',
@@ -13,15 +22,16 @@ export const buildPostInclude = (filters, CategoryModel, UserModel) => {
 			attributes: ['id', 'title'],
 			through: { attributes: [] },
 		},
+		...(categories.length
+			? [
+					{
+						model: CategoryModel,
+						as: 'filterCategories',
+						attributes: [],
+						where: { title: { [Op.in]: categories } },
+						through: { attributes: [] },
+					},
+				]
+			: []),
 	];
-	if (filters.category && filters.category.length > 0) {
-		include.push({
-			model: CategoryModel,
-			as: 'categories',
-			where: { title: { [Op.in]: filters.category } },
-			through: { attributes: [] },
-			required: true,
-		});
-	}
-	return include;
 };

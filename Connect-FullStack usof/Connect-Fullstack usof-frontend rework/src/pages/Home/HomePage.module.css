@@ -8,13 +8,32 @@
 .page__header {
     display: flex;
     flex-direction: column;
-    gap: 12px;
-    margin: 0 auto 24px;
+    gap: 24px;
+    padding: 24px;
+}
+
+.page__header-top {
+    display: flex;
+    flex-direction: column;
     text-align: center;
-    align-items: center;
 }
 
 .page__header-center {
     display: flex;
     gap: 16px;
+}
+
+.page__categories {
+    display: flex;
+    padding: 24px;
+    flex-wrap: wrap;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    background: none;
+    box-shadow:
+            0 0 0 1px rgba(42,168,255,.18),
+            0 0 55px rgba(42,168,255,.18),
+            0 20px 80px rgba(0,0,0,.55),
+            inset 0 0 55px rgba(42,168,255,.08);
 }

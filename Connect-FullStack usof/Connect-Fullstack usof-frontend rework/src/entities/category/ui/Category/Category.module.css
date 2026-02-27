@@ -1,7 +1,31 @@
 .category {
-    background: rgba(0, 200, 255, 0.1);
-    padding: 4px 12px;
-    border-radius: 14px;
-    color: #00e1ff;
-    border: 1px solid rgba(0, 200, 255, 0.4);
+    background: var(--neo-soft);
+    padding: 6px 12px;
+    border-radius: 0;
+    color: var(--txt);
+    border: 1px solid var(--neo-border);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    appearance: none;
+    outline: none;
+    font-size: 16px;
+}
+
+.category--interactive {
+    cursor: pointer;
+    transition: .2s ease;
+}
+
+.category--interactive:hover {
+    border-color: rgba(42,168,255,.75);
+    box-shadow: 0 0 14px rgba(42,168,255,.22);
+}
+
+.category--selected {
+    background: rgba(20,151,255,.22);
+    border-color: rgba(20,151,255,.65);
+    color: rgba(182, 80, 123, 0.47);
 }

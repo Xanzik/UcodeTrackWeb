@@ -11,8 +11,9 @@ class PostController {
 				status: req.query.status,
 				sortBy: req.query.sortBy,
 			};
+			const search = req.query.search;
 			const user = req.user;
-			const posts = await postService.getAllPosts(filters, user);
+			const posts = await postService.getAllPosts(filters, search, user);
 			return res.json(posts);
 		} catch (e) {
 			next(e);

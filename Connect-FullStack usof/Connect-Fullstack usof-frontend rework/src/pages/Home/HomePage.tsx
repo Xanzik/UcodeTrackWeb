@@ -8,16 +8,29 @@ import { useSearchBar } from "@/features/search/model/useSearchBar.ts";
 import { Select } from "@/shared/ui/Select";
 import { useGetAllCategoriesQuery } from "@/entities/category";
 import { CategoryList } from "@/features/category/CategoryList/CategoryList.tsx";
+import { useState } from "react";
 
 export function HomePage() {
+  const [searchCategories, setSearchCategories] = useState<string[]>([]);
   const postSearch = useSearchBar("post");
-  const categorySearch = useSearchBar("category");
-  const { data: posts } = useGetAllPostsQuery(postSearch.value);
+  const categorySearch = useSearchBar("categorySearch");
+  const { data: posts } = useGetAllPostsQuery({
+    search: postSearch.value,
+    categories: searchCategories,
+  });
   const { data: categories } = useGetAllCategoriesQuery(categorySearch.value);
+  const toggleCategory = (title: string) => {
+    setSearchCategories((prev) =>
+      prev.includes(title)
+        ? prev.filter((item) => item !== title)
+        : [...prev, title],
+    );
+  };
+
   return (
     <div className={styles["page"]}>
       <div className={styles["page__header"]}>
-        <div>
+        <div className={styles["page__header-top"]}>
           <Heading>QUESTIONS</Heading>
           <Subtitle>USER POSTS & INQUIRIES</Subtitle>
         </div>
@@ -41,8 +54,22 @@ export function HomePage() {
               { label: "Date2", value: "date2" },
             ]}
           />
+          <Select
+            placeholder="Sort By"
+            options={[
+              { label: "Like", value: "date" },
+              { label: "Dislike", value: "date2" },
+            ]}
+          />
         </div>
-        {categories && <CategoryList categories={categories} />}
+        {categories && (
+          <CategoryList
+            categories={categories}
+            className={styles["page__categories"]}
+            selectedCategories={searchCategories}
+            onCategoryClick={(category) => toggleCategory(category.title)}
+          />
+        )}
       </div>
       {posts && <PostList posts={posts} />}
     </div>
