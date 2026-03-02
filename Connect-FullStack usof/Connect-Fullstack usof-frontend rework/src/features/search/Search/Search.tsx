@@ -1,20 +1,10 @@
 import { Input } from "@/shared/ui/Input";
 import styles from "./Search.module.css";
-import type { SubmitEvent } from "react";
 import type { SearchProps } from "./Search.props";
 
-export function Search({
-  value,
-  onChange,
-  onSubmit,
-  placeholder,
-}: SearchProps) {
-  const handleSubmit = (e: SubmitEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    onSubmit();
-  };
+export function Search({ value, onChange, placeholder }: SearchProps) {
   return (
-    <form className={styles["search__form"]} onSubmit={handleSubmit}>
+    <form className={styles["search__form"]}>
       <Input
         value={value}
         onChange={(e) => onChange(e.target.value)}

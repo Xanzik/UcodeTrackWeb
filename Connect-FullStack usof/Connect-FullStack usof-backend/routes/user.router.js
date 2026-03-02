@@ -4,8 +4,8 @@ import userController from '../controllers/user.controller.js';
 import authMiddleware from '../middlewares/auth.middleware.js';
 import roleMiddleware from '../middlewares/role.middleware.js';
 
-router.get('/users', authMiddleware, userController.getUsers);
-router.get('/users/:user_id', authMiddleware, userController.getUsersByID);
+router.get('/users', userController.getUsers);
+router.get('/users/:user_id', userController.getUsersByID);
 router.post(
 	'/users',
 	authMiddleware,

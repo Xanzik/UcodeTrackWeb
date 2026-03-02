@@ -4,27 +4,27 @@ import { Heading } from "@/shared/ui/Heading";
 import { Subtitle } from "@/shared/ui/Subtitle";
 import { Search } from "@/features/search/Search";
 import { useGetAllPostsQuery } from "@/entities/post/api/postApi.ts";
-import { useSearchBar } from "@/features/search/model/useSearchBar.ts";
 import { Select } from "@/shared/ui/Select";
 import { useGetAllCategoriesQuery } from "@/entities/category";
 import { CategoryList } from "@/features/category/CategoryList/CategoryList.tsx";
-import { useState } from "react";
+import { useSearchParam } from "@/features/search/model/useSearchParam.ts";
+import { useCategoryParam } from "@/features/category/model/useCategoryFilter.ts";
 
 export function HomePage() {
-  const [searchCategories, setSearchCategories] = useState<string[]>([]);
-  const postSearch = useSearchBar("post");
-  const categorySearch = useSearchBar("categorySearch");
+  const [searchCategories, setSearchCategories] =
+    useCategoryParam("categories");
+  const [postSearch, setPostSearch] = useSearchParam("post");
+  const [categorySearch, setCategorySearch] = useSearchParam("categorySearch");
   const { data: posts } = useGetAllPostsQuery({
-    search: postSearch.value,
+    search: postSearch,
     categories: searchCategories,
   });
-  const { data: categories } = useGetAllCategoriesQuery(categorySearch.value);
+  const { data: categories } = useGetAllCategoriesQuery(categorySearch);
   const toggleCategory = (title: string) => {
-    setSearchCategories((prev) =>
-      prev.includes(title)
-        ? prev.filter((item) => item !== title)
-        : [...prev, title],
-    );
+    const next = searchCategories.includes(title)
+      ? searchCategories.filter((item) => item !== title)
+      : [...searchCategories, title];
+    setSearchCategories(next);
   };
 
   return (
@@ -36,15 +36,13 @@ export function HomePage() {
         </div>
         <div className={styles["page__header-center"]}>
           <Search
-            value={postSearch.value}
-            onChange={postSearch.setValue}
-            onSubmit={postSearch.submit}
+            value={postSearch}
+            onChange={setPostSearch}
             placeholder="Search posts..."
           />
           <Search
-            value={categorySearch.value}
-            onChange={categorySearch.setValue}
-            onSubmit={categorySearch.submit}
+            value={categorySearch}
+            onChange={setCategorySearch}
             placeholder="Search categories..."
           />
           <Select

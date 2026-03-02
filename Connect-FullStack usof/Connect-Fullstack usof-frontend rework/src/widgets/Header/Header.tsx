@@ -7,14 +7,11 @@ import { UserBadge } from "@/entities/user/ui/UserBadge";
 import type { HeaderProps } from "./Header.props";
 import { useAppSelector } from "@/app/hooks";
 import { useNavigate } from "react-router-dom";
-import { Search } from "@/features/search/Search";
-import { useSearchBar } from "@/features/search/model/useSearchBar.ts";
 import { useLogoutMutation } from "@/entities/auth/api/authApi.ts";
 
 export function Header({ className }: HeaderProps) {
   const navigate = useNavigate();
   const user = useAppSelector((state) => state.user.user);
-  const { value, setValue, submit } = useSearchBar("q");
   const [logout] = useLogoutMutation();
   const handleLogin = () => {
     navigate("/login");
@@ -32,15 +29,6 @@ export function Header({ className }: HeaderProps) {
             <Subtitle variant="light">DASHBOARD</Subtitle>
             <Subtitle>SYSTEM INTERFACE</Subtitle>
           </div>
-        </div>
-
-        <div className={styles["header__center"]}>
-          <Search
-            placeholder={"SEARCH..."}
-            value={value}
-            onChange={setValue}
-            onSubmit={submit}
-          />
         </div>
 
         <div className={styles["header__right"]}>
