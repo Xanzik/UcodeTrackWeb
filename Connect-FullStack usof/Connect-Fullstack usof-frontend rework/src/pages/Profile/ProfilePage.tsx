@@ -5,9 +5,15 @@ import { Subtitle } from "@/shared/ui/Subtitle";
 import { UserAvatar } from "@/shared/ui/UserAvatar";
 import { Badge } from "@/shared/ui/Badge";
 import { AuthPrompt } from "@/shared/ui/AuthPrompt";
+import { useParams } from "react-router-dom";
+import { useGetUserQuery } from "@/entities/user/api/userApi.ts";
+import { skipToken } from "@reduxjs/toolkit/query";
 
 export function ProfilePage() {
-  const user = useAppSelector((state) => state.user.user);
+  const { id } = useParams();
+  const currentUser = useAppSelector((state) => state.user.user);
+  const { data: fetchedUser } = useGetUserQuery(id ?? skipToken);
+  const user = fetchedUser ?? currentUser;
 
   if (!user) {
     return (

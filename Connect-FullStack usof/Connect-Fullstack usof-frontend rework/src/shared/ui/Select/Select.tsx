@@ -2,7 +2,11 @@ import type { SelectProps } from "@/shared/ui/Select/Select.props.ts";
 import cn from "classnames";
 import styles from "./Select.module.css";
 
-export function Select({ options, placeholder, ...props }: SelectProps) {
+export const Select = function Select({
+  options,
+  placeholder,
+  ...props
+}: SelectProps) {
   return (
     <select
       value={props.value}
@@ -21,4 +25,4 @@ export function Select({ options, placeholder, ...props }: SelectProps) {
       ))}
     </select>
   );
-}
+};

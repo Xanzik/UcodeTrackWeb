@@ -10,6 +10,16 @@ import { CategoryList } from "@/features/category/CategoryList/CategoryList.tsx"
 import { useSearchParam } from "@/features/search/model/useSearchParam.ts";
 import { useCategoryParam } from "@/features/category/model/useCategoryFilter.ts";
 
+const SORT_OPTIONS_1 = [
+  { label: "Date", value: "date" },
+  { label: "Date2", value: "date2" },
+] as const;
+
+const SORT_OPTIONS_2 = [
+  { label: "Like", value: "date" },
+  { label: "Dislike", value: "date2" },
+] as const;
+
 export function HomePage() {
   const [searchCategories, setSearchCategories] =
     useCategoryParam("categories");
@@ -45,22 +55,10 @@ export function HomePage() {
             onChange={setCategorySearch}
             placeholder="Search categories..."
           />
-          <Select
-            placeholder="Sort By"
-            options={[
-              { label: "Date", value: "date" },
-              { label: "Date2", value: "date2" },
-            ]}
-          />
-          <Select
-            placeholder="Sort By"
-            options={[
-              { label: "Like", value: "date" },
-              { label: "Dislike", value: "date2" },
-            ]}
-          />
+          <Select placeholder="Sort By" options={SORT_OPTIONS_1} />
+          <Select placeholder="Sort By" options={SORT_OPTIONS_2} />
         </div>
-        {categories && (
+        {categories && categories.length > 0 && (
           <CategoryList
             categories={categories}
             className={styles["page__categories"]}

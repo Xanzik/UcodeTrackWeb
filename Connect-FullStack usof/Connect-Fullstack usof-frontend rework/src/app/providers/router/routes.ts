@@ -10,5 +10,5 @@ export const routes = {
     path: `/activate/:token`,
   },
   users: { path: "/users" },
-  profile: { path: "/profile" },
+  profile: { path: "/profile/:id?" },
 } as const;
